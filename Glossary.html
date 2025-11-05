@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Glossary</title>
+  <link rel="stylesheet" href="WikiStyle.css">
+</head>
+  <div class="top-banner">
+  <a href="index.html" class="home-button">🏠 Home</a>
+</div>
+<body>
+  <h1>Glossary</h1>
+
+  <section>
+    <h2>Ares</h2>
+	
+    <p><strong>Pronunciation:</strong> /ˈeɪriz/<button class="speak-button">🔊</button></p>
+    <p>Mars-like moon of Chaos, slightly warmer and more massive than Mars.</p>
+  </section>
+  
+<section>
+<h2><a href="Artificial Gills.html">Artificial Gills</a></h2>
+<p><strong>Pronunciation:</strong> /ɑrtəˈfɪʃəl ɡɪlz/<button class="speak-button">🔊</button></p>
+<p>Device to extract air from water integrated with a wetsuit.</p>
+  </section>
+
+  <section>
+    <h2>Celectricity</h2>
+	
+    <p><strong>Pronunciation:</strong> /səˈlɛkˈtrɪsɪti/<button class="speak-button">🔊</button></p>
+    <p>Celectra’s humorous term for neural signals between her two brains.</p>
+  </section>
+
+  <section>
+    <h2>Celectrics</h2>
+	
+    <p><strong>Pronunciation:</strong> /ˈsɛlɛkˈtrɪks/<button class="speak-button">🔊</button></p>
+    <p>Celectra’s informal name for her condition, Mononous Disomas.</p>
+  </section>
+
+  <section>
+    <h2>Chaos</h2>
+    <p><strong>Pronunciation:</strong> /ˈkeɪ.ɑːs/<button class="speak-button">🔊</button></p>
+    <p>Warm super-Jupiter orbiting the binary stars Ciara and Niamh.</p>
+  </section>
+
+  <section>
+    <h2>Ciara</h2>
+    <p><strong>Pronunciation:</strong> /ˈkɪərə/ or /ˈkɪrə/<button class="speak-button">🔊</button></p>
+    <p>Dimmer K-type orange dwarf star in the binary system.</p>
+  </section>
+
+  <section>
+    <h2>Galinstanians</h2>
+    <p><strong>Pronunciation:</strong> /ˌɡælɪnˈstæn.i.ənz/<button class="speak-button">🔊</button></p>
+    <p>Intelligent life based on the metal alloy galinstan.</p>
+  </section>
+
+  <section>
+    <h2><a href="mre.html">Molecular Reconfiguration Engine (MRE)</a></h2>
+    <p><strong>Pronunciation:</strong> /məˈlɛkjʊlər riːˌkɒnfɪɡjuˈreɪʃən ˈɛndʒɪn/<button class="speak-button">🔊</button></p>
+    <p>Advanced device for matter synthesis and reclamation. See full entry → <a href="mre.html">MRE page</a></p>
+  </section>
+
+  <section>
+    <h2>Mononous Disomas</h2>
+    <p><strong>Pronunciation:</strong> /ˈmɒnənəs dɪˈsoʊməs/<button class="speak-button">🔊</button></p>
+    <p>Celectra’s condition: one mind across two bodies.</p>
+  </section>
+  
+ <section> 
+<h2>New Eden</h2>
+<p><strong>Pronunciation:</strong> /ˈnu ˈiːdən/<button class="speak-button">🔊</button></p>
+<p>The first surface settlement established by colonists in the Niamh-Ciara system. Nestled in a crook of the north–south-running Pison River, New Eden blends modular colony units with newer stone, steel, and glass structures. Home to ~200 residents, it includes key infrastructure such as the council hall, fusion reactor, and New Eden Observatory. Though small, it serves as the administrative and cultural heart of the colony.</p>
+</section>
+
+  <section>
+    <h2>Niamh</h2>
+    <p><strong>Pronunciation:</strong> /niːv/<button class="speak-button">🔊</button></p>
+    <p>Brighter G-type yellow star in the binary system.</p>
+  </section>
+
+  <section>
+    <h2>Oisín</h2>
+    <p><strong>Pronunciation:</strong> /ˈʊʃiːn/ or /ˈoʊʃiːn/<button class="speak-button">🔊</button></p>
+    <p>Closest planet to Niamh, tidally locked.</p>
+  </section>
+
+  <section>
+    <h2>Oscar</h2>
+    <p><strong>Pronunciation:</strong> /ˈɒskər/<button class="speak-button">🔊</button></p>
+    <p>Rocky moon orbiting Oisín.</p>
+  </section>
+
+<section>
+  <h2><a href="Utara.html">Utara</a></h2>
+  <p><strong>Pronunciation:</strong> /uːˈtɑːrə/<button class="speak-button">🔊</button></p>
+  <p>Unified Thought and Resource Architecture—sentient AI of the system.</p>
+</section>
+
+
+<section>
+  <h2><a href="Utopis.html">Utopis</a></h2>
+  <p><strong>Pronunciation:</strong> /ˈjuːtəpɪs/<button class="speak-button">🔊</button></p>
+  <p>Space station orbiting Ares, home to Celectra and her father.</p>
+</section>
+
+  <p><a href="index.html">← Back to Homepage</a></p>
+<script>
+let voices = [];
+
+speechSynthesis.onvoiceschanged = () => {
+  voices = speechSynthesis.getVoices();
+};
+document.querySelectorAll('.speak-button').forEach(button => {
+  button.addEventListener('click', () => {
+    const section = button.closest('section');
+    const heading = section?.querySelector('h2')?.textContent;
+
+    if (!heading) return;
+
+    let spokenText = heading;
+
+    // Override specific terms
+    if (heading === 'Utara') spokenText = 'u-TAr-a';
+    else if (heading === 'Oisín') spokenText = 'uh-SHEEN';
+    else if (heading === 'Ciara') spokenText = 'KEE-rah';
+else if (heading === 'Utopis') spokenText = 'You-toe-piss';
+else if (heading === 'Niamh') spokenText = 'Neeve';
+else if (heading === 'Galinstanians') spokenText = 'galin-stan-ians';
+    const utterance = new SpeechSynthesisUtterance(spokenText);
+    utterance.lang = 'en-US';
+    utterance.rate = 0.95;
+    utterance.pitch = 1.1;
+    speechSynthesis.speak(utterance);
+  });
+});
+
+</script>
+</body>
+</html>

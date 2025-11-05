@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ares Time & Age Calculator</title>
+	<link rel="stylesheet" href="WikiStyle.css">
+
+</head>
+  <div class="top-banner">
+  <a href="index.html" class="home-button">🏠 Home</a>
+  </div>
+<body class="p-4">
+  <div class="card-bg gradient-border">
+    <h1 class="gradient-title">Ares Time & Age Calculator</h1>
+    <p class="text-gray-400 mb-4">
+      <strong>Planet Ares</strong> orbits <em>Chaos</em> in a circumbinary system with Niamh and Ciara. Time units:
+    </p>
+    <ul class="list-container">
+      <li class="list-item"><strong>Ares-day</strong> = 18 Earth-hours</li>
+      <li class="list-item"><strong>Ares-month</strong> = 45 Earth-days = <strong>60 Ares-days</strong></li>
+      <li class="list-item"><strong>Ares-year</strong> = 407 Earth-days = <strong>542.666... Ares-days</strong></li>
+    </ul>
+    <p class="text-gray-400 mt-4">This calculator converts between <strong>Earth-age</strong> and <strong>Ares-age</strong>.</p>
+  </div>
+
+  <div class="regimen-grid">
+    <div class="card-bg gradient-border">
+      <h2 class="section-header">Earth → Ares</h2>
+      <label for="earthAge" class="text-sm">Enter Age in Earth-years:</label>
+      <input type="number" id="earthAge" placeholder="e.g., 7" step="0.01">
+      <button onclick="convertEarthToAres()">Convert to Ares-age</button>
+      <div class="text-sm mt-2" id="aresResult">-</div>
+    </div>
+
+    <div class="card-bg gradient-border">
+      <h2 class="section-header">Ares → Earth</h2>
+      <label for="aresAge" class="text-sm">Enter Age in Ares-years:</label>
+      <input type="number" id="aresAge" placeholder="e.g., 6.28194" step="0.01">
+      <button onclick="convertAresToEarth()">Convert to Earth-age</button>
+      <div class="text-sm mt-2" id="earthResult">-</div>
+    </div>
+  </div>
+
+  <div class="card-bg gradient-border mt-8">
+    <h3 class="section-header">Constants</h3>
+    <ul class="list-container">
+      <li class="list-item"><strong>1 Ares-day</strong> = 18 Earth-hours</li>
+      <li class="list-item"><strong>1 Ares-month</strong> = 45 Earth-days = 60 Ares-days</li>
+      <li class="list-item"><strong>1 Ares-year</strong> = 407 Earth-days = 542.666... Ares-days</li>
+      <li class="list-item"><strong>Earth → Ares factor</strong> ≈ 0.8977 Ares-years</li>
+    </ul>
+  </div>
+
+  <footer class="text-center text-sm text-gray-500 mt-8">
+    Ares Time System • Non-tidally locked orbit around Chaos • Circumbinary year = 407 Earth-days
+  
+
+    <script>
+        // Constants
+        const EARTH_DAYS_PER_ARES_YEAR = 407;
+        const EARTH_HOURS_PER_ARES_DAY = 18;
+        const EARTH_HOURS_PER_EARTH_DAY = 24;
+        
+        // Derived
+        const EARTH_DAYS_PER_ARES_DAY = EARTH_HOURS_PER_ARES_DAY / EARTH_HOURS_PER_EARTH_DAY; // 0.75
+        const ARES_DAYS_PER_ARES_YEAR = EARTH_DAYS_PER_ARES_YEAR / EARTH_DAYS_PER_ARES_DAY; // 542.666...
+        const EARTH_TO_ARES_FACTOR = 1 / (EARTH_DAYS_PER_ARES_YEAR / 365.25); // More accurate Earth year
+        const ARES_TO_EARTH_FACTOR = EARTH_DAYS_PER_ARES_YEAR / 365.25;
+
+        function convertEarthToAres() {
+            const earthAge = parseFloat(document.getElementById('earthAge').value);
+            const aresResult = document.getElementById('aresResult');
+            
+            if (isNaN(earthAge) || earthAge < 0) {
+                aresResult.textContent = "Please enter a valid age";
+                aresResult.style.backgroundColor = "rgba(255, 0, 0, 0.3)";
+                return;
+            }
+
+            // Use 365.25 for Earth year (accounting for leap years)
+            const aresAge = earthAge * (365.25 / EARTH_DAYS_PER_ARES_YEAR);
+            aresResult.textContent = `${earthAge} Earth-years = ${aresAge.toFixed(5)} Ares-years`;
+            aresResult.style.backgroundColor = "rgba(0, 255, 0, 0.2)";
+        }
+
+        function convertAresToEarth() {
+            const aresAge = parseFloat(document.getElementById('aresAge').value);
+            const earthResult = document.getElementById('earthResult');
+            
+            if (isNaN(aresAge) || aresAge < 0) {
+                earthResult.textContent = "Please enter a valid age";
+                earthResult.style.backgroundColor = "rgba(255, 0, 0, 0.3)";
+                return;
+            }
+
+            const earthAge = aresAge * (EARTH_DAYS_PER_ARES_YEAR / 365.25);
+            earthResult.textContent = `${aresAge} Ares-years = ${earthAge.toFixed(5)} Earth-years`;
+            earthResult.style.backgroundColor = "rgba(0, 255, 0, 0.2)";
+        }
+
+        // Allow Enter key to trigger conversion
+        document.getElementById('earthAge').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') convertEarthToAres();
+        });
+        document.getElementById('aresAge').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') convertAresToEarth();
+        });
+    </script>
+</body>
+</html>

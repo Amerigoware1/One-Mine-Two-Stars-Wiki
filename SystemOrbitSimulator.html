@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Niamh-Ciara System Orbit Simulator</title>
+	<link rel="stylesheet" href="WikiStyle.css">
+    <style>
+<!--         body { margin: 0; background: #000000; color: #e5e5e5; font-family: Arial, sans-serif; }
+        #canvas { border: 1px solid #00d4ff; width: 100%; height: calc(100vh - 50px); box-sizing: border-box; cursor: grab; }
+        .controls { margin: 10px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        button { padding: 5px 10px; background: #4a90e2; border: none; color: white; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #357abd; } -->
+        .legend { display: flex; gap: 15px; margin-left: auto; font-size: 12px; }
+        .legend-item { display: flex; align-items: center; gap: 5px; }
+        .legend-color { width: 12px; height: 12px; border-radius: 50%; }
+    </style>
+</head>
+<div class="top-banner">
+  <a href="index.html" class="home-button">🏠 Home</a>
+</div>
+<body>
+    <div class="controls">
+        <button id="randomTimeBtn">Random Time</button>
+        <button id="realTimeBtn">Real-Time Mode</button>
+        <button id="fastForwardBtn">Toggle Fast-Forward (x10)</button>
+        <div id="timeDisplay">Time: Day 82, Orbit 15 (07:29 PM CDT, Aug 31, 2025)</div>
+        <div class="legend">
+            <div class="legend-item"><div class="legend-color" style="background: #ffd700;"></div><span>Star</span></div>
+            <div class="legend-item"><div class="legend-color" style="background: #8B4513;"></div><span>Rocky</span></div>
+            <div class="legend-item"><div class="legend-color" style="background: #DAA520;"></div><span>Super-Jupiter</span></div>
+            <div class="legend-item"><div class="legend-color" style="background: #4682B4;"></div><span>Ice Giant</span></div>
+            <div class="legend-item"><div class="legend-color" style="background: #808080;"></div><span>Moon</span></div>
+            <div class="legend-item"><div class="legend-color" style="background: #00ff00;"></div><span>Colony</span></div>
+        </div>
+    </div>
+    <canvas id="canvas"></canvas>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            let time = { day: 82, orbit: 15, earthDate: new Date('2025-08-31T19:29:00-05:00') };
+            let fastForward = false;
+
+            const BARYCENTER = { x: 0, y: 0 };
+            const NUM_STARS = 2000;
+            const STAR_FIELD_SIZE = 4000;
+            const stars = [];
+			
+            let zoom = 1.0;
+            let offsetX = 0;
+            let offsetY = 0;
+            let isDragging = false;
+            let dragStart = { x: 0, y: 0 };
+
+            for (let i = 0; i < NUM_STARS; i++) {
+                stars.push({
+                    x: (Math.random() - 0.5) * STAR_FIELD_SIZE,
+                    y: (Math.random() - 0.5) * STAR_FIELD_SIZE,
+                    size: Math.random() * 2 + 0.5,
+                    brightness: Math.random() * 0.8 + 0.2,
+                    twinkleSpeed: Math.random() * 0.02 + 0.01,
+                    twinklePhase: Math.random() * Math.PI * 2
+                });
+            }
+			
+            const bodies = {
+                // Stars
+                Niamh: { a: 20, b: 16, period: 25, parent: 'barycenter', radius: 15, color: '#ffd700', phase: 0, isStar: true, type: 'star' },
+                Ciara: { a: 40, b: 32, period: 25, parent: 'barycenter', radius: 10, color: '#ff8c00', phase: Math.PI, isStar: true, type: 'star' },
+
+                // Oisin system (S-type around Niamh)
+                Oisin: { a: 90, b: 70, period: 45, parent: 'Niamh', phase: 0, radius: 6, color: '#8B4513', type: 'rocky', moons: ['Oscar'] },
+                Oscar: { a: 18, b: 14, period: 7, parent: 'Oisin', phase: 0, radius: 3, color: '#808080', type: 'moon' },
+
+                // Chaos system (P-type circumbinary)
+                Chaos: {
+  a: 200,
+  b: 160,
+  period: 400,
+  parent: 'barycenter',
+  phase: 0,
+  radius: 12,
+  color: '#DAA520',
+  type: 'gas',
+  moons: ['Ares', 'Hermes', 'Athena', 'Poseidon', 'Demeter']
+},
+Hermes: { a: 20, b: 15, period: 7, parent: 'Chaos', phase: 0, radius: 4, color: '#FF4500', type: 'moon' },
+Poseidon: { a: 25, b: 20, period: 9, parent: 'Chaos', phase: Math.PI / 4, radius: 4.5, color: '#ADD8E6', type: 'moon' },
+Athena: { a: 30, b: 25, period: 11, parent: 'Chaos', phase: Math.PI / 2, radius: 4, color: '#696969', type: 'moon' },
+Demeter: { a: 15, b: 12, period: 5, parent: 'Chaos', phase: 3 * Math.PI / 4, radius: 3, color: '#D3D3D3', type: 'moon' },
+
+                // Ra system
+                Ra: { a: 540, b: 460, period: 2200, parent: 'barycenter', phase: Math.PI, radius: 13, color: '#FFD700', type: 'gas', moons: ['Anubis', 'Isis', 'Osiris'] },
+                Anubis: { a: 20, b: 15, period: 9, parent: 'Ra', phase: 0, radius: 3, color: '#2F4F4F', type: 'moon' },
+                Isis: { a: 25, b: 20, period: 11, parent: 'Ra', phase: 2 * Math.PI / 3, radius: 4, color: '#DEB887', type: 'moon' },
+                Osiris: { a: 30, b: 25, period: 13, parent: 'Ra', phase: 4 * Math.PI / 3, radius: 4, color: '#556B2F', type: 'moon' },
+
+                // Odin system
+                Odin: { a: 700, b: 600, period: 4100, parent: 'barycenter', phase: 3 * Math.PI / 2, radius: 13, color: '#483D8B', type: 'gas', moons: ['Thor', 'Loki', 'Freyja', 'Baldr'] },
+                Thor: { a: 20, b: 15, period: 10, parent: 'Odin', phase: 0, radius: 4, color: '#8B4513', type: 'moon' },
+                Loki: { a: 25, b: 20, period: 12, parent: 'Odin', phase: Math.PI / 2, radius: 3.5, color: '#228B22', type: 'moon' },
+                Freyja: { a: 30, b: 25, period: 14, parent: 'Odin', phase: Math.PI, radius: 4, color: '#DAA520', type: 'moon' },
+                Baldr: { a: 22, b: 18, period: 11, parent: 'Odin', phase: Math.PI * 1.5, radius: 3.5, color: '#F5F5DC', type: 'moon' },
+
+                // Vishnu system
+                Vishnu: { a: 840, b: 720, period: 5800, parent: 'barycenter', phase: Math.PI / 4, radius: 12, color: '#4169E1', type: 'gas', moons: ['Lakshmi', 'Shiva', 'Krishna'] },
+                Lakshmi: { a: 20, b: 15, period: 9, parent: 'Vishnu', phase: 0, radius: 4, color: '#FFD700', type: 'moon' },
+                Shiva: { a: 25, b: 20, period: 11, parent: 'Vishnu', phase: 2 * Math.PI / 3, radius: 4, color: '#DC143C', type: 'moon' },
+                Krishna: { a: 30, b: 25, period: 13, parent: 'Vishnu', phase: 4 * Math.PI / 3, radius: 4, color: '#191970', type: 'moon' },
+
+                // Quetzalcoatl system
+                Quetzalcoatl: { a: 1020, b: 880, period: 8100, parent: 'barycenter', phase: Math.PI * 0.7, radius: 13, color: '#00CED1', type: 'gas', moons: ['Huitzilopochtli', 'Tezcatlipoca', 'XipeTotec', 'Tlaloc'] },
+                Huitzilopochtli: { a: 20, b: 15, period: 10, parent: 'Quetzalcoatl', phase: 0, radius: 3.5, color: '#DC143C', type: 'moon' },
+                Tezcatlipoca: { a: 25, b: 20, period: 12, parent: 'Quetzalcoatl', phase: Math.PI / 2, radius: 4, color: '#2F4F4F', type: 'moon' },
+                XipeTotec: { a: 30, b: 25, period: 14, parent: 'Quetzalcoatl', phase: Math.PI, radius: 3.5, color: '#CD853F', type: 'moon' },
+                Tlaloc: { a: 22, b: 18, period: 11, parent: 'Quetzalcoatl', phase: Math.PI * 1.5, radius: 4, color: '#4682B4', type: 'moon' },
+
+                // Amaterasu system (Ice Giant)
+                Amaterasu: { a: 1180, b: 1020, period: 11200, parent: 'barycenter', phase: Math.PI * 1.2, radius: 11, color: '#B0E0E6', type: 'ice', moons: ['Susanoo', 'Tsukuyomi', 'Inari'] },
+                Susanoo: { a: 20, b: 15, period: 9, parent: 'Amaterasu', phase: 0, radius: 3.5, color: '#708090', type: 'moon' },
+                Tsukuyomi: { a: 25, b: 20, period: 11, parent: 'Amaterasu', phase: 2 * Math.PI / 3, radius: 4, color: '#C0C0C0', type: 'moon' },
+                Inari: { a: 30, b: 25, period: 13, parent: 'Amaterasu', phase: 4 * Math.PI / 3, radius: 3.5, color: '#FFA500', type: 'moon' }
+            };
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight - document.querySelector('.controls').offsetHeight - 20;
+                BARYCENTER.x = canvas.width / 2;
+                BARYCENTER.y = canvas.height / 2;
+                draw();
+            }
+
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            function getPosition(bodyKey, timeDay) {
+                if (bodyKey === 'barycenter') return { x: 0, y: 0 };
+                const body = bodies[bodyKey];
+                if (!body) return { x: 0, y: 0 };
+                const angle = ((2 * Math.PI * timeDay / body.period) + (body.phase || 0)) % (2 * Math.PI);
+                const parentPos = getPosition(body.parent, timeDay);
+                return {
+                    x: parentPos.x + body.a * Math.cos(angle),
+                    y: parentPos.y + body.b * Math.sin(angle)
+                };
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.save();
+                ctx.translate(BARYCENTER.x + offsetX, BARYCENTER.y + offsetY);
+                ctx.scale(zoom, zoom);
+
+                ctx.fillStyle = '#ffffff';
+                for (let star of stars) {
+                    // Calculate twinkling effect
+                    star.twinklePhase += star.twinkleSpeed;
+                    const twinkleBrightness = star.brightness * (0.7 + 0.3 * Math.sin(star.twinklePhase));
+                    ctx.globalAlpha = twinkleBrightness;
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, star.size, 0, 2 * Math.PI);
+                    ctx.fill();
+                }
+                ctx.globalAlpha = 1.0;
+
+                ctx.font = '12px Arial';
+                ctx.textAlign = 'center';
+
+                for (let bodyKey in bodies) {
+                    const body = bodies[bodyKey];
+                    if (body.a && !body.isStar) {
+                        const parentPos = getPosition(body.parent, time.day);
+                        ctx.beginPath();
+                        ctx.ellipse(parentPos.x, parentPos.y, body.a, body.b, 0, 0, 2 * Math.PI);
+                        ctx.strokeStyle = '#444';
+                        ctx.stroke();
+                    }
+                }
+
+                for (let bodyKey in bodies) {
+                    const body = bodies[bodyKey];
+                    const pos = getPosition(bodyKey, time.day);
+                    
+                    // Draw the main body
+                    ctx.beginPath();
+                    ctx.arc(pos.x, pos.y, body.radius || 5, 0, 2 * Math.PI);
+                    ctx.fillStyle = body.color || '#808080';
+                    ctx.fill();
+                    
+                    // Add crescent shadow effect (unless it's a star)
+                    if (!body.isStar) {
+                        // Calculate light direction from barycenter (where stars are)
+                        const baryPos = { x: 0, y: 0 };
+                        const lightAngle = Math.atan2(pos.y - baryPos.y, pos.x - baryPos.x);
+                        
+                        // Draw a crescent shadow on the dark side (away from light)
+                        ctx.save();
+                        ctx.translate(pos.x, pos.y);
+                        ctx.rotate(lightAngle + Math.PI); // Add PI to flip 180 degrees
+                        
+                        ctx.beginPath();
+                        ctx.arc(0, 0, body.radius || 5, Math.PI * 0.5, Math.PI * 1.5);
+                        ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+                        ctx.fill();
+                        
+                        ctx.restore();
+                    }
+                    
+                    const showLabel = body.isStar || body.type === 'rocky' || body.type === 'gas' || body.type === 'ice' || zoom > 1.5;
+                    
+                    if (showLabel) {
+                        ctx.fillStyle = '#fff';
+                        ctx.fillText(bodyKey, pos.x, pos.y + (body.radius || 5) + 10);
+                    }
+                    
+                    if (bodyKey === 'Ares' && body.colony) {
+                        const colony = body.colony;
+                        const rotationAngle = (2 * Math.PI * time.day / body.rotationPeriod) % (2 * Math.PI);
+                        const colonyX = pos.x + (body.radius * Math.cos(rotationAngle));
+                        const colonyY = pos.y + (body.radius * Math.sin(rotationAngle));
+
+                        ctx.beginPath();
+                        ctx.arc(colonyX, colonyY, colony.radius, 0, 2 * Math.PI);
+                        ctx.fillStyle = colony.color;
+                        ctx.fill();
+
+                        if (zoom > 2.5) {
+                            ctx.fillStyle = '#fff';
+                            ctx.fillText(colony.name, colonyX, colonyY + colony.radius + 10);
+                        }
+                    }
+                }
+
+                ctx.restore();
+
+                document.getElementById('timeDisplay').innerText = `Time: Day ${time.day.toFixed(2)}, Orbit ${time.orbit} (${time.earthDate.toLocaleString()} CDT)`;
+            }
+
+            function updateTime() {
+                const increment = fastForward ? 0.5 : 0.05;
+                time.day += increment;
+                time.earthDate.setSeconds(time.earthDate.getSeconds() + 1);
+                if (time.day > 11200) { time.day = 1; time.orbit = (time.orbit % 25) + 1; }
+                draw();
+            }
+
+            function randomTime() {
+                time.day = Math.floor(Math.random() * 11200) + 1;
+                time.orbit = Math.floor(Math.random() * 25) + 1;
+                time.earthDate = new Date('2025-08-31T19:29:00-05:00');
+                time.earthDate.setDate(time.earthDate.getDate() + Math.floor(Math.random() * 365));
+                draw();
+            }
+
+            function startRealTime() {
+                if (!document.realTimeInterval) {
+                    document.realTimeInterval = setInterval(updateTime, 500);
+                    document.getElementById('realTimeBtn').textContent = 'Stop Real-Time';
+                } else {
+                    clearInterval(document.realTimeInterval);
+                    document.realTimeInterval = null;
+                    document.getElementById('realTimeBtn').textContent = 'Real-Time Mode';
+                }
+            }
+
+            function toggleFastForward() {
+                const fastForwardBtn = document.getElementById('fastForwardBtn');
+                if (fastForwardBtn) {
+                    fastForward = !fastForward;
+                    fastForwardBtn.textContent = `Toggle Fast-Forward (x${fastForward ? 10 : 1})`;
+                }
+            }
+
+            canvas.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                const scaleAmount = 1.1;
+                
+                // Get mouse position relative to canvas
+                const rect = canvas.getBoundingClientRect();
+                const mouseX = e.clientX - rect.left;
+                const mouseY = e.clientY - rect.top;
+                
+                // Calculate world position before zoom
+                const worldX = (mouseX - BARYCENTER.x - offsetX) / zoom;
+                const worldY = (mouseY - BARYCENTER.y - offsetY) / zoom;
+                
+                // Apply zoom
+                if (e.deltaY < 0) {
+                    zoom *= scaleAmount;
+                } else {
+                    zoom /= scaleAmount;
+                }
+                
+                // Adjust offset to keep mouse position fixed
+                offsetX = mouseX - BARYCENTER.x - worldX * zoom;
+                offsetY = mouseY - BARYCENTER.y - worldY * zoom;
+                
+                draw();
+            });
+
+            canvas.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                dragStart.x = e.clientX - offsetX;
+                dragStart.y = e.clientY - offsetY;
+                canvas.style.cursor = 'grabbing';
+            });
+
+            canvas.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    offsetX = e.clientX - dragStart.x;
+                    offsetY = e.clientY - dragStart.y;
+                    draw();
+                }
+            });
+
+            canvas.addEventListener('mouseup', () => {
+                isDragging = false;
+                canvas.style.cursor = 'grab';
+            });
+
+            canvas.addEventListener('mouseleave', () => {
+                isDragging = false;
+                canvas.style.cursor = 'grab';
+            });
+
+            document.getElementById('randomTimeBtn').addEventListener('click', randomTime);
+            document.getElementById('realTimeBtn').addEventListener('click', startRealTime);
+            document.getElementById('fastForwardBtn').addEventListener('click', toggleFastForward);
+
+            draw();
+        });
+    </script>
+</body>
+</html>
