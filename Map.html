@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Scroll Zoom Image</title>
+    <div class="top-banner">
+  <a href="index.html" class="home-button">🏠 Home</a>
+  </div>
+  <style>
+    body {
+      margin: 0;
+      background: #111;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .zoom-container {
+      position: relative;
+      overflow: hidden;
+      width: 800px;
+      height: auto;
+      cursor: zoom-in;
+    }
+
+    .zoom-container img {
+      width: 100%;
+      height: auto;
+      transition: transform 0.1s ease;
+      transform-origin: center center;
+      will-change: transform;
+    }
+  </style>
+</head>
+<body>
+  <div class="zoom-container" id="zoom-container">
+    <img src="assets/images/Ares.png" alt="Ares" id="zoom-image" />
+  </div>
+
+  <script>
+    const container = document.getElementById('zoom-container');
+    const image = document.getElementById('zoom-image');
+    let scale = 1;
+
+    container.addEventListener('wheel', (e) => {
+      e.preventDefault();
+
+      const rect = container.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+      image.style.transformOrigin = `${x}% ${y}%`;
+
+      const delta = e.deltaY > 0 ? -0.1 : 0.1;
+      scale = Math.min(Math.max(1, scale + delta), 10); // Clamp between 1x and 5x zoom
+      image.style.transform = `scale(${scale})`;
+    });
+
+    container.addEventListener('mouseleave', () => {
+      scale = 1;
+      image.style.transform = `scale(1)`;
+      image.style.transformOrigin = 'center center';
+    });
+  </script>
+</body>
+</html>
