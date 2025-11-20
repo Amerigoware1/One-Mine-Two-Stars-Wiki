@@ -178,6 +178,25 @@ th {
   color: #e5e7eb;
   font-weight: bold;
 }
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1em;
+}
+.data-table th, .data-table td {
+  border: 1px solid var(--table-border);
+  padding: 8px;
+  text-align: left;
+}
+.data-table th {
+  background-color: #4338ca;
+}
+.data-table caption {
+  font-weight: bold;
+  padding: 8px;
+  background-color: var(--infobox-header);
+  text-align: left;
+}
 
 /* Infobox */
 .infobox {
@@ -373,3 +392,4 @@ button:hover {
   border-radius: 0.5rem;
   font-size: 0.95rem;
 }
+
