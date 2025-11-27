@@ -4,39 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>New Eden Map</title>
-  <link rel="stylesheet" href="WikiStyle.css">
-  <link rel="icon" type="image/png" href="assets/images/favicon.png">
-    <div class="top-banner">
-  <a href="index.html" class="home-button">🏠 Home</a>
-  </div>
-  <style>
-    body {
-      margin: 0;
-      background: #111;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .zoom-container {
-      position: relative;
-      overflow: hidden;
-      width: 800px;
-      height: auto;
-      cursor: zoom-in;
-    }
-
-    .zoom-container img {
-      width: 100%;
-      height: auto;
-      transition: transform 0.1s ease;
-      transform-origin: center center;
-      will-change: transform;
-    }
-  </style>
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    <link rel="stylesheet" href="WikiStyle.css?v=3">
 </head>
 <body>
+      <div class="top-banner">
+  <a href="index.html" class="home-button">🏠 Home</a>
+  </div>
   <div class="zoom-container" id="zoom-container">
     <img src="assets/images/Ares.png" alt="Ares" id="zoom-image" />
   </div>
@@ -68,5 +42,6 @@
   </script>
 </body>
 </html>
+
 
 
