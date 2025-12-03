@@ -116,15 +116,7 @@ a:hover {
   transition: all 0.4s ease;
   backdrop-filter: blur(4px);
  }
-.controls {
-  /* 1. Set background to fully transparent */
-  background: transparent; 
-  /* 2. Remove default padding/margin that might exist */
-  padding: 0;
-  margin: 0;
-  /* 3. Ensure no border */
-  border: none;
-}
+
 .card-bg, .infobox, .toc, .result {
   background: var(--bg-card);
   border: 1px solid var(--border-glow);
@@ -266,19 +258,6 @@ input:focus {
 .glow-violet { text-shadow: 0 0 10px var(--neon-violet); color: var(--neon-violet); }
 .glow-cyan   { text-shadow: 0 0 10px var(--neon-cyan);   color: var(--neon-cyan); }
 
-/* ===========================
-   FORCE TRANSPARENT HEADER & CONTROLS
-   =========================== */
-.top-banner,
-.controls {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0.5rem 1rem !important;
-    margin: 0 !important;
-    backdrop-filter: none !important;
-}
-
 /* Top banner — subtle permanent glow + stronger on hover */
 .top-banner {
     position: relative;
@@ -319,29 +298,19 @@ input:focus {
     box-shadow: 0 0 20px rgba(193, 60, 255, 0.6);
 }
 
-/* Controls buttons – keep them visible but clean */
-.controls button {
-    margin: 0 0.5rem;
-    background: rgba(12, 0, 40, 0.4);
-    backdrop-filter: blur(6px);
-}
-.controls button:hover {
-    background: rgba(193, 60, 255, 0.3);
+.top-banner button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
 }
 
-/* FINAL FIX – Force controls to be truly transparent in the orbit simulator only */
-body:has(#canvas) .controls,
-.SystemOrbitSimulator .controls,
-.controls:has(#randomTimeBtn) {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 12px 20px 12px 20px !important;  /* only the spacing you actually want */
-    margin: 0 !important;
-    backdrop-filter: none !important;
-    position: relative;
-    z-index: 100;
+#timeDisplay {
+    margin-left: auto;
+    white-space: nowrap;
+    font-family: 'Orbitron', sans-serif;
+    color: var(--neon-cyan);
 }
+
+
 
 
 
