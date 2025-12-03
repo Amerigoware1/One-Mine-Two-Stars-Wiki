@@ -91,7 +91,14 @@ a:hover {
   color: var(--neon-violet);
   text-shadow: 0 0 8px var(--glow-cyan);
 }
-
+/* Float Clearing for Main Article
+   =========================== */
+.article-content {
+    /* Creates a new Block Formatting Context (BFC)
+       which forces the element to flow around the float (.infobox) */
+    overflow: hidden;
+    /* Optional: Add some top margin if needed, but the h1 separation should be enough */
+}
 /* ===========================
    Cards & Panels
    =========================== */
@@ -128,7 +135,12 @@ a:hover {
   font-size: 0.9rem;
   letter-spacing: 1px;
 }
-
+.infobox table.infobox {
+    /* Remove the default border-radius from the nested table */
+    border-radius: 0; 
+    border: none;
+    margin: 0;
+}
 /* ===========================
    TOC
    =========================== */
@@ -201,3 +213,4 @@ input:focus {
    =========================== */
 .glow-violet { text-shadow: 0 0 10px var(--neon-violet); color: var(--neon-violet); }
 .glow-cyan   { text-shadow: 0 0 10px var(--neon-cyan);   color: var(--neon-cyan); }
+
