@@ -8,15 +8,14 @@
 	<link rel="stylesheet" href="WikiStyle.css?v=10">
 </head>
 <body>
-	<div class="top-banner">
-  <a href="index.html" class="home-button">🏠 Home</a>
+<div class="top-banner">
+    <a href="index.html" class="home-button">🏠 Home</a>
+
+    <button id="randomTimeBtn">Random Time</button>
+    <button id="realTimeBtn">Real-Time Mode</button>
+    <button id="fastForwardBtn">Toggle Fast-Forward (x10)</button>
+    <span id="timeDisplay">Time: Day 82, Orbit 15 (07:29 PM CDT, Aug 31, 2025)</span>
 </div>
-    <div class="controls">
-        <button id="randomTimeBtn">Random Time</button>
-        <button id="realTimeBtn">Real-Time Mode</button>
-        <button id="fastForwardBtn">Toggle Fast-Forward (x10)</button>
-        <div id="timeDisplay">Time: Day 82, Orbit 15 (07:29 PM CDT, Aug 31, 2025)</div>
-    </div>
     <canvas id="canvas"></canvas>
 
     <script>
@@ -109,7 +108,9 @@ Demeter: { a: 15, b: 12, period: 5, parent: 'Chaos', phase: 3 * Math.PI / 4, rad
 
             function resizeCanvas() {
                 canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight - document.querySelector('.controls').offsetHeight - 20;
+                canvas.height = window.innerHeight -
+                document.querySelector('.top-banner').offsetHeight;
+
                 BARYCENTER.x = canvas.width / 2;
                 BARYCENTER.y = canvas.height / 2;
                 draw();
