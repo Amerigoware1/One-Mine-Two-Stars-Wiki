@@ -329,6 +329,19 @@ input:focus {
     background: rgba(193, 60, 255, 0.3);
 }
 
+/* FINAL FIX – Force controls to be truly transparent in the orbit simulator only */
+body:has(#canvas) .controls,
+.SystemOrbitSimulator .controls,
+.controls:has(#randomTimeBtn) {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 12px 20px 12px 20px !important;  /* only the spacing you actually want */
+    margin: 0 !important;
+    backdrop-filter: none !important;
+    position: relative;
+    z-index: 100;
+}
 
 
 
