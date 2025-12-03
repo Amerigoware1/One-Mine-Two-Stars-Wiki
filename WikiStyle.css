@@ -135,7 +135,39 @@ a:hover {
   font-size: 0.9rem;
   letter-spacing: 1px;
 }
-
+/* ===========================
+   Infobox Image Control
+   =========================== */
+.infobox img.portrait {
+  /* Set maximum width to 100% of its parent (.infobox), 
+     ensuring it scales down but never gets bigger than the box. */
+  max-width: 100%;
+  
+  /* Maintain the aspect ratio */
+  height: auto; 
+  
+  /* Apply border radius to match the sci-fi aesthetic */
+  border-radius: 0.5rem; 
+  
+  /* Add a subtle glow/border around the image */
+  border: 2px solid var(--neon-cyan);
+  box-shadow: 0 0 10px var(--glow-cyan);
+  
+  /* Ensure it doesn't leave stray pixels inside the container */
+  display: block; 
+}
+/* Also, fix a nested table issue in the infobox: */
+.infobox table.infobox {
+    /* Remove the default border-radius from the nested table */
+    border-radius: 0; 
+    border: none;
+    margin: 0;
+}
+/* Ensure the infobox column holding the image spans the full width,
+   as your HTML uses colspan="2" */
+.infobox td[colspan="2"] {
+    text-align: center;
+}
 /* ===========================
    TOC
    =========================== */
@@ -208,5 +240,6 @@ input:focus {
    =========================== */
 .glow-violet { text-shadow: 0 0 10px var(--neon-violet); color: var(--neon-violet); }
 .glow-cyan   { text-shadow: 0 0 10px var(--neon-cyan);   color: var(--neon-cyan); }
+
 
 
