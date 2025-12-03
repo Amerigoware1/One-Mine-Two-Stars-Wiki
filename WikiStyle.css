@@ -125,7 +125,7 @@ a:hover {
   /* 3. Ensure no border */
   border: none;
 }
-.card-bg, .infobox, .toc, .top-banner, .result {
+.card-bg, .infobox, .toc, .result {
   background: var(--bg-card);
   border: 1px solid var(--border-glow);
   border-radius: 0.75rem;
@@ -265,6 +265,7 @@ input:focus {
    =========================== */
 .glow-violet { text-shadow: 0 0 10px var(--neon-violet); color: var(--neon-violet); }
 .glow-cyan   { text-shadow: 0 0 10px var(--neon-cyan);   color: var(--neon-cyan); }
+
 
 
 
