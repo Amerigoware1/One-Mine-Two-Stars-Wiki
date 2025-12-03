@@ -6,7 +6,7 @@
   --text-color: #e5e7eb;       /* Soft light gray */
   --link-color: #80bfff;
   --table-border: #666;
-  --infobox-bg: #00ffff;
+  --infobox-bg: #3a0f5c;
   --infobox-header: #1a0a2f;
 }
 
@@ -294,6 +294,7 @@ button:hover {
   border-radius: 0.5rem;
   font-size: 0.95rem;
 }
+
 
 
 
