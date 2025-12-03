@@ -102,6 +102,21 @@ a:hover {
 /* ===========================
    Cards & Panels
    =========================== */
+.top-banner {
+   background: rgba(0, 0, 0, 0)
+    border: 1px solid var(--border-glow);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+margin: 25px 25px; 
+  
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6),
+              0 0 15px var(--glow-violet);
+  transition: all 0.4s ease;
+  backdrop-filter: blur(4px);
+}
+.controls {
+background: rgba(0, 0, 0, 0)
+}
 .card-bg, .infobox, .toc, .top-banner, .result {
   background: var(--bg-card);
   border: 1px solid var(--border-glow);
@@ -114,7 +129,7 @@ margin: 25px 25px;
   transition: all 0.4s ease;
   backdrop-filter: blur(4px);
 }
-.card-bg:hover, .infobox:hover, .toc:hover {
+.card-bg:hover, .infobox:hover, .toc:hover, top-banner:hover {
   box-shadow: 0 0 30px var(--glow-violet),
               0 0 50px var(--glow-cyan);
   transform: translateY(-4px);
@@ -242,6 +257,7 @@ input:focus {
    =========================== */
 .glow-violet { text-shadow: 0 0 10px var(--neon-violet); color: var(--neon-violet); }
 .glow-cyan   { text-shadow: 0 0 10px var(--neon-cyan);   color: var(--neon-cyan); }
+
 
 
 
