@@ -107,7 +107,7 @@ a:hover {
   border: 1px solid var(--border-glow);
   border-radius: 0.75rem;
   padding: 1.5rem;
-margin: 25px 0; 
+margin: 25px 25px; 
   
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6),
               0 0 15px var(--glow-violet);
@@ -242,6 +242,7 @@ input:focus {
    =========================== */
 .glow-violet { text-shadow: 0 0 10px var(--neon-violet); color: var(--neon-violet); }
 .glow-cyan   { text-shadow: 0 0 10px var(--neon-cyan);   color: var(--neon-cyan); }
+
 
 
 
