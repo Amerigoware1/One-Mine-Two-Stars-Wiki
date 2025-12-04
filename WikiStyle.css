@@ -310,6 +310,9 @@ input:focus {
     color: var(--neon-cyan);
 }
 
+#canvas {
+    background-color: #000000 !important;
+}
 
 
 
