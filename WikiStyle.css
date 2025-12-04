@@ -142,8 +142,8 @@ margin: 25px 25px;
   float: right;
   width: 320px;
   margin: 0 0 1.5rem 1.5rem;
-  border: 1px solid var(--neon-violet);
-}
+  
+
 .infobox th, .infobox caption {
   background: rgba(193, 60, 255, 0.2);
   color: var(--neon-cyan);
@@ -154,13 +154,14 @@ margin: 25px 25px;
 }
 .infobox {
     background: var(--bg-card);
-    border: 1px solid var(--border-glow);
+   /* border: 1px solid var(--border-glow);*/
+   border: 1px solid var(--neon-violet);
     padding: 1rem;
     margin: 0 0 1.5rem 1.5rem; /* no giant top margin */
     float: right;
     clear: right;
     width: 320px; /* or as needed */
-
+}
 /* ===========================
    Infobox Image Control
    =========================== */
@@ -322,6 +323,7 @@ input:focus {
 #canvas {
     background-color: #000000 !important;
 }
+
 
 
 
