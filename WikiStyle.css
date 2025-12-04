@@ -160,10 +160,7 @@ margin: 25px 25px;
     float: right;
     clear: right;
     width: 320px; /* or as needed */
-}
-.card-bg {
-    clear: both;
-}
+
 /* ===========================
    Infobox Image Control
    =========================== */
@@ -325,6 +322,7 @@ input:focus {
 #canvas {
     background-color: #000000 !important;
 }
+
 
 
 
