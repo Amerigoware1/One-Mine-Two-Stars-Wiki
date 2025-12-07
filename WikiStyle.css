@@ -384,7 +384,42 @@ section h3:not(:first-of-type) {
   padding-top: 1em;
 }
 
+/* Index page link cards */
+.index-links a {
+  display: block;
+  margin: 1rem 0;
+  padding: 1rem 1.5rem;
+  background: var(--bg-card-dark);
+  border: 1px solid var(--neon-violet);
+  border-radius: 0.6rem;
+  color: var(--neon-cyan);
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 0 12px rgba(0, 232, 255, 0.25);
+  transition: all 0.3s ease;
+}
 
+.index-links a:hover {
+  color: var(--neon-magenta);
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 20px var(--glow-cyan), 0 0 30px var(--glow-violet);
+  transform: translateY(-3px);
+}
+
+.index-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.index-links a {
+  animation: pulse 3s infinite alternate;
+}
+@keyframes pulse {
+  from { box-shadow: 0 0 12px rgba(0, 232, 255, 0.25); }
+  to   { box-shadow: 0 0 24px rgba(193, 60, 255, 0.4); }
+}
 
 
 
