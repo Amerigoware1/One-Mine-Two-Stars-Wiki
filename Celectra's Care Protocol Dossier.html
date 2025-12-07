@@ -93,8 +93,23 @@
     <h3 class="text-lg-bold text-fuchsia-700 mb-3">III. Ongoing Surveillance & Compliance</h3>
     <p class="text-gray-400 text-sm">Mandatory full-body dermatological screening <strong>every 3 to 6 months</strong> due to extreme risk profile. Success in remaining cancer-free is directly correlated with 100% adherence to <strong>all</strong> protective and repair protocols.</p>
   </div>
-
+  <!-- Back to Top Button -->
+  <button id="toTopBtn" aria-label="Return to top">⬆️ Top</button>
+  <script>
+    const toTopBtn = document.getElementById("toTopBtn");
+    window.addEventListener("scroll", () => {
+      if (document.documentElement.scrollTop > 200) {
+        toTopBtn.style.display = "block";
+      } else {
+        toTopBtn.style.display = "none";
+      }
+    });
+    toTopBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
 </body>
 </html>
+
 
 
