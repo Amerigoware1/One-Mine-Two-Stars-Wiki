@@ -324,6 +324,25 @@ input:focus {
     background-color: #000000 !important;
 }
 
+/* Indent subcategory headers within the Slang section */
+section h3 {
+  margin-left: 1.5em;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+}
+
+/* Indent individual slang entries under each subcategory */
+section h3 + section,
+section h3 + section + section,
+section h3 + section + section + section {
+  margin-left: 3em;
+}
+
+/* Apply to all sibling <section> elements until the next h3 */
+section h3 ~ section {
+  margin-left: 3em;
+}
+
 
 
 
