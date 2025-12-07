@@ -344,10 +344,22 @@ section h3 ~ section {
 }
 
 
-/* TEST — TEMPORARY */
-body {
-  outline: 5px solid red !important;
+/* Indent only the Slang subcategories */
+h2 + p + h3 {
+  margin-left: 1.5em;
 }
+
+/* Indent entries under each Slang subcategory */
+h3 + section {
+  margin-left: 3em;
+}
+
+/* Indent all following <section> elements until the next <h3> */
+h3 ~ section {
+  margin-left: 3em;
+}
+
+
 
 
 
