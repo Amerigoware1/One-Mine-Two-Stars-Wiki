@@ -54,8 +54,30 @@
     <p>&copy; One Mine Two Stars Wiki</p>
   </div>
 </div>
+  <!-- Floating Return to Top Button -->
+<button id="toTopBtn" aria-label="Return to top">⬆️ Top</button>
+
+<script>
+  const toTopBtn = document.getElementById("toTopBtn");
+
+  // Show button when scrolled down
+  window.addEventListener("scroll", () => {
+    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+      toTopBtn.style.display = "block";
+    } else {
+      toTopBtn.style.display = "none";
+    }
+  });
+
+  // Smooth scroll to top
+  toTopBtn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+</script>
+
 </body>
 </html>
+
 
 
 
