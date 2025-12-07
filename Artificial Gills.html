@@ -1,101 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Artificial Gill HFM Module Design</title>
-    <link rel="icon" type="image/png" href="assets/images/favicon.png">
-    <link rel="stylesheet" href="WikiStyle.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artificial Gill HFM Module Design</title>
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
+  <link rel="stylesheet" href="WikiStyle.css">
 </head>
-<body class="p-4 sm:p-8 min-h-screen">
-    <div class="top-banner">
-        <a href="index.html" class="home-button">🏠 Home</a>
+<body class="page-body">
+
+  <!-- Top banner -->
+  <div class="top-banner">
+    <a href="index.html" class="home-button">🏠 Home</a>
+  </div>
+
+  <!-- Main content -->
+  <div class="content-wrapper">
+    <header class="page-header">
+      <h1>AQUATIC RESPIRATION: HFM MODULE</h1>
+      <p class="subtitle">Wetsuit‑Integrated Artificial Gill</p>
+    </header>
+
+    <section class="article-content">
+      <p>
+        The primary challenge in designing a compact artificial gill is achieving the enormous membrane
+        surface area (estimated at 60–100 m²) required for sufficient oxygen transfer, all within a wearable
+        form factor. This design integrates the Hollow Fiber Membrane (HFM) module directly into the back
+        panel of a wetsuit, forming a streamlined dorsal extension approximately 14 cm thick. This configuration
+        allows for high‑efficiency gas exchange without impeding swimming motion or requiring external gear.
+      </p>
+    </section>
+
+    <!-- Cards -->
+    <div class="card-bg">
+      <h2>1. The Principle of Extreme Packing</h2>
+      <p>The core of the system is the Hollow Fiber Membrane...</p>
+      <ul>
+        <li><strong>Fiber Scale:</strong> Fibers are incredibly fine...</li>
+        <li><strong>Packing Density:</strong> Commercial modules can achieve...</li>
+        <li><strong>Material:</strong> Highly permeable polymers...</li>
+      </ul>
     </div>
-    <div class="max-w-4xl mx-auto">
-        <header class="text-center mb-10 py-4 border-b border-gray-700">
-            <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
-                AQUATIC RESPIRATION: HFM MODULE
-            </h1>
-            <p class="mt-2 text-lg text-gray-400">Wetsuit-Integrated Artificial Gill</p>
-        </header>
 
-        <section class="mb-12">
-            <p class="text-gray-300 text-lg leading-relaxed">
-                The primary challenge in designing a compact artificial gill is achieving the enormous membrane surface area (estimated at 60–100 m²) required for sufficient oxygen transfer, all within a wearable form factor. This design integrates the Hollow Fiber Membrane (HFM) module directly into the back panel of a wetsuit, forming a streamlined dorsal extension approximately 14 cm thick. This configuration allows for high-efficiency gas exchange without impeding swimming motion or requiring external gear.
-            </p>
-        </section>
+    <div class="card-bg">
+      <h2>2. Controlled Flow and Efficiency</h2>
+      <p>The HFM module's structure ensures controlled flow...</p>
+      <ul>
+        <li><strong>Shell‑Side Feed:</strong> Seawater is pumped...</li>
+        <li><strong>Lumen‑Side Extraction:</strong> A slight vacuum...</li>
+        <li><strong>The "Wavy" Improvement:</strong> Helical fibers...</li>
+      </ul>
+    </div>
 
-        <div class="space-y-8">
+    <div class="card-bg">
+      <h2>3. Wetsuit‑Integrated System Components</h2>
+      <p>The apparatus is fully embedded into the wetsuit’s back panel...</p>
+      <ul>
+        <li><strong>HFM Cartridge:</strong> Embedded into the upper back.</li>
+        <li><strong>Water Pump:</strong> Positioned near the lower spine.</li>
+        <li><strong>Vacuum Pump:</strong> Maintains negative pressure.</li>
+        <li><strong>Oxygen Concentrator:</strong> Compact PSA unit.</li>
+      </ul>
+    </div>
+  </div>
 
-            <!-- Card 1 -->
-            <div class="card-bg p-6 rounded-xl shadow-2xl transition duration-300 hover:shadow-blue-900/50 gradient-border">
-                <h2 class="section-header text-blue-400 flex items-center">
+  <!-- Footer -->
+  <footer class="page-footer">
+    <p>© 2025 One Mine Two Stars Wiki</p>
+  </footer>
 
-    <!--                 <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10h16V7M4 7h16M4 7H3m17 0h1m-1 0v10m0-10V7M5 11h14M5 15h14M4 11h1m16 0h1" />
-                    </svg> -->
-                    1. The Principle of Extreme Packing
-                </h2>
-                <p class="mb-4 text-gray-300">
-                    The core of the system is the Hollow Fiber Membrane. Engineers use bundles of thousands of polymer tubes to maximize the surface-area-to-volume ratio (SA/V).
-                </p>
-                <ul class="list-disc list-inside space-y-2 text-sm text-gray-400 pl-4">
-                    <li><strong class="text-blue-300">Fiber Scale:</strong> Fibers are incredibly fine, often just a few hundred microns in diameter.</li>
-                    <li><strong class="text-blue-300">Packing Density:</strong> Commercial modules can achieve packing densities of 45% to 60%, allowing 100 m² of membrane to fit into a volume the size of a wetsuit’s dorsal bulge.</li>
-                    <li><strong class="text-blue-300">Material:</strong> Highly permeable polymers (like certain silicones or specialized polyimides) allow dissolved oxygen to cross the barrier under a pressure differential.</li>
-                </ul>
-            </div>
+  <!-- Back to Top Button -->
+  <button id="toTopBtn" aria-label="Return to top">⬆️ Top</button>
+  <script>
+    const toTopBtn = document.getElementById("toTopBtn");
+    window.addEventListener("scroll", () => {
+      if (document.documentElement.scrollTop > 200) {
+        toTopBtn.style.display = "block";
+      } else {
+        toTopBtn.style.display = "none";
+      }
+    });
+    toTopBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
 
-            <!-- Card 2 -->
-            <div class="card-bg p-6 rounded-xl shadow-2xl transition duration-300 hover:shadow-cyan-900/50 gradient-border">
-                <h2 class="section-header text-cyan-400 flex items-center">
-
-                  <!--   <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg> -->
-                    2. Controlled Flow and Efficiency
-                </h2>
-                <p class="mb-4 text-gray-300">
-                    The HFM module's structure ensures controlled flow to maximize mass transfer.
-                </p>
-                <div class="space-y-4 text-sm text-gray-400">
-                    <div>
-                        <strong class="text-cyan-300 block mb-1">Shell-Side Feed (Water Flow):</strong>
-                        Seawater is pumped into the shell of the dorsal canister, flowing precisely over the exterior of the tightly packed fibers. This high, controlled velocity breaks up the boundary layer—the thin layer of low-oxygen water that forms directly on the membrane surface.
-                    </div>
-                    <div>
-                        <strong class="text-cyan-300 block mb-1">Lumen-Side Extraction (Gas Flow):</strong>
-                        A slight vacuum is maintained inside the hollow center (the lumen) of the fibers. This creates the partial pressure gradient (<span class="font-serif italic">&Delta;P</span>) that drives dissolved oxygen to permeate the membrane wall and collect inside the fibers.
-                    </div>
-                    <div>
-                        <strong class="text-cyan-300 block mb-1">The "Wavy" Improvement:</strong>
-                        While the fibers are fixed, some advanced designs use helical or slightly coiled fibers. This intentional, internal "wave" structure creates beneficial turbulence (Dean vortices), boosting oxygen transfer efficiency.
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="card-bg p-6 rounded-xl shadow-2xl transition duration-300 hover:shadow-purple-900/50 gradient-border">
-                <h2 class="section-header text-purple-400 flex items-center">
-
-                   <!--  <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m4 4v10m0-10l4-4m-4 4l4 4m-4-4l-4 4m4-4l4-4m-4 4v10" />
-                    </svg> -->
-                    3. Wetsuit-Integrated System Components
-                </h2>
-                <p class="mb-4 text-gray-300">
-                    The apparatus is fully embedded into the wetsuit’s back panel, forming a dorsal extension (~14 cm thick) that manages power, flow, and gas extraction.
-                </p>
-                <ul class="list-disc list-inside space-y-2 text-sm text-gray-400 pl-4">
-                    <li><strong class="text-purple-300">HFM Cartridge:</strong> The central, non-moving component where gas exchange occurs, embedded into the upper back.</li>
-                    <li><strong class="text-purple-300">Water Pump (Low Power):</strong> Miniaturized and positioned near the lower spine, it circulates seawater across the shell side.</li>
-                    <li><strong class="text-purple-300">Vacuum Pump:</strong> Housed in the upper dorsal cavity, it maintains negative pressure inside the fibers and extracts the gas mixture O₂ + N₂.</li>
-                    <li><strong class="text-purple-300">Oxygen Concentrator:</strong> A compact PSA unit near the shoulder blades refines the extracted gas for safe breathing.</li>
-                </ul>
-            </div>
-        </div>
+</body>
+</html>
 
 
-        <footer class="mt-12 text-center text-gray-500 text
 
 
