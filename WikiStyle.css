@@ -384,10 +384,16 @@ section h3:not(:first-of-type) {
   padding-top: 1em;
 }
 
-/* Index page link cards */
+/* Index page glowing link panels */
+.index-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
 .index-links a {
   display: block;
-  margin: 1rem 0;
   padding: 1rem 1.5rem;
   background: var(--bg-card-dark);
   border: 1px solid var(--neon-violet);
@@ -406,20 +412,13 @@ section h3:not(:first-of-type) {
   transform: translateY(-3px);
 }
 
-.index-links {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
-  margin-top: 2rem;
+.index-links .link-desc {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
 }
 
-.index-links a {
-  animation: pulse 3s infinite alternate;
-}
-@keyframes pulse {
-  from { box-shadow: 0 0 12px rgba(0, 232, 255, 0.25); }
-  to   { box-shadow: 0 0 24px rgba(193, 60, 255, 0.4); }
-}
 
 
 
