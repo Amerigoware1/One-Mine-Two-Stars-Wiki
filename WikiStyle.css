@@ -142,7 +142,7 @@ margin: 25px 25px;
   float: right;
   width: 320px;
   margin: 0 0 1.5rem 1.5rem;
-  
+}
 
 .infobox th, .infobox caption {
   background: rgba(193, 60, 255, 0.2);
@@ -348,6 +348,7 @@ section h3 ~ section {
 body {
   outline: 5px solid red !important;
 }
+
 
 
 
