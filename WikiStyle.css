@@ -270,7 +270,7 @@ input:focus {
 
 /* Top banner — subtle permanent glow + stronger on hover */
 .top-banner {
-    position: fixed;
+    position: relative;
     z-index: 10;
     transition: all 0.4s ease;
     border-bottom: 1px solid rgba(193, 60, 255, 0.15);
@@ -524,6 +524,7 @@ main h2 {
   color: var(--text-muted);
   font-size: 0.9rem;
 }
+
 
 
 
