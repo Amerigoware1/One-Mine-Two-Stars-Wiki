@@ -9,9 +9,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="top-banner">
-        <a href="Cast.html" class="home-button">Back to Cast</a>
-    </div>
+  <!-- Navigation Bar -->
+  <div class="top-banner">
+    <a href="index.html" class="home-button">🏠 Home</a>
+  </div>
 
     <div class="header-container">
         <h1 class="gradient-title orbitron">Alexander "Xan" Carisco</h1>
@@ -107,5 +108,32 @@
         </ul>
     </div>
 	</div>
+	  <!-- Footer -->
+  <div id="footer">
+    <p>Back to <a href="Cast.html">Characters</a> | <a href="index.html">Home</a></p>
+    <p>&copy; One Mine Two Stars Wiki</p>
+  </div>
+<!-- Floating Return to Top Button -->
+<button id="toTopBtn" aria-label="Return to top">⬆️ Top</button>
+
+<script>
+  const toTopBtn = document.getElementById("toTopBtn");
+
+  // Show button when scrolled down
+  window.addEventListener("scroll", () => {
+    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+      toTopBtn.style.display = "block";
+    } else {
+      toTopBtn.style.display = "none";
+    }
+  });
+
+  // Smooth scroll to top
+  toTopBtn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+</script>
+
 </body>
+
 </html>
