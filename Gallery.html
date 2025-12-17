@@ -35,6 +35,34 @@
     transform: scale(1.1);
     box-shadow: 0 8px 16px rgba(0,0,0,0.4);
   }
+     /* Lightbox styles */
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
+      justify-content: center;
+      align-items: center;
+    }
+    .lightbox img {
+      max-width: 90%;
+      max-height: 80%;
+      border: 4px solid gold;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(255,215,0,0.7);
+    }
+    .lightbox:target {
+      display: flex;
+    }
+    .close {
+      position: absolute;
+      top: 20px; right: 30px;
+      font-size: 2rem;
+      color: gold;
+      text-decoration: none;
+    }
   </style>
 </head>
 
@@ -47,23 +75,28 @@
 
   <div class="gallery-grid">
     <div class="card-bg">
-      <a href="assets/images/celectra-cabinet.png" target="_blank">
+      <a href="#cabinet">
       <img src="assets/images/celectra-cabinet.png" alt="Celectra’s Rock Cabinet">
       <div class="card-caption">Celectra’s illuminated cabinet of Galinstanian leavings</div>
     </div>
 
     <div class="card-bg">
-      <a href="assets/images/mining-tools.png" target="_blank">
-      <img src="assets/images/mining-tools.png" alt="Mining Tools">
-      <div class="card-caption">Standard mining kit used in Utopis expeditions</div>
-    </div>
-
-    <div class="card-bg">
-      <a href="assets/images/cave-entry.png" target="_blank">
+      <a href="#cave-entry">
       <img src="assets/images/cave-entry.png" alt="Cave Entry">
       <div class="card-caption">Entrance to the deep caves explored over seven years</div>
     </div>
     <!-- Add more cards as needed -->
+  </div>
+
+    <!-- Lightbox overlays -->
+  <div id="cabinet" class="lightbox">
+    <a href="#" class="close">&times;</a>
+    <img src="assets/images/celectra-cabinet.png" alt="Celectra’s Rock Cabinet">
+  </div>
+
+  <div id="cave-entry" class="lightbox">
+    <a href="#" class="close">&times;</a>
+    <img src="assets/images/cave-entry.png" alt="Cave Entry">
   </div>
 </body>
 </html>
