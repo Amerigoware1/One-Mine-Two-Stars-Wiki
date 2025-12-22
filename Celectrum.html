@@ -15,10 +15,17 @@
   <div class="infobox">
         <tr>
       <td colspan="2" class="text-center pb-2">
-<video autoplay playsinline class="portrait" poster="assets/images/Celectrum.jpg">
-  <source src="assets/images/Celectrum.mp4" type="video/mp4">
-  <img src="assets/images/Celectrum.jpg" title="Your browser does not support the video tag">
-</video>
+<div class="portrait-container">
+    <video id="celectrum-vid" autoplay muted playsinline class="portrait" poster="assets/images/Celectrum.jpg">
+      <source src="assets/images/Celectrum.mp4" type="video/mp4">
+      <img src="assets/images/Celectrum.jpg" title="Your browser does not support the video tag">
+    </video>
+    
+    <div class="video-controls">
+        <button onclick="togglePlay()" id="playBtn">⟳ REPLAY</button>
+        <button onclick="toggleMute()" id="muteBtn">UNMUTE</button>
+    </div>
+</div>
       </td>
     </tr>
     <table>
@@ -119,8 +126,28 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
   </script>
+  <script>
+  const video = document.getElementById('celectrum-vid');
+const muteBtn = document.getElementById('muteBtn');
+
+function togglePlay() {
+    video.currentTime = 0; // Rewind to start
+    video.play();
+}
+
+function toggleMute() {
+    if (video.muted) {
+        video.muted = false;
+        muteBtn.innerText = "MUTE";
+    } else {
+        video.muted = true;
+        muteBtn.innerText = "UNMUTE";
+    }
+}
+    </script>
 </body>
 </html>
+
 
 
 
