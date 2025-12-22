@@ -518,6 +518,48 @@ main h2 {
   font-size: 0.9rem;
 }
 
+/* Container to hold the video and buttons */
+.portrait-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+/* Style for the control overlay */
+.video-controls {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    opacity: 0; /* Hidden by default */
+    transition: opacity 0.3s ease;
+}
+
+/* Show buttons when hovering over the video */
+.portrait-container:hover .video-controls {
+    opacity: 1;
+}
+
+/* Sci-fi style for the small control buttons */
+.video-controls button {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.7rem;
+    padding: 4px 8px;
+    background: rgba(15, 1, 36, 0.8); /* Matches your --bg-space */
+    border: 1px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    text-shadow: 0 0 5px var(--glow-cyan);
+    cursor: pointer;
+    box-shadow: 0 0 10px var(--glow-cyan);
+}
+
+.video-controls button:hover {
+    background: var(--neon-cyan);
+    color: var(--bg-space);
+}
 
 
 
