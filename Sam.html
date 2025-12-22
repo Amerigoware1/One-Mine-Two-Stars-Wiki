@@ -19,8 +19,11 @@
     <table class="infobox">
       <tr>
         <td colspan="2" class="text-center pb-2">
-          <img src="assets/images/Sam.jpg" alt="Sam" class="portrait">
-          <div class="image-caption">Sam on a neutral presentation day</div>
+          <img id="samPortrait"
+     src=""
+     alt="Sam Calder"
+     style="max-width:100%; border-radius:12px;" class="portrait">
+          <div class="image-caption">Sam</div>
         </td>
       </tr>
       <tr>
@@ -131,7 +134,16 @@
     <p>Back to <a href="Cast.html">Characters</a> or <a href="Glossary.html">Glossary</a> | <a href="index.html">Home</a></p>
     <p>&copy; One Mine Two Stars Wiki</p>
   </div>
+<script>
+  const samImages = [
+    "assets/images/sam-masculine.jpg",
+    "assets/images/sam-feminine.jpg",
+    "assets/images/sam-androgynous.jpg"
+  ];
 
+  const randomIndex = Math.floor(Math.random() * samImages.length);
+  document.getElementById("samPortrait").src = samImages[randomIndex];
+</script>
   <!-- Back to Top Button -->
   <button id="toTopBtn" aria-label="Return to top">⬆️ Top</button>
   <script>
