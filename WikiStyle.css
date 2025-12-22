@@ -165,23 +165,16 @@ margin: 25px 25px;
 /* ===========================
    Infobox Image Control
    =========================== */
-.infobox img.portrait {
-  /* Set maximum width to 100% of its parent (.infobox), 
-     ensuring it scales down but never gets bigger than the box. */
+.infobox img.portrait, 
+.infobox video.portrait {
   max-width: 100%;
-  
-  /* Maintain the aspect ratio */
   height: auto; 
-  
-  /* Apply border radius to match the sci-fi aesthetic */
   border-radius: 0.5rem; 
-  
-  /* Add a subtle glow/border around the image */
   border: 2px solid var(--neon-cyan);
   box-shadow: 0 0 10px var(--glow-cyan);
-  
-  /* Ensure it doesn't leave stray pixels inside the container */
   display: block; 
+  /* Added for video alignment */
+  object-fit: cover; 
 }
 /* Also, fix a nested table issue in the infobox: */
 .infobox table.infobox {
@@ -524,6 +517,7 @@ main h2 {
   color: var(--text-muted);
   font-size: 0.9rem;
 }
+
 
 
 
