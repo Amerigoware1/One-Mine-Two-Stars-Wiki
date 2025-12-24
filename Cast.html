@@ -245,7 +245,6 @@ function calculateEarthAge(birthDate, targetDate) {
 function earthToAresYears(earthYears) {
   return earthYears * (EARTH_YEAR_DAYS / EARTH_DAYS_PER_ARES_YEAR);
 }
-const table = document.getElementById("ageTable");
 document.querySelectorAll(".ageTable").forEach(table => {
 
   const birthDate = new Date(table.dataset.birthday);
@@ -279,6 +278,7 @@ document.querySelectorAll(".ageTable").forEach(table => {
 
 </body>
 </html>
+
 
 
 
