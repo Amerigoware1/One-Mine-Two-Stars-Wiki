@@ -223,6 +223,10 @@ td, th {
   border-bottom: 1px solid var(--border-glow);
   text-align: center; 
 }
+tbody tr:nth-child(2) {
+  font-size: 0.9em;
+  color: rgba(180, 220, 255, 0.8);
+}
 
 /* ===========================
    Buttons & Inputs
@@ -561,6 +565,7 @@ main h2 {
     background: var(--neon-cyan);
     color: var(--bg-space);
 }
+
 
 
 
