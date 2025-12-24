@@ -23,7 +23,34 @@
     
     <div class="card-bg">
       <strong><a href="Celectra.html">Celectra Ambar Carisco</a></strong><br/>
-      Age: 7 Earth years (6.25 Ares years)<br/>
+      <table id="ageTable" data-birthday="2225-10-11">
+  <thead>
+    <tr>
+      <th>Birthday</th>
+      <td colspan="3">10/11/2225</td>
+    </tr>
+    <tr>
+      <th></th>
+      <th>Book 1</th>
+      <th>Book 2</th>
+      <th>Book 3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Earth Age</th>
+      <td data-book="1"></td>
+      <td data-book="2"></td>
+      <td data-book="3"></td>
+    </tr>
+    <tr>
+      <th scope="row">Ares Age</th>
+      <td data-book="1" data-ares></td>
+      <td data-book="2" data-ares></td>
+      <td data-book="3" data-ares></td>
+    </tr>
+  </tbody>
+</table>
       Condition: Mononous Disomas<br/>
       A brilliant child with long white hair and milk chocolate eyes, born prematurely after radiation exposure in utero. She is the bridge between humanity and the Galinstanians, the only person who can both receive and transmit telepathic communication with them. Despite her extraordinary abilities, she struggles with being seen as a curiosity rather than simply a child.
     </div>
@@ -38,9 +65,9 @@
     </tr>
     <tr>
       <th></th>
-      <th>Book 1 (Oct 11, 2232)</th>
-      <th>Book 2 (Nov 19, 2239)</th>
-      <th>Book 3 (Sep 1, 2246)</th>
+      <th>Book 1</th>
+      <th>Book 2</th>
+      <th>Book 3</th>
     </tr>
   </thead>
   <tbody>
@@ -246,6 +273,7 @@ if (shouldHideAresAges(birthDate)) {
 </script>
 </body>
 </html>
+
 
 
 
