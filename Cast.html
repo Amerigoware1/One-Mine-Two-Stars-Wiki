@@ -23,11 +23,11 @@
     
     <div class="card-bg">
       <strong><a href="Celectra.html">Celectra Ambar Carisco</a></strong><br/>
-      <table id="ageTable" data-birthday="2225-10-11">
+      <table class="ageTable" data-birthday="2103-05-12">
   <thead>
     <tr>
       <th>Birthday</th>
-      <td colspan="3">10/11/2225</td>
+      <td colspan="3">Oct 11, 2225</td>
     </tr>
     <tr>
       <th></th>
@@ -57,7 +57,7 @@
     
     <div class="card-bg">
       <strong><a href="Amerigo.html">Amerigo Carisco</a></strong><br/>
-<table id="ageTable" data-birthday="2103-05-12">
+<table class="ageTable" data-birthday="2103-05-12">
   <thead>
     <tr>
       <th>Birthday</th>
@@ -246,33 +246,40 @@ function earthToAresYears(earthYears) {
   return earthYears * (EARTH_YEAR_DAYS / EARTH_DAYS_PER_ARES_YEAR);
 }
 const table = document.getElementById("ageTable");
-const birthDate = new Date(table.dataset.birthday);
+document.querySelectorAll(".ageTable").forEach(table => {
 
-document.querySelectorAll("[data-book]").forEach(cell => {
-  const bookNumber = cell.dataset.book;
-  const bookDate = BOOK_DATES[bookNumber];
+  const birthDate = new Date(table.dataset.birthday);
 
-  if (!bookDate) return;
-
-  const earthAge = calculateEarthAge(birthDate, bookDate);
-
-  if (cell.hasAttribute("data-ares")) {
-    cell.textContent = earthToAresYears(earthAge).toFixed(2);
-  } else {
-    cell.textContent = earthAge.toFixed(1);
+  function shouldHideAresAges(date) {
+    return date < CRYOSLEEP_CUTOFF;
   }
-	function shouldHideAresAges(birthDate) {
-  return birthDate < CRYOSLEEP_CUTOFF;
-}
-if (shouldHideAresAges(birthDate)) {
-  document.querySelectorAll("[data-ares]").forEach(cell => {
-    cell.parentElement.style.display = "none";
+
+  table.querySelectorAll("[data-book]").forEach(cell => {
+    const bookNumber = cell.dataset.book;
+    const bookDate = BOOK_DATES[bookNumber];
+    if (!bookDate) return;
+
+    const earthAge = calculateEarthAge(birthDate, bookDate);
+
+    if (cell.hasAttribute("data-ares")) {
+      cell.textContent = earthToAresYears(earthAge).toFixed(2);
+    } else {
+      cell.textContent = earthAge.toFixed(1);
+    }
   });
-}	
-});		
+
+  if (shouldHideAresAges(birthDate)) {
+    table.querySelectorAll("[data-ares]").forEach(cell => {
+      cell.parentElement.style.display = "none";
+    });
+  }
+
+});
 </script>
+
 </body>
 </html>
+
 
 
 
