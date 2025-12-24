@@ -30,23 +30,35 @@
     
     <div class="card-bg">
       <strong><a href="Amerigo.html">Amerigo Carisco</a></strong><br/>
-<table>
+<table id="ageTable" data-birthday="2103-05-12">
   <thead>
-  <tr><th>Age</th></tr>	  
-  <tr>
-    <th>Book 1 (2232)</th>
-    <th>Book 2 (2239)</th>
-    <th>Book 3 (2246)</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td>39.4</td>
-    <td>46.5</td>
-    <td>52.9</td>
-  </tr>
-</tbody>
+    <tr>
+      <th>Birthday</th>
+      <td colspan="3">May 12, 2103</td>
+    </tr>
+    <tr>
+      <th></th>
+      <th>Book 1 (Oct 11, 2232)</th>
+      <th>Book 2 (Nov 19, 2239)</th>
+      <th>Book 3 (Sep 1, 2246)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Earth Age</th>
+      <td data-book="1"></td>
+      <td data-book="2"></td>
+      <td data-book="3"></td>
+    </tr>
+    <tr>
+      <th scope="row">Ares Age</th>
+      <td data-book="1" data-ares></td>
+      <td data-book="2" data-ares></td>
+      <td data-book="3" data-ares></td>
+    </tr>
+  </tbody>
 </table>
+
 <br/>
       Occupation: Materials Scientist<br/>
       Celectra's devoted father, a widower raising his extraordinary daughter alone until Zoë enters their lives. Dark chocolate eyes and silver-flecked black hair. A scientist by training, he initially struggled to accept Celectra's unified consciousness but became her fierce protector and advocate.
@@ -178,9 +190,63 @@
     toTopBtn.addEventListener("click", () => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
-  </script>		
+  </script>
+	<script>
+const BOOK_DATES = {
+  1: new Date("2232-10-11"),
+  2: new Date("2239-11-19"),
+  3: new Date("2246-09-01")
+};
+const CRYOSLEEP_YEARS = 90;
+const CRYOSLEEP_CUTOFF = new Date("2215-07-20");
+const EARTH_DAYS_PER_ARES_YEAR = 407;
+const EARTH_YEAR_DAYS = 365.25;
+function applyCryosleep(birthDate) {
+  if (birthDate < CRYOSLEEP_CUTOFF) {
+    const adjusted = new Date(birthDate);
+    adjusted.setFullYear(adjusted.getFullYear() + CRYOSLEEP_YEARS);
+    return adjusted;
+  }
+  return birthDate;
+}		
+function calculateEarthAge(birthDate, targetDate) {
+  const effectiveBirth = applyCryosleep(birthDate);
+  const diffMs = targetDate - effectiveBirth;
+  const diffDays = diffMs / (1000 * 60 * 60 * 24);
+  return diffDays / 365.25;
+}
+function earthToAresYears(earthYears) {
+  return earthYears * (EARTH_YEAR_DAYS / EARTH_DAYS_PER_ARES_YEAR);
+}
+const table = document.getElementById("ageTable");
+const birthDate = new Date(table.dataset.birthday);
+
+document.querySelectorAll("[data-book]").forEach(cell => {
+  const bookNumber = cell.dataset.book;
+  const bookDate = BOOK_DATES[bookNumber];
+
+  if (!bookDate) return;
+
+  const earthAge = calculateEarthAge(birthDate, bookDate);
+
+  if (cell.hasAttribute("data-ares")) {
+    cell.textContent = earthToAresYears(earthAge).toFixed(2);
+  } else {
+    cell.textContent = earthAge.toFixed(1);
+  }
+	function shouldHideAresAges(birthDate) {
+  return birthDate < CRYOSLEEP_CUTOFF;
+}
+if (shouldHideAresAges(birthDate)) {
+  document.querySelectorAll("[data-ares]").forEach(cell => {
+    cell.parentElement.style.display = "none";
+  });
+}	
+});		
+</script>
 </body>
 </html>
+
 
 
 
