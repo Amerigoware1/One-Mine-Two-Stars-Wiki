@@ -269,11 +269,13 @@ input:focus {
 /* Top banner — subtle permanent glow + stronger on hover */
 .top-banner {
     position: fixed;
-    z-index: 10;
+    top: 0;        /* This pulls it to the very top */
+    left: 0;       /* This aligns it to the left */
+    width: 100%;   /* This ensures it stretches across the screen */
+    z-index: 10;   /* Keeps it above other content */
     transition: all 0.4s ease;
     border-bottom: 1px solid rgba(193, 60, 255, 0.15);
 }
-
 /* Permanent subtle glow */
 .top-banner::before {
     content: "";
@@ -565,6 +567,7 @@ main h2 {
     background: var(--neon-cyan);
     color: var(--bg-space);
 }
+
 
 
 
