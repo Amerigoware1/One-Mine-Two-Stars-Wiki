@@ -16,7 +16,7 @@
   --neon-magenta:     #ff2af1;
   
   /* Text */
-  --text-primary:     #f5abed;
+  --text-primary:     #e37df5;
   --text-muted:       #b8b1ff;
   --text-heading:     #ffffff;
   
@@ -567,6 +567,7 @@ main h2 {
     background: var(--neon-cyan);
     color: var(--bg-space);
 }
+
 
 
 
