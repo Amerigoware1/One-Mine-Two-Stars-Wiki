@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reclamatics</title>
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
+  <link rel="stylesheet" href="WikiStyle.css?v=3">
+</head>
+
+<body>
+  <div class="top-banner">
+    <a href="index.html" class="home-button">🏠 Home</a>
+  </div>
+  <h1>Reclamatics</h1>
+
+  <div class="card-bg">
+    <p>Reclamatics are automated maintenance units commonly deployed in colonial habitats, research facilities, and spacecraft. They utilize targeted molecular disintegration and reclamation technology—similar in principle to the <a href="Mining_Disintegrator.html">Mining Disintegrator</a> and the <a href="MRE.html">Molecular Reconfiguration Engine (MRE)</a>—to break down dust, debris, organic residues, and microbial contaminants at the molecular level. Their operation leaves surfaces sterile and intact, with waste materials sorted for recycling or safe disposal.</p>
+  </div>
+
+  <div class="card-bg">
+    <h2>Description</h2>
+    <p>Typically palm-sized or smaller, Reclamatics are disk-shaped or hexagonal units equipped with multi-spectrum sensors and low-intensity disintegration emitters. They move on micro-thrusters or agile treads, capable of navigating complex environments such as ventilation shafts, laboratory benches, and living quarters. Their emitters generate a fine, controlled field that breaks down contaminants without damaging underlying surfaces, making them ideal for delicate equipment and habitation areas.</p>
+
+    <p>Most models operate autonomously, following pre-programmed routes or responding to real-time sensor data. They can be remotely monitored or directed via a central maintenance console. Advanced models include swarm coordination protocols, allowing groups of bots to work in concert for large-scale cleaning tasks.</p>
+  </div>
+
+  <div class="card-bg">
+    <h2>Operational Principles</h2>
+    <p>Like the Mining Disintegrator in reclamation mode, Reclamatics employ modulated energy fields to weaken and dissolve molecular bonds in contaminants. Organic matter, dust particles, and microbial films are atomized and separated into base components. Recoverable materials are stored in internal reservoirs for later recycling, while non-useful residues are compacted into inert pellets for disposal.</p>
+
+    <p>The process is nearly silent and leaves no chemical residue, making it preferable to traditional cleaning methods in sealed or sterile environments. The faint hum emitted during operation is often the only indication of their activity.</p>
+  </div>
+
+  <div class="card-bg">
+    <h2>Variants</h2>
+    <ul>
+      <li><strong>Standard Habitat Model:</strong> The most common variant, used in living and working spaces. Equipped with basic sorting and storage for common dust and organic waste.</li>
+      <li><strong>Medical/Sterilization Bot:</strong> Enhanced with UV-C and higher-intensity disintegrator fields for use in medical bays and labs. Capable of neutralizing pathogens and hazardous biological residues.</li>
+      <li><strong>Industrial Decontamination Unit:</strong> A larger, more robust model used in mining or manufacturing areas to clear chemical spills, fine particulate, and radioactive dust. Often towes external waste containers.</li>
+      <li><strong>Swarm Node:</strong> A minimalistic bot designed to operate in coordinated groups, covering large areas quickly. Often deployed after construction or excavation projects.</li>
+    </ul>
+  </div>
+
+  <div class="card-bg">
+    <h2>Usage in the Niamh-Ciara System</h2>
+    <p>Reclamatics are ubiquitous throughout colonial settlements on Ares and orbital stations. They maintain air quality by filtering and breaking down particulate in ventilation systems, and they are routinely used in hydroponics bays to control algae and mold. In the Pison River base, they are credited with reducing illness rates by consistently sterilizing living modules and lab spaces.</p>
+
+    <p>Their reliability and low maintenance make them a foundational element of long-term habitat sustainability, though technicians note that improper calibration can occasionally lead to overly aggressive cleaning—sometimes damaging labels or delicate surface coatings.</p>
+  </div>
+
+  <p>
+    <a href="Glossary.html">← Back to Glossary</a> | 
+    <a href="index.html">← Back to Homepage</a>
+  </p>
+
+  <script>
+    let voices = [];
+    speechSynthesis.onvoiceschanged = () => {
+      voices = speechSynthesis.getVoices();
+    };
+    document.querySelectorAll('.speak-button').forEach(button => {
+      button.addEventListener('click', () => {
+        const heading = document.querySelector('h1')?.textContent || 'Reclamatics';
+        const utterance = new SpeechSynthesisUtterance(heading);
+        utterance.lang = 'en-US';
+        utterance.rate = 0.95;
+        utterance.pitch = 1.1;
+        speechSynthesis.speak(utterance);
+      });
+    });
+  </script>
+
+  <!-- Back to Top Button -->
+  <button id="toTopBtn" aria-label="Return to top">⬆️ Top</button>
+  <script>
+    const toTopBtn = document.getElementById("toTopBtn");
+    window.addEventListener("scroll", () => {
+      if (document.documentElement.scrollTop > 200) {
+        toTopBtn.style.display = "block";
+      } else {
+        toTopBtn.style.display = "none";
+      }
+    });
+    toTopBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>
