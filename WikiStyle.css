@@ -1,3 +1,6 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
 /* ===========================
    Sci-Fi Novel Wiki Theme
    =========================== */
@@ -108,8 +111,8 @@ a:hover {
    /* 2. Keep the border, glow, and other styles */
    border: 1px solid var(--border-glow);
   border-radius: 0.75rem;
-  padding: 1.5rem;
-  margin: 25px 25px; 
+  padding: 1rem 1.5rem;
+  margin: 0; 
   position: fixed;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6),
               0 0 15px var(--glow-violet);
@@ -567,6 +570,7 @@ main h2 {
     background: var(--neon-cyan);
     color: var(--bg-space);
 }
+
 
 
 
