@@ -3,109 +3,170 @@
 <head>
   <meta charset="UTF-8">
   <title>One Mine Two Stars Wiki</title>
-	<link rel="icon" type="image/png" href="assets/images/favicon.png">
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
   <link rel="stylesheet" href="WikiStyle.css">
+  <style>
+    /* Additional styles for the series section */
+    .series-status {
+      background: linear-gradient(135deg, #1a237e 0%, #311b92 100%);
+      color: white;
+      padding: 2rem;
+      border-radius: 10px;
+      margin: 2rem 0;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+    .series-status h2 {
+      color: #bb86fc;
+      margin-top: 0;
+    }
+    .book-progress {
+      display: flex;
+      gap: 1rem;
+      margin: 1.5rem 0;
+      flex-wrap: wrap;
+    }
+    .book-card {
+      background: rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 1rem;
+      flex: 1;
+      min-width: 200px;
+    }
+    .book-card h3 {
+      margin-top: 0;
+      color: #bb86fc;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      margin: 0.5rem 0;
+    }
+    .status-ready { background: #4caf50; }
+    .status-polishing { background: #ff9800; }
+    .status-drafting { background: #2196f3; }
+    .author-note {
+      background: rgba(255,255,255,0.05);
+      border-left: 4px solid #bb86fc;
+      padding: 1rem;
+      margin: 1.5rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+  </style>
 </head>
 <body>
 
   <header class="card-bg">
     <h1>One Mine Two Stars Wiki</h1>
-	    <p>This is your central hub for exploring the speculative world of Celectra, the Utopis space station, and the Niamh–Ciara planetary system. Browse glossary terms, planetary data, and technical breakdowns of key systems and locations.</p>
+    <p>This is your central hub for exploring the speculative world of Celectra, the Utopis space station, and the Niamh–Ciara planetary system. Browse glossary terms, planetary data, and technical breakdowns of key systems and locations.</p>
+    
+    <!-- Author Announcement -->
+    <div class="author-note">
+      <p><strong>📚 Note from the Author:</strong> Welcome to the official wiki for my upcoming sci-fi series! This site serves as both a worldbuilding resource for readers and a living pitch document for agents/editors. Explore the universe below, and feel free to <a href="mailto:your-email@example.com" style="color:#bb86fc;">reach out</a> if you're in publishing!</p>
+      <p style="margin-top:0.5rem; font-style:italic;">— Emmery Chrisco</p>
+    </div>
   </header>
 
   <main>
-  <!-- Core Articles -->
-  <section>
-    <h2>📘 Core Articles</h2>
-    <div class="index-links">
-      <a href="Glossary.html">📘 Glossary<br><span class="link-desc">Definitions and terminology</span></a>
-      <a href="SolarSystemOverview.html">🪐 System Overview<br><span class="link-desc">Planetary data and orbital structure</span></a>
-	  <a href="Educational System.html">🏫 Educational System<br><span class="link-desc">Educational System wiki</span></a>
-	  <a href="Celectrum.html">🎼 Celectrum<br><span class="link-desc">A musical instrument</span></a>
-      <a href="MRE.html">⚙️ Molecular Reconfiguration Engine<br><span class="link-desc">Full technical breakdown</span></a>
-      <a href="Utopis.html">🚀 Utopis Space Station<br><span class="link-desc">Wikipedia-style article</span></a>
-      <a href="Ares-Wiki.html">🔴 Ares<br><span class="link-desc">Colony moon wiki</span></a>
-      <a href="New Eden.html">🗺️ New Eden<br><span class="link-desc">Colony town wiki</span></a>
-      <a href="Galinstanians-Wiki.html">🌌 Galinstanians Wiki<br><span class="link-desc">About the indigenous people</span></a>
-	  <a href="Gallery.html">🖼️ Gallery<br><span class="link-desc">A collection of images</span></a>
-    </div>
-  </section>
+    <!-- Series Status Section -->
+    <section class="series-status">
+      <h2>📖 The "One Mine, Two Stars" Series</h2>
+      <p>A sci-fi epic exploring humanity's expansion to the Niamh–Ciara system, featuring unique technologies like the MRE, mysterious indigenous species, and the philosophical challenges of colonization.</p>
+      
+      <div class="book-progress">
+        <div class="book-card">
+          <h3>Book 1: [Title Pending]</h3>
+          <span class="status-badge status-ready">Ready for Professional Edit</span>
+          <p>Complete manuscript. Introducing the Niamh–Ciara system, Utopis Station, and the discovery of Galinstanian life.</p>
+        </div>
+        <div class="book-card">
+          <h3>Book 2: [Title Pending]</h3>
+          <span class="status-badge status-polishing">In Revision/Polishing</span>
+          <p>Deepening conflicts between colonists, Galinstanians, and the ethical implications of the MRE technology.</p>
+        </div>
+        <div class="book-card">
+          <h3>Book 3: [Title Pending]</h3>
+          <span class="status-badge status-drafting">Under Construction</span>
+          <p>Series climax. Resolving the fate of Celectra, Ares Colony, and humanity's place in the system.</p>
+        </div>
+      </div>
+      
+      <p><strong>Seeking Representation:</strong> Currently querying agents. Full manuscript and detailed series bible available upon request.</p>
+      <a href="Series-Overview.html" style="color:#bb86fc; font-weight:bold; text-decoration:none; border:1px solid #bb86fc; padding:0.5rem 1rem; border-radius:5px; display:inline-block; margin-top:1rem;">View Full Series Overview →</a>
+    </section>
 
-  <!-- Tools & Simulators -->
-  <section>
-    <h2>🛠️ Tools & Simulators</h2>
-    <div class="index-links">
-      <a href="SystemOrbitSimulator.html">🛰️ Orbit Simulator<br><span class="link-desc">Visualize planetary motion</span></a>
-      <a href="Age Calculator.html">📱 Age Calculator<br><span class="link-desc">Convert Earth years to Ares years</span></a>
-      <a href="Ares Chronograph.html">📅 Ares Chronograph<br><span class="link-desc">Time and weather simulator</span></a>
-    </div>
-  </section>
+    <!-- Core Articles -->
+    <section>
+      <h2>📘 Core Articles</h2>
+      <div class="index-links">
+        <a href="Glossary.html">📘 Glossary<br><span class="link-desc">Definitions and terminology</span></a>
+        <a href="SolarSystemOverview.html">🪐 System Overview<br><span class="link-desc">Planetary data and orbital structure</span></a>
+        <a href="Educational System.html">🏫 Educational System<br><span class="link-desc">Educational System wiki</span></a>
+        <a href="Celectrum.html">🎼 Celectrum<br><span class="link-desc">A musical instrument</span></a>
+        <a href="MRE.html">⚙️ Molecular Reconfiguration Engine<br><span class="link-desc">Full technical breakdown</span></a>
+        <a href="Utopis.html">🚀 Utopis Space Station<br><span class="link-desc">Wikipedia-style article</span></a>
+        <a href="Ares-Wiki.html">🔴 Ares<br><span class="link-desc">Colony moon wiki</span></a>
+        <a href="New Eden.html">🗺️ New Eden<br><span class="link-desc">Colony town wiki</span></a>
+        <a href="Galinstanians-Wiki.html">🌌 Galinstanians Wiki<br><span class="link-desc">About the indigenous people</span></a>
+        <a href="Gallery.html">🖼️ Gallery<br><span class="link-desc">A collection of images</span></a>
+      </div>
+    </section>
 
-  <!-- Characters & Factions -->
-  <section>
-    <h2>👥 Characters & Factions</h2>
-    <div class="index-links">
-      <a href="Cast.html">👨🏻‍👩🏻‍👦🏻‍👦🏻 Characters<br><span class="link-desc">Novel cast of characters</span></a>
-      <a href="Listener Corps.html">🎧 Listener Corps<br><span class="link-desc">About the Listener Corps</span></a>
-    </div>
-  </section>
-</main>
+    <!-- Tools & Simulators -->
+    <section>
+      <h2>🛠️ Tools & Simulators</h2>
+      <div class="index-links">
+        <a href="SystemOrbitSimulator.html">🛰️ Orbit Simulator<br><span class="link-desc">Visualize planetary motion</span></a>
+        <a href="Age Calculator.html">📱 Age Calculator<br><span class="link-desc">Convert Earth years to Ares years</span></a>
+        <a href="Ares Chronograph.html">📅 Ares Chronograph<br><span class="link-desc">Time and weather simulator</span></a>
+      </div>
+    </section>
 
-<!-- Floating Return to Top Button -->
-<button id="toTopBtn" aria-label="Return to top">⬆️ Top</button>
-
-<script>
-  const toTopBtn = document.getElementById("toTopBtn");
-
-  // Show button when scrolled down
-  window.addEventListener("scroll", () => {
-    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-      toTopBtn.style.display = "block";
-    } else {
-      toTopBtn.style.display = "none";
-    }
-  });
-
-  // Smooth scroll to top
-  toTopBtn.addEventListener("click", () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
-</script>
-
-</body>
-</html>
-
+    <!-- Characters & Factions -->
+    <section>
+      <h2>👥 Characters & Factions</h2>
+      <div class="index-links">
+        <a href="Cast.html">👨🏻‍👩🏻‍👦🏻‍👦🏻 Characters<br><span class="link-desc">Novel cast of characters</span></a>
+        <a href="Listener Corps.html">🎧 Listener Corps<br><span class="link-desc">About the Listener Corps</span></a>
+      </div>
+    </section>
+    
+    <!-- Publishing Contact Section -->
+    <section style="background:#f5f5f5; padding:1.5rem; border-radius:8px; margin-top:2rem;">
+      <h2>📬 For Publishing Professionals</h2>
+      <p>This wiki demonstrates the depth and marketability of the series. It includes:</p>
+      <ul>
+        <li>Complete worldbuilding with technical specifications</li>
+        <li>Interactive tools showing reader engagement potential</li>
+        <li>Character bios and faction dynamics</li>
+        <li>Series outline and manuscript readiness status</li>
+      </ul>
+      <p><strong>Interested agents/editors:</strong> <a href="mailto:your-email@example.com">Contact Emmery Chrisco</a> for the full manuscript, query letter, and series proposal.</p>
     </section>
   </main>
-  </div>
+
+  <!-- Floating Return to Top Button -->
+  <button id="toTopBtn" aria-label="Return to top">⬆️ Top</button>
+
+  <script>
+    const toTopBtn = document.getElementById("toTopBtn");
+
+    // Show button when scrolled down
+    window.addEventListener("scroll", () => {
+      if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        toTopBtn.style.display = "block";
+      } else {
+        toTopBtn.style.display = "none";
+      }
+    });
+
+    // Smooth scroll to top
+    toTopBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
