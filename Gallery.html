@@ -92,20 +92,26 @@
   position: relative;
   cursor: grab;
   overflow: hidden;
-  max-width: 90vw;
-  max-height: 90vh;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .lightbox-content img {
-  transform-origin: center center; /* Changed from center center */
-  transition: transform 0.2s ease;
-  max-width: 100%;
-  max-height: 100%;
+  /* Remove max-width/max-height — let JS control sizing */
+  max-width: none;
+  max-height: none;
   width: auto;
   height: auto;
+  /* Ensure it can be transformed freely */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  transform-origin: 0 0; /* We'll handle origin via translate math */
+  transition: none; /* Disable during interaction */
 }
   
   .close {
@@ -248,12 +254,13 @@ document.querySelectorAll('.lightbox-content').forEach(container => {
   let startX, startY;
   
   // Reset function to restore default state
-  function resetImage() {
-    scale = 1;
-    originX = 0;
-    originY = 0;
-    img.style.transform = `scale(${scale}) translate(${originX}px, ${originY}px)`;
-  }
+function resetImage() {
+  scale = 1;
+  originX = 0;
+  originY = 0;
+  // Include the base centering transform
+  img.style.transform = `translate(-50%, -50%) scale(${scale}) translate(${originX}px, ${originY}px)`;
+}
   
   // Calculate initial scale to fit image in viewport
   function calculateInitialScale() {
@@ -280,14 +287,14 @@ document.querySelectorAll('.lightbox-content').forEach(container => {
   img.addEventListener('load', function() {
     const initialScale = calculateInitialScale();
     scale = initialScale;
-    img.style.transform = `scale(${scale}) translate(${originX}px, ${originY}px)`;
+    img.style.transform = `translate(-50%, -50%) scale(${scale}) translate(${originX}px, ${originY}px)`;
   });
   
   // Ensure image is loaded (in case it's cached)
   if (img.complete) {
     const initialScale = calculateInitialScale();
     scale = initialScale;
-    img.style.transform = `scale(${scale}) translate(${originX}px, ${originY}px)`;
+    img.style.transform = `translate(-50%, -50%) scale(${scale}) translate(${originX}px, ${originY}px)`;
   }
   
   // Zoom with mouse wheel - zoom to cursor position
@@ -314,9 +321,26 @@ document.querySelectorAll('.lightbox-content').forEach(container => {
       originY = mouseY / newScale - imgY;
       
       scale = newScale;
-      img.style.transform = `scale(${scale}) translate(${originX}px, ${originY}px)`;
+      img.style.transform = `translate(-50%, -50%) scale(${scale}) translate(${originX}px, ${originY}px)`;
     }
   });
+// Call on load AND if already complete
+img.addEventListener('load', applyInitialScale);
+if (img.complete && img.naturalWidth > 0) {
+  applyInitialScale();
+}
+function applyInitialScale() {
+  if (img.naturalWidth === 0 || img.naturalHeight === 0) return; // Not loaded yet
+  
+  const viewportWidth = window.innerWidth * 0.9;
+  const viewportHeight = window.innerHeight * 0.9;
+  const widthRatio = viewportWidth / img.naturalWidth;
+  const heightRatio = viewportHeight / img.naturalHeight;
+  scale = Math.min(widthRatio, heightRatio, 1);
+  originX = 0;
+  originY = 0;
+  img.style.transform = `translate(-50%, -50%) scale(${scale}) translate(${originX}px, ${originY}px)`;
+}
   
   // Drag to pan
   container.addEventListener('mousedown', e => {
@@ -358,7 +382,7 @@ document.querySelectorAll('.lightbox-content').forEach(container => {
     originX = Math.max(-maxX, Math.min(maxX, originX));
     originY = Math.max(-maxY, Math.min(maxY, originY));
     
-    img.style.transform = `scale(${scale}) translate(${originX}px, ${originY}px)`;
+    img.style.transform = `translate(-50%, -50%) scale(${scale}) translate(${originX}px, ${originY}px)`;
   });
   
   // Double click to reset zoom
@@ -367,14 +391,15 @@ document.querySelectorAll('.lightbox-content').forEach(container => {
   });
   
   // Reset when closing lightbox (using Escape key)
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') {
-      const openLightbox = document.querySelector('.lightbox:target');
-      if (openLightbox) {
-        openLightbox.querySelector('.lightbox-content img').style.transform = 'scale(1) translate(0px, 0px)';
-      }
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    const openLightbox = document.querySelector('.lightbox:target');
+    if (openLightbox) {
+      const img = openLightbox.querySelector('.lightbox-content img');
+      img.style.transform = 'translate(-50%, -50%) scale(1) translate(0px, 0px)';
     }
-  });
+  }
+});
 });
 </script>
  <!-- Footer -->
