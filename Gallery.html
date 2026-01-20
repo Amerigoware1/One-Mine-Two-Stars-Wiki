@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="WikiStyle.css">
 
   <!-- PhotoSwipe CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/photoswipe@5/dist/photoswipe.css">
+<link rel="stylesheet" href="https://unpkg.com/photoswipe@5/dist/photoswipe.css">
 
   <style>
     .gallery-grid {
@@ -91,12 +91,16 @@
   <!-- PhotoSwipe JS -->
   <script src="https://unpkg.com/photoswipe@5/dist/photoswipe.umd.js"></script>
 
-  <script>
+  <!-- Load PhotoSwipe IIFE build -->
+<script src="https://unpkg.com/photoswipe@5/dist/umd/photoswipe.min.js"></script>
+
+<script>
+  // Your gallery data
   const galleryItems = [
     { src: "Celectra-Pregnant.png", caption: "Celectra while pregnant (age 22)" },
     { src: "celectra-cabinet.png", caption: "Celectra’s illuminated cabinet of Galinstanian leavings" },
     { src: "ANI.png", caption: "Artificial Neural Interface" },
-    { src: "Cave.jpg", caption: "Entrance to the deep caves explored over fourteen years. Home of the local Galinstanians, Celectra's resonance chamber, and the geothermal pool grotto." },
+    { src: "Cave.jpg", caption: "Entrance to the deep caves explored over fourteen years..." },
     { src: "Gazing through port hole.jpg", caption: "Livingroom on the space station Utopis (Book 1)" },
     { src: "Carisco Family.jpg", caption: "Carisco Family (Book 2)" },
     { src: "Galinstanian.jpg", caption: "Galinstanian" },
@@ -106,7 +110,6 @@
   const basePath = "assets/images/";
   const galleryEl = document.getElementById("gallery");
 
-  // Generate gallery cards
   galleryItems.forEach((item, index) => {
     const card = document.createElement("div");
     card.className = "card-bg";
@@ -114,7 +117,6 @@
       <img src="${basePath}${item.src}" alt="${item.caption}" loading="lazy">
       <div class="card-caption">${item.caption}</div>
     `;
-    // ✅ Attach click to the whole card (robust)
     card.addEventListener("click", (e) => {
       e.preventDefault();
       openLightbox(index);
@@ -122,29 +124,22 @@
     galleryEl.appendChild(card);
   });
 
-  // ✅ Proper PhotoSwipe initialization
   function openLightbox(index) {
-    // Map items to PhotoSwipe format — WITHOUT w/h
     const items = galleryItems.map(item => ({
       src: basePath + item.src,
-      title: item.caption,
-      // Optional: improve load behavior
-      element: document.querySelector(`#gallery .card-bg:nth-child(${index + 1}) img`)
+      title: item.caption
     }));
-
+console.log('PhotoSwipe global:', typeof PhotoSwipe);
     const lightbox = new PhotoSwipe({
       dataSource: items,
       index: index,
       bgOpacity: 0.9,
       wheelToZoom: true,
       pinchToClose: true,
-      closeOnVerticalDrag: true,
-      // Enable zoom
-      initialZoomLevel: 'fit', // 'fill' or 'fit'
+      initialZoomLevel: 'fit',
       secondaryZoomLevel: 2,
       maxZoomLevel: 3
     });
-
     lightbox.init();
   }
 
