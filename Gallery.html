@@ -6,426 +6,298 @@
   <title>Gallery – One Mine Two Stars Wiki</title>
   <link rel="icon" type="image/png" href="assets/images/favicon.png">
   <link rel="stylesheet" href="WikiStyle.css">
- <style>
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Default 2 columns */
-  gap: 1rem;
-  margin-top: 1.5rem;
-}
+  <style>
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
 
-/* For medium screens */
-@media (min-width: 768px) {
-  .gallery-grid {
-    grid-template-columns: repeat(3, 1fr); /* 3 columns */
-  }
-}
+    @media (min-width: 768px) {
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (min-width: 1024px) {
+      .gallery-grid { grid-template-columns: repeat(4, 1fr); }
+    }
 
-/* For large screens */
-@media (min-width: 1024px) {
-  .gallery-grid {
-    grid-template-columns: repeat(4, 1fr); /* 4 columns */
-  }
-}
-  
-  .card-bg {
-    background: #0a0022;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    text-align: center;
-    padding: 0.5rem; /* Reduced from 1rem */
-    display: flex;
-    flex-direction: column;
-    height: 100%; /* Makes all cards equal height */
-  }
-  
-  .card-bg a {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    text-decoration: none;
-  }
-  
-.card-bg img {
-  width: 100%;
-  height: 180px; /* Fixed height */
-  object-fit: cover; /* This will crop if needed */
-  border-radius: 4px;
-  flex-grow: 0;
-}
-  
-  .card-caption {
-    margin-top: 0.5rem;
-    font-size: 0.85rem; /* Slightly smaller */
-    color: #ddd;
-    line-height: 1.3;
-    flex-grow: 1;
-    display: flex;
-    align-items: flex-start; /* Align text to top */
-    justify-content: center;
-  }
-  
-  .card-bg img:hover {
-    transform: scale(1.5); /* Reduced from 1.5 to prevent excessive zoom */
-    box-shadow: 0 8px 16px rgba(0,0,0,0.4);
-  }
-  
-  /* Lightbox styles - unchanged */
-  .lightbox {
-    display: none;
-    position: fixed;
-    z-index: 999;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.9);
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-  }
-  
-  .lightbox:target {
-    display: flex;
-  }
-  
-.lightbox-content {
-  position: relative;
-  cursor: grab;
-  overflow: hidden;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+    .card-bg {
+      background: #0a0022;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      text-align: center;
+      padding: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
 
-.lightbox-content img {
-  /* Remove max-width/max-height — let JS control sizing */
-  max-width: none;
-  max-height: none;
-  width: auto;
-  height: auto;
-  /* Ensure it can be transformed freely */
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(1);
-  transform-origin: 0 0; /* We'll handle origin via translate math */
-  transition: none; /* Disable during interaction */
-}
-  
-  .close {
-    position: absolute;
-    top: 20px; right: 30px;
-    font-size: 2rem;
-    color: indigo;
-    text-decoration: none;
-    z-index: 1000;
-  }
-</style>
+    .card-bg a {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      text-decoration: none;
+    }
+
+    .card-bg img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 4px;
+      flex-grow: 0;
+    }
+
+    .card-caption {
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      color: #ddd;
+      line-height: 1.3;
+      flex-grow: 1;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    /* Lightbox styles */
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .lightbox:target {
+      display: flex;
+    }
+
+    .lightbox-content {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      cursor: grab;
+    }
+
+    .lightbox-content img {
+      /* Critical: absolute positioning for free transform */
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      max-width: none;
+      max-height: none;
+      width: auto;
+      height: auto;
+      /* Base transform: center the image */
+      transform: translate(-50%, -50%) scale(1);
+      transform-origin: 0 0;
+      transition: none;
+      user-select: none;
+    }
+
+    .close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 2rem;
+      color: indigo;
+      text-decoration: none;
+      z-index: 1000;
+    }
+  </style>
 </head>
 
 <body class="p-4">
   <div class="top-banner">
     <a href="index.html" class="home-button">🏠 Home</a>
-
   </div>
- <div class="card-bg">
-      <h1>Gallery</h1>
-  A collection of artifacts, environments, and curiosities from *One Mine Two Stars*.
-   </div>
+
+  <div class="card-bg">
+    <h1>Gallery</h1>
+    A collection of artifacts, environments, and curiosities from <em>One Mine Two Stars</em>.
+  </div>
+
   <div class="gallery-grid">
-
-    <div class="card-bg">
-      <a href="#pregnant">
-      <img src="assets/images/Celectra-Pregnant.png" alt="Celectra while pregnant">
-      <div class="card-caption">Celectra while pregnant (age 22)</div>
-    </div>
-    
-    <div class="card-bg">
-      <a href="#cabinet">
-      <img src="assets/images/celectra-cabinet.png" alt="Celectra’s Rock Cabinet">
-      <div class="card-caption">Celectra’s illuminated cabinet of Galinstanian leavings</div>
-    </div>
-
-      <div class="card-bg">
-      <a href="#ANI">
-      <img src="assets/images/ANI.png" alt="Artificial Neural Interface">
-      <div class="card-caption">Artificial Neural Interface</div>
-    </div>
-    
-    <div class="card-bg">
-      <a href="#cave-entry">
-      <img src="assets/images/Cave.jpg" alt="Cave Entry">
-      <div class="card-caption">Entrance to the deep caves explored over fourteen years. Home of the local Galinstanians, Celectra's resonance chamber, and the geothermal pool grotto.</div>
-    </div>
-
-    <div class="card-bg">
-      <a href="#utopis-quarters">
-      <img src="assets/images/Gazing through port hole.jpg" alt="Utopis Quarters">
-      <div class="card-caption">Livingroom on the space station Utopis (Book 1)</div>
-    </div>
-
-    <div class="card-bg">
-      <a href="#Cariscos">
-      <img src="assets/images/Carisco Family.jpg" alt="Carisco Family">
-      <div class="card-caption">Carisco Family (Book 2)</div>
-    </div>
-
-    <div class="card-bg">
-      <a href="#Galinstanian">
-      <img src="assets/images/Galinstanian.jpg" alt="Galinstanian">
-      <div class="card-caption">Galinstanian</div>
-    </div>
-
-    <div class="card-bg">
-      <a href="#Corps">
-      <img src="assets/images/Listener Corps.png" alt="Listener Corps">
-      <div class="card-caption">Listener Corps</div>
-    </div>
-    <!-- Add more cards as needed -->
+    <div class="card-bg"><a href="#pregnant"><img src="assets/images/Celectra-Pregnant.png" alt="Celectra while pregnant"><div class="card-caption">Celectra while pregnant (age 22)</div></a></div>
+    <div class="card-bg"><a href="#cabinet"><img src="assets/images/celectra-cabinet.png" alt="Celectra’s Rock Cabinet"><div class="card-caption">Celectra’s illuminated cabinet of Galinstanian leavings</div></a></div>
+    <div class="card-bg"><a href="#ANI"><img src="assets/images/ANI.png" alt="Artificial Neural Interface"><div class="card-caption">Artificial Neural Interface</div></a></div>
+    <div class="card-bg"><a href="#cave-entry"><img src="assets/images/Cave.jpg" alt="Cave Entry"><div class="card-caption">Entrance to the deep caves explored over fourteen years...</div></a></div>
+    <div class="card-bg"><a href="#utopis-quarters"><img src="assets/images/Gazing through port hole.jpg" alt="Utopis Quarters"><div class="card-caption">Livingroom on the space station Utopis (Book 1)</div></a></div>
+    <div class="card-bg"><a href="#Cariscos"><img src="assets/images/Carisco Family.jpg" alt="Carisco Family"><div class="card-caption">Carisco Family (Book 2)</div></a></div>
+    <div class="card-bg"><a href="#Galinstanian"><img src="assets/images/Galinstanian.jpg" alt="Galinstanian"><div class="card-caption">Galinstanian</div></a></div>
+    <div class="card-bg"><a href="#Corps"><img src="assets/images/Listener Corps.png" alt="Listener Corps"><div class="card-caption">Listener Corps</div></a></div>
   </div>
 
-    <!-- Lightbox overlays -->
-
-<div id="pregnant" class="lightbox">
-  <a href="#" class="close">&times;</a>
-  <div class="lightbox-content">
-    <img src="assets/images/Celectra-Pregnant.png" alt="Celectra while pregnant">
+  <!-- Lightbox overlays -->
+  <div id="pregnant" class="lightbox">
+    <a href="#" class="close">&times;</a>
+    <div class="lightbox-content"><img src="assets/images/Celectra-Pregnant.png" alt="Celectra while pregnant"></div>
   </div>
-</div>
-  
-<div id="cabinet" class="lightbox">
-  <a href="#" class="close">&times;</a>
-  <div class="lightbox-content">
-    <img src="assets/images/celectra-cabinet.png" alt="Celectra’s Rock Cabinet">
+  <div id="cabinet" class="lightbox">
+    <a href="#" class="close">&times;</a>
+    <div class="lightbox-content"><img src="assets/images/celectra-cabinet.png" alt="Celectra’s Rock Cabinet"></div>
   </div>
-</div>
-
-<div id="ANI" class="lightbox">
-  <a href="#" class="close">&times;</a>
-  <div class="lightbox-content">
-    <img src="assets/images/ANI.png" alt="Artificial Neural Interface">
+  <div id="ANI" class="lightbox">
+    <a href="#" class="close">&times;</a>
+    <div class="lightbox-content"><img src="assets/images/ANI.png" alt="Artificial Neural Interface"></div>
   </div>
-</div>
-  
   <div id="cave-entry" class="lightbox">
     <a href="#" class="close">&times;</a>
-      <div class="lightbox-content">
-    <img src="assets/images/Cave.jpg" alt="Cave Entry">
-      </div>  
+    <div class="lightbox-content"><img src="assets/images/Cave.jpg" alt="Cave Entry"></div>
+  </div>
+  <div id="utopis-quarters" class="lightbox">
+    <a href="#" class="close">&times;</a>
+    <div class="lightbox-content"><img src="assets/images/Gazing through port hole.jpg" alt="Utopis Quarters"></div>
+  </div>
+  <div id="Cariscos" class="lightbox">
+    <a href="#" class="close">&times;</a>
+    <div class="lightbox-content"><img src="assets/images/Carisco Family.jpg" alt="Carisco Family"></div>
+  </div>
+  <div id="Galinstanian" class="lightbox">
+    <a href="#" class="close">&times;</a>
+    <div class="lightbox-content"><img src="assets/images/Galinstanian.jpg" alt="Galinstanian"></div>
+  </div>
+  <div id="Corps" class="lightbox">
+    <a href="#" class="close">&times;</a>
+    <div class="lightbox-content"><img src="assets/images/Listener Corps.png" alt="Listener Corps"></div>
   </div>
 
-    <div id="utopis-quarters" class="lightbox">
-    <a href="#" class="close">&times;</a>
-      <div class="lightbox-content">
-    <img src="assets/images/Gazing through port hole.jpg" alt="Utopis Quarters">
-      </div>  
-  </div>
-
-      <div id="Cariscos" class="lightbox">
-    <a href="#" class="close">&times;</a>
-      <div class="lightbox-content">
-    <img src="assets/images/Carisco Family.jpg" alt="Carisco Family">
-      </div>  
-  </div>
-  
-    <div id="Galinstanian" class="lightbox">
-    <a href="#" class="close">&times;</a>
-      <div class="lightbox-content">
-    <img src="assets/images/Galinstanian.jpg" alt="Galinstanian">
-      </div>  
-  </div>
-
-      <div id="Corps" class="lightbox">
-    <a href="#" class="close">&times;</a>
-      <div class="lightbox-content">
-    <img src="assets/images/Listener Corps.png" alt="Listener Corps">
-      </div>  
-  </div>
-  
-<script>
-document.querySelectorAll('.lightbox-content').forEach(container => {
-  const img = container.querySelector('img');
-  let scale = 1;
-  let originX = 0;
-  let originY = 0;
-  let isDragging = false;
-  let startX, startY;
-  
-  // Reset function to restore default state
-function resetImage() {
-  scale = 1;
-  originX = 0;
-  originY = 0;
-  // Include the base centering transform
-  img.style.transform = `translate(-50%, -50%) scale(${scale}) translate(${originX}px, ${originY}px)`;
-}
-  
-  // Calculate initial scale to fit image in viewport
-  function calculateInitialScale() {
-    const viewportWidth = window.innerWidth * 0.9; // 90% of viewport width
-    const viewportHeight = window.innerHeight * 0.9; // 90% of viewport height
-    const imgNaturalWidth = img.naturalWidth;
-    const imgNaturalHeight = img.naturalHeight;
-    
-    const widthRatio = viewportWidth / imgNaturalWidth;
-    const heightRatio = viewportHeight / imgNaturalHeight;
-    
-    // Use the smaller ratio to fit the image completely
-    return Math.min(widthRatio, heightRatio, 1); // Max scale of 1 initially
-  }
-  
-  // Apply initial scaling when lightbox opens
-  container.closest('.lightbox').addEventListener('click', function(e) {
-    if (e.target === this || e.target.classList.contains('close')) {
-      resetImage();
-    }
-  });
-  
-  // Initialize with appropriate scale on first open
-  img.addEventListener('load', function() {
-    const initialScale = calculateInitialScale();
-    scale = initialScale;
-    img.style.transform = `translate(-50%, -50%) scale(${scale}) translate(${originX}px, ${originY}px)`;
-  });
-  
-  // Ensure image is loaded (in case it's cached)
-  if (img.complete) {
-    const initialScale = calculateInitialScale();
-    scale = initialScale;
-    img.style.transform = `translate(-50%, -50%) scale(${scale}) translate(${originX}px, ${originY}px)`;
-  }
-  
-  // Zoom with mouse wheel - zoom to cursor position
-  container.addEventListener('wheel', e => {
-    e.preventDefault();
-    
-    // Get mouse position relative to image
-    const rect = container.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    
-    // Calculate mouse position in image coordinates (before zoom)
-    const imgX = (mouseX - originX * scale) / scale;
-    const imgY = (mouseY - originY * scale) / scale;
-    
-    // Calculate new scale
-    const delta = e.deltaY > 0 ? -0.2 : 0.2;
-    const newScale = Math.min(Math.max(0.5, scale + delta), 5);
-    
-    // Only apply if scale changed
-    if (newScale !== scale) {
-      // Calculate new origin to zoom to cursor position
-      originX = mouseX / newScale - imgX;
-      originY = mouseY / newScale - imgY;
-      
-      scale = newScale;
-      img.style.transform = `translate(-50%, -50%) scale(${scale}) translate(${originX}px, ${originY}px)`;
-    }
-  });
-// Call on load AND if already complete
-img.addEventListener('load', applyInitialScale);
-if (img.complete && img.naturalWidth > 0) {
-  applyInitialScale();
-}
-function applyInitialScale() {
-  if (img.naturalWidth === 0 || img.naturalHeight === 0) return; // Not loaded yet
-  
-  const viewportWidth = window.innerWidth * 0.9;
-  const viewportHeight = window.innerHeight * 0.9;
-  const widthRatio = viewportWidth / img.naturalWidth;
-  const heightRatio = viewportHeight / img.naturalHeight;
-  scale = Math.min(widthRatio, heightRatio, 1);
-  originX = 0;
-  originY = 0;
-  img.style.transform = `translate(-50%, -50%) scale(${scale}) translate(${originX}px, ${originY}px)`;
-}
-  
-  // Drag to pan
-  container.addEventListener('mousedown', e => {
-    // Only start dragging on left click
-    if (e.button !== 0) return;
-    
-    isDragging = true;
-    startX = e.clientX - originX * scale;
-    startY = e.clientY - originY * scale;
-    container.style.cursor = 'grabbing';
-    e.preventDefault();
-  });
-  
-  container.addEventListener('mouseup', () => {
-    isDragging = false;
-    container.style.cursor = 'grab';
-  });
-  
-  container.addEventListener('mouseleave', () => {
-    isDragging = false;
-    container.style.cursor = 'grab';
-  });
-  
-  container.addEventListener('mousemove', e => {
-    if (!isDragging) return;
-    
-    originX = (e.clientX - startX) / scale;
-    originY = (e.clientY - startY) / scale;
-    
-    // Constrain dragging to keep image in view
-    const rect = container.getBoundingClientRect();
-    const imgWidth = img.naturalWidth * scale;
-    const imgHeight = img.naturalHeight * scale;
-    
-    // Optional: Add boundaries to prevent dragging too far
-    const maxX = Math.max(0, (imgWidth - rect.width) / (2 * scale));
-    const maxY = Math.max(0, (imgHeight - rect.height) / (2 * scale));
-    
-    originX = Math.max(-maxX, Math.min(maxX, originX));
-    originY = Math.max(-maxY, Math.min(maxY, originY));
-    
-    img.style.transform = `translate(-50%, -50%) scale(${scale}) translate(${originX}px, ${originY}px)`;
-  });
-  
-  // Double click to reset zoom
-  container.addEventListener('dblclick', e => {
-    resetImage();
-  });
-  
-  // Reset when closing lightbox (using Escape key)
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    const openLightbox = document.querySelector('.lightbox:target');
-    if (openLightbox) {
-      const img = openLightbox.querySelector('.lightbox-content img');
-      img.style.transform = 'translate(-50%, -50%) scale(1) translate(0px, 0px)';
-    }
-  }
-});
-});
-</script>
- <!-- Footer -->
+  <!-- Footer -->
   <div id="footer">
     <p>Back to <a href="index.html">Home</a></p>
     <p>&copy; One Mine Two Stars Wiki</p>
   </div>
-<!-- Floating Return to Top Button -->
-<button id="toTopBtn" aria-label="Return to top">⬆️ Top</button>
 
-<script>
-  const toTopBtn = document.getElementById("toTopBtn");
+  <!-- Return to Top Button -->
+  <button id="toTopBtn" aria-label="Return to top" style="display:none; position:fixed; bottom:20px; right:20px; padding:10px;">⬆️ Top</button>
 
-  // Show button when scrolled down
-  window.addEventListener("scroll", () => {
-    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-      toTopBtn.style.display = "block";
-    } else {
-      toTopBtn.style.display = "none";
-    }
-  });
+  <script>
+    // Initialize each lightbox
+    document.querySelectorAll('.lightbox-content').forEach(container => {
+      const img = container.querySelector('img');
+      let scale = 1;
+      let offsetX = 0;
+      let offsetY = 0;
+      let isDragging = false;
+      let startX, startY;
 
-  // Smooth scroll to top
-  toTopBtn.addEventListener("click", () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
-</script>
+      // Reset to centered, scaled view
+      function resetTransform() {
+        scale = 1;
+        offsetX = 0;
+        offsetY = 0;
+        applyTransform();
+      }
+
+      function applyTransform() {
+        img.style.transform = `translate(-50%, -50%) scale(${scale}) translate(${offsetX}px, ${offsetY}px)`;
+      }
+
+      // Set initial scale to fit image in viewport
+      function setInitialScale() {
+        if (!img.naturalWidth || !img.naturalHeight) return;
+
+        const maxWidth = window.innerWidth * 0.9;
+        const maxHeight = window.innerHeight * 0.9;
+        const ratio = Math.min(maxWidth / img.naturalWidth, maxHeight / img.naturalHeight, 1);
+        scale = ratio;
+        applyTransform();
+      }
+
+      // Ensure image is loaded
+      if (img.complete && img.naturalWidth > 0) {
+        setInitialScale();
+      } else {
+        img.addEventListener('load', setInitialScale);
+      }
+
+      // Zoom with mouse wheel
+      container.addEventListener('wheel', e => {
+        e.preventDefault();
+        const rect = container.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+
+        // Current image position in container coords
+        const imgRect = img.getBoundingClientRect();
+        const imgX = (mouseX - (imgRect.width / 2) - offsetX) / scale;
+        const imgY = (mouseY - (imgRect.height / 2) - offsetY) / scale;
+
+        // Adjust scale
+        const delta = e.deltaY > 0 ? -0.2 : 0.2;
+        const newScale = Math.min(Math.max(0.5, scale + delta), 5);
+
+        if (newScale !== scale) {
+          // Compute new offset so cursor stays over same point
+          const newImgX = imgX * newScale;
+          const newImgY = imgY * newScale;
+          offsetX = mouseX - (imgRect.width / 2) - newImgX;
+          offsetY = mouseY - (imgRect.height / 2) - newImgY;
+
+          scale = newScale;
+          applyTransform();
+        }
+      });
+
+      // Drag to pan
+      container.addEventListener('mousedown', e => {
+        if (e.button !== 0) return; // only left click
+        isDragging = true;
+        startX = e.clientX - offsetX;
+        startY = e.clientY - offsetY;
+        container.style.cursor = 'grabbing';
+        e.preventDefault();
+      });
+
+      window.addEventListener('mousemove', e => {
+        if (!isDragging) return;
+        offsetX = e.clientX - startX;
+        offsetY = e.clientY - startY;
+        applyTransform();
+      });
+
+      window.addEventListener('mouseup', () => {
+        isDragging = false;
+        container.style.cursor = 'grab';
+      });
+
+      // Double-click to reset
+      container.addEventListener('dblclick', resetTransform);
+
+      // Reset when lightbox closes via close button or backdrop
+      const lightbox = container.closest('.lightbox');
+      lightbox.addEventListener('click', e => {
+        if (e.target === lightbox || e.target.classList.contains('close')) {
+          resetTransform();
+        }
+      });
+    });
+
+    // Escape key closes and resets
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        const openLightbox = document.querySelector('.lightbox:target');
+        if (openLightbox) {
+          const container = openLightbox.querySelector('.lightbox-content');
+          const img = container.querySelector('img');
+          img.style.transform = 'translate(-50%, -50%) scale(1) translate(0px, 0px)';
+        }
+      }
+    });
+
+    // Return to top button
+    const toTopBtn = document.getElementById("toTopBtn");
+    window.addEventListener("scroll", () => {
+      toTopBtn.style.display = (window.scrollY > 200) ? "block" : "none";
+    });
+    toTopBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
 </body>
 </html>
+
