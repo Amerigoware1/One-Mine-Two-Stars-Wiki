@@ -124,9 +124,11 @@
   function openLightbox(index) {
     if (!lightbox) {
       lightbox = new PhotoSwipeLightbox({
-        dataSource: galleryItems.map(item => ({
+          dataSource: galleryItems.map(item => ({
           src: basePath + item.src,
-          caption: item.caption
+          w: item.width,  // Map your width to 'w'
+          h: item.height, // Map your height to 'h'
+          alt: item.caption
         })),
         bgOpacity: 0.9,
         wheelToZoom: true,
