@@ -7,12 +7,26 @@
   <link rel="icon" type="image/png" href="assets/images/favicon.png">
   <link rel="stylesheet" href="WikiStyle.css">
  <style>
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Default 2 columns */
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+/* For medium screens */
+@media (min-width: 768px) {
   .gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 1rem; /* Reduced from 1.5rem */
-    margin-top: 1.5rem; /* Reduced from 2rem */
+    grid-template-columns: repeat(3, 1fr); /* 3 columns */
   }
+}
+
+/* For large screens */
+@media (min-width: 1024px) {
+  .gallery-grid {
+    grid-template-columns: repeat(4, 1fr); /* 4 columns */
+  }
+}
   
   .card-bg {
     background: #0a0022;
@@ -74,18 +88,25 @@
     display: flex;
   }
   
-  .lightbox-content {
-    position: relative;
-    cursor: grab;
-    overflow: hidden;
-  }
-  
-  .lightbox-content img {
-    transform-origin: center center;
-    transition: transform 0.2s ease;
-    max-width: none;
-    max-height: none;
-  }
+.lightbox-content {
+  position: relative;
+  cursor: grab;
+  overflow: hidden;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.lightbox-content img {
+  transform-origin: 0 0; /* Changed from center center */
+  transition: transform 0.2s ease;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+}
   
   .close {
     position: absolute;
@@ -217,7 +238,7 @@
       </div>  
   </div>
   
-  <script>
+<script>
 document.querySelectorAll('.lightbox-content').forEach(container => {
   const img = container.querySelector('img');
   let scale = 1;
@@ -225,33 +246,134 @@ document.querySelectorAll('.lightbox-content').forEach(container => {
   let originY = 0;
   let isDragging = false;
   let startX, startY;
-
-  container.addEventListener('wheel', e => {
-    e.preventDefault();
-    const delta = e.deltaY > 0 ? -0.1 : 0.1;
-    scale = Math.min(Math.max(0.5, scale + delta), 5);
+  
+  // Reset function to restore default state
+  function resetImage() {
+    scale = 1;
+    originX = 0;
+    originY = 0;
+    img.style.transform = `scale(${scale}) translate(${originX}px, ${originY}px)`;
+  }
+  
+  // Calculate initial scale to fit image in viewport
+  function calculateInitialScale() {
+    const viewportWidth = window.innerWidth * 0.9; // 90% of viewport width
+    const viewportHeight = window.innerHeight * 0.9; // 90% of viewport height
+    const imgNaturalWidth = img.naturalWidth;
+    const imgNaturalHeight = img.naturalHeight;
+    
+    const widthRatio = viewportWidth / imgNaturalWidth;
+    const heightRatio = viewportHeight / imgNaturalHeight;
+    
+    // Use the smaller ratio to fit the image completely
+    return Math.min(widthRatio, heightRatio, 1); // Max scale of 1 initially
+  }
+  
+  // Apply initial scaling when lightbox opens
+  container.closest('.lightbox').addEventListener('click', function(e) {
+    if (e.target === this || e.target.classList.contains('close')) {
+      resetImage();
+    }
+  });
+  
+  // Initialize with appropriate scale on first open
+  img.addEventListener('load', function() {
+    const initialScale = calculateInitialScale();
+    scale = initialScale;
     img.style.transform = `scale(${scale}) translate(${originX}px, ${originY}px)`;
   });
-
-  container.addEventListener('mousedown', e => {
-    isDragging = true;
-    startX = e.clientX;
-    startY = e.clientY;
-    container.style.cursor = 'grabbing';
+  
+  // Ensure image is loaded (in case it's cached)
+  if (img.complete) {
+    const initialScale = calculateInitialScale();
+    scale = initialScale;
+    img.style.transform = `scale(${scale}) translate(${originX}px, ${originY}px)`;
+  }
+  
+  // Zoom with mouse wheel - zoom to cursor position
+  container.addEventListener('wheel', e => {
+    e.preventDefault();
+    
+    // Get mouse position relative to image
+    const rect = container.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    
+    // Calculate mouse position in image coordinates (before zoom)
+    const imgX = (mouseX - originX * scale) / scale;
+    const imgY = (mouseY - originY * scale) / scale;
+    
+    // Calculate new scale
+    const delta = e.deltaY > 0 ? -0.2 : 0.2;
+    const newScale = Math.min(Math.max(0.5, scale + delta), 5);
+    
+    // Only apply if scale changed
+    if (newScale !== scale) {
+      // Calculate new origin to zoom to cursor position
+      originX = mouseX / newScale - imgX;
+      originY = mouseY / newScale - imgY;
+      
+      scale = newScale;
+      img.style.transform = `scale(${scale}) translate(${originX}px, ${originY}px)`;
+    }
   });
-
+  
+  // Drag to pan
+  container.addEventListener('mousedown', e => {
+    // Only start dragging on left click
+    if (e.button !== 0) return;
+    
+    isDragging = true;
+    startX = e.clientX - originX * scale;
+    startY = e.clientY - originY * scale;
+    container.style.cursor = 'grabbing';
+    e.preventDefault();
+  });
+  
   container.addEventListener('mouseup', () => {
     isDragging = false;
     container.style.cursor = 'grab';
   });
-
+  
+  container.addEventListener('mouseleave', () => {
+    isDragging = false;
+    container.style.cursor = 'grab';
+  });
+  
   container.addEventListener('mousemove', e => {
     if (!isDragging) return;
-    originX += (e.clientX - startX) / scale;
-    originY += (e.clientY - startY) / scale;
-    startX = e.clientX;
-    startY = e.clientY;
+    
+    originX = (e.clientX - startX) / scale;
+    originY = (e.clientY - startY) / scale;
+    
+    // Constrain dragging to keep image in view
+    const rect = container.getBoundingClientRect();
+    const imgWidth = img.naturalWidth * scale;
+    const imgHeight = img.naturalHeight * scale;
+    
+    // Optional: Add boundaries to prevent dragging too far
+    const maxX = Math.max(0, (imgWidth - rect.width) / (2 * scale));
+    const maxY = Math.max(0, (imgHeight - rect.height) / (2 * scale));
+    
+    originX = Math.max(-maxX, Math.min(maxX, originX));
+    originY = Math.max(-maxY, Math.min(maxY, originY));
+    
     img.style.transform = `scale(${scale}) translate(${originX}px, ${originY}px)`;
+  });
+  
+  // Double click to reset zoom
+  container.addEventListener('dblclick', e => {
+    resetImage();
+  });
+  
+  // Reset when closing lightbox (using Escape key)
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      const openLightbox = document.querySelector('.lightbox:target');
+      if (openLightbox) {
+        openLightbox.querySelector('.lightbox-content img').style.transform = 'scale(1) translate(0px, 0px)';
+      }
+    }
   });
 });
 </script>
