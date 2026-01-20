@@ -93,7 +93,7 @@
 <script>
   const galleryItems = [
     { src: "Celectra-Pregnant.png", caption: "Celectra while pregnant (age 22)", width: 988, height: 954 },
-    { src: "celectra-cabinet.png", caption: "Celectra’s illuminated cabinet of Galinstanian leavings" width: 1024, height: 1536 },
+    { src: "celectra-cabinet.png", caption: "Celectra’s illuminated cabinet of Galinstanian leavings", width: 1024, height: 1536 },
     { src: "ANI.png", caption: "Artificial Neural Interface", width: 1205, height: 722 },
     { src: "Cave.jpg", caption: "Entrance to the deep caves explored over fourteen years.", width: 784, height: 1168 },
     { src: "Gazing through port hole.jpg", caption: "Livingroom on the space station Utopis (Book 1)", width: 1024, height: 1024 },
@@ -105,6 +105,7 @@
   const basePath = "assets/images/";
   const galleryEl = document.getElementById("gallery");
 
+  // This part builds the thumbnails on your page
   galleryItems.forEach((item, index) => {
     const card = document.createElement("div");
     card.className = "card-bg";
@@ -124,10 +125,11 @@
   function openLightbox(index) {
     if (!lightbox) {
       lightbox = new PhotoSwipeLightbox({
-          dataSource: galleryItems.map(item => ({
+        // This maps your 'width' and 'height' to the 'w' and 'h' PhotoSwipe needs
+        dataSource: galleryItems.map(item => ({
           src: basePath + item.src,
-          w: item.width,  // Map your width to 'w'
-          h: item.height, // Map your height to 'h'
+          w: item.width,
+          h: item.height,
           alt: item.caption
         })),
         bgOpacity: 0.9,
@@ -136,19 +138,14 @@
         initialZoomLevel: 'fit',
         secondaryZoomLevel: 2,
         maxZoomLevel: 3,
-        pswpModule: PhotoSwipe // ✅ Use global PhotoSwipe
+        pswpModule: PhotoSwipe 
       });
-      console.log('PhotoSwipe available:', typeof PhotoSwipe === 'function');
-if (typeof PhotoSwipe !== 'function') {
-  alert('PhotoSwipe failed to load! Check console for errors.');
-}
       lightbox.init();
     }
-
     lightbox.loadAndOpen(index);
   }
 
-  // Return to top
+  // Return to top button logic
   const toTopBtn = document.getElementById("toTopBtn");
   window.addEventListener("scroll", () => {
     toTopBtn.style.display = window.scrollY > 200 ? "block" : "none";
