@@ -87,58 +87,68 @@
   <script src="https://unpkg.com/photoswipe@5/dist/photoswipe.umd.js"></script>
 
   <script>
-    // ✅ Define your images ONCE here
-    const galleryItems = [
-      { src: "Celectra-Pregnant.png", caption: "Celectra while pregnant (age 22)" },
-      { src: "celectra-cabinet.png", caption: "Celectra’s illuminated cabinet of Galinstanian leavings" },
-      { src: "ANI.png", caption: "Artificial Neural Interface" },
-      { src: "Cave.jpg", caption: "Entrance to the deep caves explored over fourteen years. Home of the local Galinstanians, Celectra's resonance chamber, and the geothermal pool grotto." },
-      { src: "Gazing through port hole.jpg", caption: "Livingroom on the space station Utopis (Book 1)" },
-      { src: "Carisco Family.jpg", caption: "Carisco Family (Book 2)" },
-      { src: "Galinstanian.jpg", caption: "Galinstanian" },
-      { src: "Listener Corps.png", caption: "Listener Corps" }
-    ];
+  const galleryItems = [
+    { src: "Celectra-Pregnant.png", caption: "Celectra while pregnant (age 22)" },
+    { src: "celectra-cabinet.png", caption: "Celectra’s illuminated cabinet of Galinstanian leavings" },
+    { src: "ANI.png", caption: "Artificial Neural Interface" },
+    { src: "Cave.jpg", caption: "Entrance to the deep caves explored over fourteen years. Home of the local Galinstanians, Celectra's resonance chamber, and the geothermal pool grotto." },
+    { src: "Gazing through port hole.jpg", caption: "Livingroom on the space station Utopis (Book 1)" },
+    { src: "Carisco Family.jpg", caption: "Carisco Family (Book 2)" },
+    { src: "Galinstanian.jpg", caption: "Galinstanian" },
+    { src: "Listener Corps.png", caption: "Listener Corps" }
+  ];
 
-    const basePath = "assets/images/";
-    const galleryEl = document.getElementById("gallery");
+  const basePath = "assets/images/";
+  const galleryEl = document.getElementById("gallery");
 
-    // Generate gallery cards
-    galleryItems.forEach((item, index) => {
-      const card = document.createElement("div");
-      card.className = "card-bg";
-      card.innerHTML = `
-        <img src="${basePath}${item.src}" alt="${item.caption}">
-        <div class="card-caption">${item.caption}</div>
-      `;
-      card.addEventListener("click", () => openLightbox(index));
-      galleryEl.appendChild(card);
+  // Generate gallery cards
+  galleryItems.forEach((item, index) => {
+    const card = document.createElement("div");
+    card.className = "card-bg";
+    card.innerHTML = `
+      <img src="${basePath}${item.src}" alt="${item.caption}" loading="lazy">
+      <div class="card-caption">${item.caption}</div>
+    `;
+    // ✅ Attach click to the whole card (robust)
+    card.addEventListener("click", (e) => {
+      e.preventDefault();
+      openLightbox(index);
+    });
+    galleryEl.appendChild(card);
+  });
+
+  // ✅ Proper PhotoSwipe initialization
+  function openLightbox(index) {
+    // Map items to PhotoSwipe format — WITHOUT w/h
+    const items = galleryItems.map(item => ({
+      src: basePath + item.src,
+      title: item.caption,
+      // Optional: improve load behavior
+      element: document.querySelector(`#gallery .card-bg:nth-child(${index + 1}) img`)
+    }));
+
+    const lightbox = new PhotoSwipe({
+      dataSource: items,
+      index: index,
+      bgOpacity: 0.9,
+      wheelToZoom: true,
+      pinchToClose: true,
+      closeOnVerticalDrag: true,
+      // Enable zoom
+      initialZoomLevel: 'fit', // 'fill' or 'fit'
+      secondaryZoomLevel: 2,
+      maxZoomLevel: 3
     });
 
-    // Open PhotoSwipe
-    function openLightbox(index) {
-      const items = galleryItems.map(item => ({
-        src: basePath + item.src,
-        w: 0, // will be detected automatically
-        h: 0,
-        title: item.caption
-      }));
+    lightbox.init();
+  }
 
-      const lightbox = new PhotoSwipe({
-        dataSource: items,
-        index: index,
-        bgOpacity: 0.9,
-        wheelToZoom: true,
-        pinchToClose: true
-      });
-      lightbox.init();
-    }
-
-    // Return to top button
-    const toTopBtn = document.getElementById("toTopBtn");
-    window.addEventListener("scroll", () => {
-      toTopBtn.style.display = window.scrollY > 200 ? "block" : "none";
-    });
-    toTopBtn.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
-  </script>
+  // Return to top
+  const toTopBtn = document.getElementById("toTopBtn");
+  window.addEventListener("scroll", () => {
+    toTopBtn.style.display = window.scrollY > 200 ? "block" : "none";
+  });
+  toTopBtn.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
+</script>
 </body>
 </html>
