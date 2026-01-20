@@ -89,9 +89,8 @@
   </div>
 
 <script src="photoswipe.umd.min.js"></script>
-
+<script src="photoswipe-lightbox.umd.min.js"></script>
 <script>
-  // Your gallery data
   const galleryItems = [
     { src: "Celectra-Pregnant.png", caption: "Celectra while pregnant (age 22)" },
     { src: "celectra-cabinet.png", caption: "Celectra’s illuminated cabinet of Galinstanian leavings" },
@@ -106,6 +105,7 @@
   const basePath = "assets/images/";
   const galleryEl = document.getElementById("gallery");
 
+  // Generate gallery cards
   galleryItems.forEach((item, index) => {
     const card = document.createElement("div");
     card.className = "card-bg";
@@ -120,23 +120,28 @@
     galleryEl.appendChild(card);
   });
 
+  // Initialize PhotoSwipe Lightbox
+  let lightbox;
+
   function openLightbox(index) {
-    const items = galleryItems.map(item => ({
-      src: basePath + item.src,
-      title: item.caption
-    }));
-console.log('PhotoSwipe global:', typeof PhotoSwipe);
-    const lightbox = new PhotoSwipe({
-      dataSource: items,
-      index: index,
-      bgOpacity: 0.9,
-      wheelToZoom: true,
-      pinchToClose: true,
-      initialZoomLevel: 'fit',
-      secondaryZoomLevel: 2,
-      maxZoomLevel: 3
-    });
-    lightbox.init();
+    if (!lightbox) {
+      lightbox = new PhotoSwipeLightbox({
+        dataSource: galleryItems.map(item => ({
+          src: basePath + item.src,
+          caption: item.caption
+        })),
+        bgOpacity: 0.9,
+        wheelToZoom: true,
+        pinchToClose: true,
+        initialZoomLevel: 'fit',
+        secondaryZoomLevel: 2,
+        maxZoomLevel: 3,
+        pswpModule: () => import('https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/umd/photoswipe.umd.min.js')
+      });
+      lightbox.init();
+    }
+
+    lightbox.loadAndOpen(index);
   }
 
   // Return to top
