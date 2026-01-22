@@ -1778,7 +1778,28 @@
         
         // Initialize database flag
         window.databaseLoaded = false;
+        function testWithSampleData() {
+    characterData = [
+        {
+            'CHARACTER': 'Amerigo Carisco',
+            'BIRTH DATE': '2103-05-12',
+            'CRYOSLEEP': '90',
+            'SPECIES': 'Human'
+        },
+        {
+            'CHARACTER': 'Jinan Jenni Carisco',
+            'BIRTH DATE': '2120-08-15',
+            'CRYOSLEEP': '0',
+            'SPECIES': 'Human'
+        }
+    ];
+    
+    characterData = characterData.map(character => calculateMissingAges(character));
+    displayCharacterData();
+    updateDatabaseStats();
+}
     </script>
 </body>
 </html>
+
 
