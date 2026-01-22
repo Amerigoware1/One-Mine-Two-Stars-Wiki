@@ -990,22 +990,23 @@
                 </div>
                 
                 <div class="database-table-container">
-                    <table class="database-table" id="characterTable">
-                        <thead>
-                            <tr>
-                                <th onclick="sortTable(0)">Character</th>
-                                <th onclick="sortTable(1)">Birth Date</th>
-                                <th onclick="sortTable(2)">Age in 2247</th>
-                                <th onclick="sortTable(3)">Biological Age</th>
-                                <th onclick="sortTable(4)">Chrono Age</th>
-                                <th onclick="sortTable(5)">Cryosleep</th>
-                                <th onclick="sortTable(6)">Species</th>
-                            </tr>
-                        </thead>
-                        <tbody id="databaseBody">
-                            <!-- Data will be loaded here -->
-                        </tbody>
-                    </table>
+<table class="database-table" id="characterTable">
+    <thead>
+        <tr>
+            <th onclick="sortTable(0)">Character</th>
+            <th onclick="sortTable(1)">Birth Date</th>
+            <th onclick="sortTable(2)">Age in 2247</th>
+            <th onclick="sortTable(3)">Biological Age</th>
+            <th onclick="sortTable(4)">Chrono Age</th>
+            <th onclick="sortTable(5)">Cryosleep</th>
+            <th onclick="sortTable(6)">Species</th>
+            <th onclick="sortTable(7)">Status</th>
+        </tr>
+    </thead>
+    <tbody id="databaseBody">
+        <!-- Data will be loaded here -->
+    </tbody>
+</table>
                 </div>
                 
                 <div class="info-section" style="margin-top: 30px;">
@@ -1362,374 +1363,412 @@
         
         // ========== Character Database Functions ==========
         
-        const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTBH5t96rREPMDeLxgo1n64emrrKmlreOfazzQ0WtdAnu1HETbpbXnr9wq6gik9VdSYa9maK5cx4uUX/pub?output=csv';
+       // ========== Character Database Functions ==========
+
+const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTBH5t96rREPMDeLxgo1n64emrrKmlreOfazzQ0WtdAnu1HETbpbXnr9wq6gik9VdSYa9maK5cx4uUX/pub?output=csv';
+
+let characterData = [];
+let sortDirection = {};
+
+async function loadCharacterDatabase() {
+    const loadingSpinner = document.getElementById('databaseLoading');
+    const tableBody = document.getElementById('databaseBody');
+    
+    loadingSpinner.classList.add('active');
+    tableBody.innerHTML = '';
+    
+    try {
+        console.log('Fetching data from:', GOOGLE_SHEET_URL);
+        const response = await fetch(GOOGLE_SHEET_URL);
+        if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         
-        let characterData = [];
-        let sortDirection = {};
+        const csvText = await response.text();
+        console.log('Raw CSV data:', csvText.substring(0, 500));
         
-        async function loadCharacterDatabase() {
-            const loadingSpinner = document.getElementById('databaseLoading');
-            const tableBody = document.getElementById('databaseBody');
-            
-            loadingSpinner.classList.add('active');
-            tableBody.innerHTML = '';
-            
-            try {
-                console.log('Fetching data from:', GOOGLE_SHEET_URL);
-                const response = await fetch(GOOGLE_SHEET_URL);
-                if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                
-                const csvText = await response.text();
-                console.log('Raw CSV data:', csvText.substring(0, 500));
-                
-                const rows = parseCSV(csvText);
-                console.log('Parsed rows:', rows.length, 'First few rows:', rows.slice(0, 3));
-                
-                if (rows.length < 2) {
-                    throw new Error('No data found in CSV (only headers or empty)');
-                }
-                
-                // Assuming first row is headers
-                const headers = rows[0].map(h => h.trim());
-                console.log('Headers:', headers);
-                
-                characterData = rows.slice(1).map(row => {
-                    const obj = {};
-                    headers.forEach((header, index) => {
-                        obj[header] = row[index] ? row[index].trim() : '';
-                    });
-                    return obj;
-                });
-                
-                console.log('Processed character data:', characterData.slice(0, 3));
-                
-                // Calculate missing ages automatically
-                characterData = characterData.map(character => {
-                    return calculateMissingAges(character);
-                });
-                
-                // Update last updated time
-                document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
-                
-                displayCharacterData();
-                updateDatabaseStats();
-                window.databaseLoaded = true;
-                
-            } catch (error) {
-                console.error('Database load error:', error);
-                tableBody.innerHTML = `
-                    <tr>
-                        <td colspan="7" style="text-align: center; padding: 40px; color: #ff5555;">
-                            ⚠️ Error loading database: ${error.message}<br>
-                            <span style="color: var(--text-muted); font-size: 0.9rem;">
-                                Please check: 1) Internet connection, 2) Google Sheet is published as CSV, 3) URL is correct<br>
-                                URL used: ${GOOGLE_SHEET_URL}
-                            </span>
-                        </td>
-                    </tr>
-                `;
-            } finally {
-                loadingSpinner.classList.remove('active');
-            }
+        const rows = parseCSV(csvText);
+        console.log('Parsed rows:', rows.length, 'First few rows:', rows.slice(0, 3));
+        
+        if (rows.length < 2) {
+            throw new Error('No data found in CSV (only headers or empty)');
         }
         
-        function calculateMissingAges(character) {
-            // Reference date: September 2247
-            const referenceDate = new Date(2247, 8, 15); // September 15, 2247
-            
-            // Get character name from various possible column names
-            const charName = character['CHARACTER'] || character['Character'] || 
-                           character['NAME'] || character['Name'] || '';
-            
-            // Try to extract birth date from various column names
-            let birthDateStr = character['BIRTH DATE'] || character['Birth Date'] || 
-                             character['BIRTH_DATE'] || character['Birth'] || 
-                             character['BIRTH'] || character['DOB'] || '';
-            
-            let birthDate = null;
-            let chronologicalAge = '';
-            let biologicalAge = '';
-            let age2247 = '';
-            
-            if (birthDateStr && birthDateStr.trim() !== '') {
-                birthDate = parseDate(birthDateStr);
-                if (birthDate) {
-                    // Calculate chronological age
-                    const msPerYear = 365.2425 * 24 * 60 * 60 * 1000;
-                    const chronological = (referenceDate - birthDate) / msPerYear;
-                    chronologicalAge = chronological.toFixed(1);
-                    
-                    // Get cryosleep years from various column names
-                    const cryoStr = character['CRYOSLEEP'] || character['Cryosleep'] || 
-                                  character['CRYO'] || character['Cryo'] || 
-                                  character['CRYO_YEARS'] || character['Cryo Years'] || '0';
-                    const cryoYears = parseFloat(cryoStr) || 0;
-                    
-                    // Calculate biological age
-                    const biological = Math.max(0, chronological - cryoYears);
-                    biologicalAge = biological.toFixed(1);
-                    
-                    // Age in 2247 is the same as chronological age
-                    age2247 = chronologicalAge;
-                }
-            }
-            
-            // Get species from various column names
-            const species = character['SPECIES'] || character['Species'] || 
-                          character['RACE'] || character['Race'] || 
-                          character['TYPE'] || character['Type'] || '';
-            
-            // Return character with calculated ages
-            return {
-                ...character,
-                'CHARACTER': charName,
-                'BIRTH DATE': birthDateStr,
-                'AGE IN 2247': character['AGE IN 2247'] || character['Age in 2247'] || age2247 || '',
-                'BIOLOGICAL AGE': character['BIOLOGICAL AGE'] || character['Biological Age'] || biologicalAge || '',
-                'CHRONO AGE': character['CHRONO AGE'] || character['Chrono Age'] || chronologicalAge || '',
-                'CRYOSLEEP': cryoStr || '0',
-                'SPECIES': species
-            };
-        }
+        // Assuming first row is headers
+        const headers = rows[0].map(h => h.trim());
+        console.log('Headers:', headers);
         
-        function parseCSV(csv) {
-            const lines = csv.split('\n');
-            const result = [];
+        characterData = rows.slice(1).map(row => {
+            const obj = {};
+            headers.forEach((header, index) => {
+                obj[header] = row[index] ? row[index].trim() : '';
+            });
+            return obj;
+        }).filter(character => {
+            // Filter out empty rows and summary rows
+            const charName = character['Character'] || '';
+            return charName && charName.trim() !== '' && 
+                   !charName.includes('Total') && 
+                   !charName.includes('Sum') &&
+                   !/^\s*,\s*$/.test(charName); // Not just commas
+        });
+        
+        console.log('Processed character data:', characterData.slice(0, 3));
+        
+        // Calculate ages for Book 3 (2246) since that's closest to September 2247
+        characterData = characterData.map(character => {
+            return calculateMissingAges(character);
+        });
+        
+        // Update last updated time
+        document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
+        
+        displayCharacterData();
+        updateDatabaseStats();
+        window.databaseLoaded = true;
+        
+    } catch (error) {
+        console.error('Database load error:', error);
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="7" style="text-align: center; padding: 40px; color: #ff5555;">
+                    ⚠️ Error loading database: ${error.message}<br>
+                    <span style="color: var(--text-muted); font-size: 0.9rem;">
+                        Please check: 1) Internet connection, 2) Google Sheet is published as CSV, 3) URL is correct<br>
+                        URL used: ${GOOGLE_SHEET_URL}
+                    </span>
+                </td>
+            </tr>
+        `;
+    } finally {
+        loadingSpinner.classList.remove('active');
+    }
+}
+
+function calculateMissingAges(character) {
+    // Reference date: September 2247 (use Book 3 age as base)
+    const referenceYear = 2247;
+    
+    // Get character name
+    const charName = character['Character'] || character['CHARACTER'] || '';
+    
+    // Get birth date
+    const birthDateStr = character['Birthday'] || character['BIRTH DATE'] || 
+                        character['Birth Date'] || character['DOB'] || '';
+    
+    // Get age from Book 3 (2246) - closest to our reference date of 2247
+    const book3AgeStr = character['Book 3  (2246) age'] || character['Book 3 (2246) age'] || 
+                       character['Book 3 age'] || '';
+    
+    let birthDate = null;
+    let chronologicalAge = '';
+    let biologicalAge = '';
+    let age2247 = '';
+    
+    // First, try to use Book 3 age directly
+    if (book3AgeStr && book3AgeStr.trim() !== '' && book3AgeStr !== 'Deceased') {
+        const ageMatch = book3AgeStr.match(/\d+(\.\d+)?/);
+        if (ageMatch) {
+            const book3Age = parseFloat(ageMatch[0]);
+            if (!isNaN(book3Age)) {
+                // Book 3 is 2246, so for 2247 add 1 year
+                age2247 = (book3Age + 1).toFixed(1);
+                chronologicalAge = age2247;
+                biologicalAge = age2247; // Assuming no cryosleep for now
+            }
+        }
+    }
+    
+    // If no Book 3 age, try to calculate from birth date
+    if ((!age2247 || age2247 === 'NaN') && birthDateStr && birthDateStr.trim() !== '') {
+        birthDate = parseDate(birthDateStr);
+        if (birthDate) {
+            // Calculate age for September 2247
+            const referenceDate = new Date(referenceYear, 8, 15); // September 15, 2247
+            const msPerYear = 365.2425 * 24 * 60 * 60 * 1000;
+            const chronological = (referenceDate - birthDate) / msPerYear;
             
-            for (let i = 0; i < lines.length; i++) {
-                const line = lines[i].trim();
-                if (line === '') continue;
-                
-                let currentLine = [];
-                let currentField = '';
-                let inQuotes = false;
-                
-                for (let j = 0; j < line.length; j++) {
-                    const char = line[j];
-                    
-                    if (char === '"') {
-                        inQuotes = !inQuotes;
-                    } else if (char === ',' && !inQuotes) {
-                        currentLine.push(currentField);
-                        currentField = '';
-                    } else {
-                        currentField += char;
-                    }
-                }
-                
-                // Add the last field
+            if (chronological > 0) {
+                chronologicalAge = chronological.toFixed(1);
+                biologicalAge = chronologicalAge; // No cryosleep data in this sheet
+                age2247 = chronologicalAge;
+            }
+        }
+    }
+    
+    // Get death date if available
+    const deathDateStr = character['Death Date'] || character['Death'] || '';
+    const isDeceased = deathDateStr && deathDateStr.trim() !== '' || 
+                      book3AgeStr === 'Deceased';
+    
+    // Get species - not in this sheet, so we'll leave blank or try to infer
+    let species = '';
+    if (charName.toLowerCase().includes('cruiz') || 
+        charName.toLowerCase().includes('carisco') ||
+        charName.toLowerCase().includes('bowers') ||
+        charName.toLowerCase().includes('patel')) {
+        species = 'Human';
+    }
+    
+    // Return character with calculated ages
+    return {
+        ...character,
+        'CHARACTER': charName,
+        'BIRTH DATE': birthDateStr,
+        'AGE IN 2247': age2247 || '',
+        'BIOLOGICAL AGE': biologicalAge || '',
+        'CHRONO AGE': chronologicalAge || '',
+        'CRYOSLEEP': '0', // No cryosleep data in this sheet
+        'SPECIES': species,
+        'STATUS': isDeceased ? 'Deceased' : 'Alive'
+    };
+}
+
+function parseCSV(csv) {
+    const lines = csv.split('\n');
+    const result = [];
+    
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (line === '') continue;
+        
+        let currentLine = [];
+        let currentField = '';
+        let inQuotes = false;
+        
+        for (let j = 0; j < line.length; j++) {
+            const char = line[j];
+            
+            if (char === '"') {
+                inQuotes = !inQuotes;
+            } else if (char === ',' && !inQuotes) {
                 currentLine.push(currentField);
-                result.push(currentLine);
-            }
-            
-            return result;
-        }
-        
-        function displayCharacterData(filteredData = characterData) {
-            const tableBody = document.getElementById('databaseBody');
-            
-            if (filteredData.length === 0) {
-                tableBody.innerHTML = `
-                    <tr>
-                        <td colspan="7" style="text-align: center; padding: 40px; color: var(--text-muted);">
-                            No characters found. Try a different search term.
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-            
-            let html = '';
-            
-            filteredData.forEach(character => {
-                const charName = escapeHTML(character['CHARACTER']);
-                const birthDate = escapeHTML(character['BIRTH DATE']);
-                const age2247 = escapeHTML(character['AGE IN 2247']);
-                const biologicalAge = escapeHTML(character['BIOLOGICAL AGE']);
-                const chronologicalAge = escapeHTML(character['CHRONO AGE']);
-                const cryosleep = escapeHTML(character['CRYOSLEEP']);
-                const species = escapeHTML(character['SPECIES']);
-                
-                const hasCryosleep = parseFloat(cryosleep) > 0;
-                const hasBirthDate = birthDate && birthDate.trim() !== '';
-                
-                // Add data entry button if birth date is missing
-                const dataEntryBtn = !hasBirthDate ? `
-                    <button class="data-entry-btn" onclick="enterCharacterData('${charName.replace(/'/g, "\\'")}')" 
-                            title="Enter data for ${charName}">
-                        📝
-                    </button>
-                ` : '';
-                
-                html += `
-                    <tr>
-                        <td>
-                            <strong>${charName || 'Unknown'}</strong>
-                            ${dataEntryBtn}
-                        </td>
-                        <td>${birthDate || '<span style="color: #ff5555; font-style: italic;">Missing</span>'}</td>
-                        <td><span class="age-highlight">${age2247 || '-'}</span></td>
-                        <td>
-                            ${biologicalAge || '-'}
-                            ${hasCryosleep ? '<span class="bio-badge">Bio</span>' : ''}
-                        </td>
-                        <td>
-                            ${chronologicalAge || '-'}
-                            ${hasCryosleep ? '<span class="cryo-badge">Cryo</span>' : ''}
-                        </td>
-                        <td>${cryosleep || '0'}</td>
-                        <td>${species || '<span style="color: #888;">Unknown</span>'}</td>
-                    </tr>
-                `;
-            });
-            
-            tableBody.innerHTML = html;
-        }
-        
-        function escapeHTML(str) {
-            if (!str) return '';
-            return str
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#039;');
-        }
-        
-        function enterCharacterData(characterName) {
-            const birthDate = prompt(`Enter birth date for ${characterName}:\n(e.g., 10-11-2225, October 11, 2225)`);
-            if (birthDate !== null) {
-                const species = prompt(`Enter species for ${characterName}:`) || '';
-                
-                // Find and update the character in the data
-                const characterIndex = characterData.findIndex(char => 
-                    char['CHARACTER'] === characterName
-                );
-                
-                if (characterIndex !== -1) {
-                    characterData[characterIndex]['BIRTH DATE'] = birthDate;
-                    characterData[characterIndex]['SPECIES'] = species;
-                    
-                    // Recalculate ages
-                    characterData[characterIndex] = calculateMissingAges(characterData[characterIndex]);
-                    
-                    // Update display
-                    displayCharacterData();
-                    updateDatabaseStats();
-                    
-                    alert(`Data updated for ${characterName}! (Note: This is temporary - add to Google Sheets for permanent storage)`);
-                }
-            }
-        }
-        
-        function filterDatabase() {
-            const searchTerm = document.getElementById('databaseSearch').value.toLowerCase();
-            
-            if (!searchTerm) {
-                displayCharacterData(characterData);
-                return;
-            }
-            
-            const filtered = characterData.filter(character => {
-                // Search through all character properties
-                return Object.values(character).some(value => 
-                    value && value.toString().toLowerCase().includes(searchTerm)
-                );
-            });
-            
-            displayCharacterData(filtered);
-            updateDatabaseStats(filtered);
-        }
-        
-        function sortTable(columnIndex) {
-            const table = document.getElementById('characterTable');
-            const tbody = table.querySelector('tbody');
-            const rows = Array.from(tbody.querySelectorAll('tr'));
-            
-            const isNumeric = columnIndex === 2 || columnIndex === 3 || columnIndex === 4;
-            
-            if (!sortDirection[columnIndex]) {
-                sortDirection[columnIndex] = 'asc';
+                currentField = '';
             } else {
-                sortDirection[columnIndex] = sortDirection[columnIndex] === 'asc' ? 'desc' : 'asc';
+                currentField += char;
             }
-            
-            rows.sort((a, b) => {
-                const aCell = a.cells[columnIndex].textContent;
-                const bCell = b.cells[columnIndex].textContent;
-                
-                let aValue, bValue;
-                
-                if (isNumeric) {
-                    aValue = parseFloat(aCell.replace(/[^0-9.-]/g, ''));
-                    bValue = parseFloat(bCell.replace(/[^0-9.-]/g, ''));
-                    
-                    if (isNaN(aValue)) aValue = 0;
-                    if (isNaN(bValue)) bValue = 0;
-                } else {
-                    aValue = aCell.toLowerCase();
-                    bValue = bCell.toLowerCase();
-                }
-                
-                if (sortDirection[columnIndex] === 'asc') {
-                    return aValue > bValue ? 1 : -1;
-                } else {
-                    return aValue < bValue ? 1 : -1;
-                }
-            });
-            
-            // Reorder rows in table
-            rows.forEach(row => tbody.appendChild(row));
         }
         
-        function updateDatabaseStats(filteredData = characterData) {
-            document.getElementById('totalCharacters').textContent = filteredData.length;
+        // Add the last field
+        currentLine.push(currentField);
+        result.push(currentLine);
+    }
+    
+    return result;
+}
+
+function displayCharacterData(filteredData = characterData) {
+    const tableBody = document.getElementById('databaseBody');
+    
+    if (filteredData.length === 0) {
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="7" style="text-align: center; padding: 40px; color: var(--text-muted);">
+                    No characters found. Try a different search term.
+                </td>
+            </tr>
+        `;
+        return;
+    }
+    
+    let html = '';
+    
+    filteredData.forEach(character => {
+        const charName = escapeHTML(character['CHARACTER']);
+        const birthDate = escapeHTML(character['BIRTH DATE']);
+        const age2247 = escapeHTML(character['AGE IN 2247']);
+        const biologicalAge = escapeHTML(character['BIOLOGICAL AGE']);
+        const chronologicalAge = escapeHTML(character['CHRONO AGE']);
+        const cryosleep = escapeHTML(character['CRYOSLEEP']);
+        const species = escapeHTML(character['SPECIES']);
+        const status = character['STATUS'] || '';
+        
+        const isDeceased = status === 'Deceased';
+        const hasBirthDate = birthDate && birthDate.trim() !== '';
+        
+        // Style based on status
+        const statusStyle = isDeceased ? 'style="color: #888; text-decoration: line-through;"' : '';
+        const deceasedBadge = isDeceased ? '<span style="color: #ff5555; font-size: 0.8rem; margin-left: 5px;">†</span>' : '';
+        
+        // Add data entry button if birth date is missing
+        const dataEntryBtn = !hasBirthDate ? `
+            <button class="data-entry-btn" onclick="enterCharacterData('${charName.replace(/'/g, "\\'")}')" 
+                    title="Enter data for ${charName}">
+                📝
+            </button>
+        ` : '';
+        
+html += `
+    <tr>
+        <td ${statusStyle}>
+            <strong>${charName || 'Unknown'}</strong>
+            ${deceasedBadge}
+            ${dataEntryBtn}
+        </td>
+        <td>${birthDate || '<span style="color: #ff5555; font-style: italic;">Missing</span>'}</td>
+        <td><span class="age-highlight">${age2247 || '-'}</span></td>
+        <td>${biologicalAge || '-'}</td>
+        <td>${chronologicalAge || '-'}</td>
+        <td>${cryosleep || '0'}</td>
+        <td>${species || '<span style="color: #888;">Unknown</span>'}</td>
+        <td>${isDeceased ? '<span style="color: #ff5555;">Deceased</span>' : '<span style="color: #55ff55;">Alive</span>'}</td>
+    </tr>
+`;
+    });
+    
+    tableBody.innerHTML = html;
+}
+
+function escapeHTML(str) {
+    if (!str) return '';
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+function enterCharacterData(characterName) {
+    const birthDate = prompt(`Enter birth date for ${characterName}:\n(e.g., May 12, 2103)`);
+    if (birthDate !== null) {
+        const species = prompt(`Enter species for ${characterName}:`) || '';
+        
+        // Find and update the character in the data
+        const characterIndex = characterData.findIndex(char => 
+            char['CHARACTER'] === characterName
+        );
+        
+        if (characterIndex !== -1) {
+            characterData[characterIndex]['BIRTH DATE'] = birthDate;
+            characterData[characterIndex]['SPECIES'] = species;
             
-            if (filteredData.length === 0) {
-                document.getElementById('averageAge').textContent = '0.0';
-                document.getElementById('cryoCount').textContent = '0';
-                document.getElementById('youngestAge').textContent = '0';
-                document.getElementById('oldestAge').textContent = '0';
-                return;
-            }
+            // Recalculate ages
+            characterData[characterIndex] = calculateMissingAges(characterData[characterIndex]);
             
-            let totalAge = 0;
-            let cryoCount = 0;
-            let ages = [];
+            // Update display
+            displayCharacterData();
+            updateDatabaseStats();
             
-            filteredData.forEach(character => {
-                // Try to extract age from different possible column names
-                let ageStr = character['BIOLOGICAL AGE'] || character['Biological Age'] || 
-                            character['AGE IN 2247'] || character['Age in 2247'] || '';
-                
-                if (ageStr) {
-                    // Extract first number from string
-                    const ageMatch = ageStr.match(/\d+(\.\d+)?/);
-                    if (ageMatch) {
-                        const age = parseFloat(ageMatch[0]);
-                        if (!isNaN(age)) {
-                            totalAge += age;
-                            ages.push(age);
-                        }
-                    }
-                }
-                
-                // Check for cryosleep
-                const cryoStr = character['CRYOSLEEP'] || character['Cryosleep'] || '0';
-                if (parseFloat(cryoStr) > 0) {
-                    cryoCount++;
-                }
-            });
-            
-            const averageAge = ages.length > 0 ? (totalAge / ages.length).toFixed(1) : '0.0';
-            const youngestAge = ages.length > 0 ? Math.min(...ages).toFixed(1) : '0';
-            const oldestAge = ages.length > 0 ? Math.max(...ages).toFixed(1) : '0';
-            
-            document.getElementById('averageAge').textContent = averageAge;
-            document.getElementById('cryoCount').textContent = cryoCount;
-            document.getElementById('youngestAge').textContent = youngestAge;
-            document.getElementById('oldestAge').textContent = oldestAge;
+            alert(`Data updated for ${characterName}! (Note: This is temporary - add to Google Sheets for permanent storage)`);
         }
+    }
+}
+
+function filterDatabase() {
+    const searchTerm = document.getElementById('databaseSearch').value.toLowerCase();
+    
+    if (!searchTerm) {
+        displayCharacterData(characterData);
+        return;
+    }
+    
+    const filtered = characterData.filter(character => {
+        // Search through all character properties
+        return Object.values(character).some(value => 
+            value && value.toString().toLowerCase().includes(searchTerm)
+        );
+    });
+    
+    displayCharacterData(filtered);
+    updateDatabaseStats(filtered);
+}
+
+function sortTable(columnIndex) {
+    const table = document.getElementById('characterTable');
+    const tbody = table.querySelector('tbody');
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    
+    const isNumeric = columnIndex === 2 || columnIndex === 3 || columnIndex === 4;
+    
+    if (!sortDirection[columnIndex]) {
+        sortDirection[columnIndex] = 'asc';
+    } else {
+        sortDirection[columnIndex] = sortDirection[columnIndex] === 'asc' ? 'desc' : 'asc';
+    }
+    
+    rows.sort((a, b) => {
+        const aCell = a.cells[columnIndex].textContent;
+        const bCell = b.cells[columnIndex].textContent;
+        
+        let aValue, bValue;
+        
+        if (isNumeric) {
+            aValue = parseFloat(aCell.replace(/[^0-9.-]/g, ''));
+            bValue = parseFloat(bCell.replace(/[^0-9.-]/g, ''));
+            
+            if (isNaN(aValue)) aValue = 0;
+            if (isNaN(bValue)) bValue = 0;
+        } else {
+            aValue = aCell.toLowerCase();
+            bValue = bCell.toLowerCase();
+        }
+        
+        if (sortDirection[columnIndex] === 'asc') {
+            return aValue > bValue ? 1 : -1;
+        } else {
+            return aValue < bValue ? 1 : -1;
+        }
+    });
+    
+    // Reorder rows in table
+    rows.forEach(row => tbody.appendChild(row));
+}
+
+function updateDatabaseStats(filteredData = characterData) {
+    const totalChars = filteredData.length;
+    document.getElementById('totalCharacters').textContent = totalChars;
+    
+    if (totalChars === 0) {
+        document.getElementById('averageAge').textContent = '0.0';
+        document.getElementById('cryoCount').textContent = '0';
+        document.getElementById('youngestAge').textContent = '0';
+        document.getElementById('oldestAge').textContent = '0';
+        return;
+    }
+    
+    let totalAge = 0;
+    let cryoCount = 0;
+    let ages = [];
+    let aliveCount = 0;
+    
+    filteredData.forEach(character => {
+        // Try to extract age
+        let ageStr = character['AGE IN 2247'] || '';
+        
+        if (ageStr) {
+            const ageMatch = ageStr.match(/\d+(\.\d+)?/);
+            if (ageMatch) {
+                const age = parseFloat(ageMatch[0]);
+                if (!isNaN(age)) {
+                    totalAge += age;
+                    ages.push(age);
+                }
+            }
+        }
+        
+        // Check for cryosleep
+        const cryoStr = character['CRYOSLEEP'] || '0';
+        if (parseFloat(cryoStr) > 0) {
+            cryoCount++;
+        }
+        
+        // Count alive characters
+        if (character['STATUS'] !== 'Deceased') {
+            aliveCount++;
+        }
+    });
+    
+    const averageAge = ages.length > 0 ? (totalAge / ages.length).toFixed(1) : '0.0';
+    const youngestAge = ages.length > 0 ? Math.min(...ages).toFixed(1) : '0';
+    const oldestAge = ages.length > 0 ? Math.max(...ages).toFixed(1) : '0';
+    
+    document.getElementById('averageAge').textContent = averageAge;
+    document.getElementById('cryoCount').textContent = cryoCount;
+    document.getElementById('youngestAge').textContent = youngestAge;
+    document.getElementById('oldestAge').textContent = oldestAge;
+    
+    // Update the "Total Characters" to show alive/deceased
+    document.getElementById('totalCharacters').textContent = `${totalChars} (${aliveCount} alive)`;
+}
         
         // ========== Common UI Functions ==========
         
@@ -1801,5 +1840,6 @@
     </script>
 </body>
 </html>
+
 
 
