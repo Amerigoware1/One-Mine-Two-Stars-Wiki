@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chrono Age Calculator | Universal Age & Time Tool</title>
-	<link rel="icon" type="image/png" href="assets/images/favicon.png">
     <link rel="stylesheet" href="WikiStyle.css">
     <style>
         /* ========== TOP BANNER FIXES ========== */
         .top-banner {
-		box-sizing: border-box;
+            box-sizing: border-box;
             position: fixed;
             top: 0;
             left: 0;
@@ -25,7 +24,7 @@
         }
         
         .top-banner-content {
-		box-sizing: border-box;
+            box-sizing: border-box;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -94,13 +93,13 @@
         /* ========== CALCULATOR CONTAINER ADJUSTMENT ========== */
         .calculator-container {
             max-width: 1200px;
-            margin: 100px auto 40px; /* Increased top margin for fixed banner */
+            margin: 100px auto 40px;
             padding: 0 20px;
         }
         
         @media (max-width: 768px) {
             .calculator-container {
-                margin-top: 120px; /* More space on mobile */
+                margin-top: 120px;
             }
         }
         
@@ -715,6 +714,24 @@
             100% { transform: rotate(360deg); }
         }
         
+        .data-entry-btn {
+            background: rgba(60, 100, 255, 0.2);
+            color: var(--neon-cyan);
+            border: 1px solid var(--neon-cyan);
+            border-radius: 4px;
+            padding: 2px 8px;
+            margin-left: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+        
+        .data-entry-btn:hover {
+            background: var(--neon-cyan);
+            color: black;
+            transform: scale(1.1);
+        }
+        
         @media (max-width: 768px) {
             .database-header {
                 flex-direction: column;
@@ -741,23 +758,6 @@
                 justify-content: space-between;
                 min-width: unset;
             }
-			.data-entry-btn {
-    background: rgba(60, 100, 255, 0.2);
-    color: var(--neon-cyan);
-    border: 1px solid var(--neon-cyan);
-    border-radius: 4px;
-    padding: 2px 8px;
-    margin-left: 8px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: all 0.2s ease;
-}
-
-.data-entry-btn:hover {
-    background: var(--neon-cyan);
-    color: black;
-    transform: scale(1.1);
-}
         }
     </style>
 </head>
@@ -789,7 +789,6 @@
         
         <!-- Chrono Age Calculator Tab -->
         <div id="chrono-tab" class="tab-content active">
-            <!-- ... Existing Chrono Calculator Content ... -->
             <div class="card-bg" style="margin: 0;">
                 <div class="input-section">
                     <div class="date-input-group">
@@ -877,7 +876,6 @@
         
         <!-- Ares Time Converter Tab -->
         <div id="ares-tab" class="tab-content">
-            <!-- ... Existing Ares Calculator Content ... -->
             <div class="card-bg" style="margin: 0;">
                 <p class="text-gray-400 mb-4">
                     <strong>Planet Ares</strong> orbits <em>Chaos</em> in a circumbinary system with Niamh and Ciara.
@@ -946,7 +944,7 @@
             </div>
         </div>
         
-        <!-- NEW: Character Database Tab -->
+        <!-- Character Database Tab -->
         <div id="database-tab" class="tab-content">
             <div class="database-container">
                 <div class="database-header">
@@ -1305,241 +1303,287 @@
             resultCard.scrollIntoView({ behavior: 'smooth' });
         }
         
+        // ========== Ares Time Converter Functions ==========
+        
+        // Constants for Ares time system
+        const EARTH_DAYS_PER_ARES_YEAR = 407;
+        const EARTH_HOURS_PER_ARES_DAY = 18;
+        const EARTH_HOURS_PER_EARTH_DAY = 24;
+        
+        // Derived constants
+        const EARTH_DAYS_PER_ARES_DAY = EARTH_HOURS_PER_ARES_DAY / EARTH_HOURS_PER_EARTH_DAY; // 0.75
+        const ARES_DAYS_PER_ARES_YEAR = EARTH_DAYS_PER_ARES_YEAR / EARTH_DAYS_PER_ARES_DAY; // 542.666...
+        const EARTH_TO_ARES_FACTOR = 1 / (EARTH_DAYS_PER_ARES_YEAR / 365.25); // Earth year to Ares year
+        const ARES_TO_EARTH_FACTOR = EARTH_DAYS_PER_ARES_YEAR / 365.25; // Ares year to Earth year
+        
+        function convertEarthToAres() {
+            const earthAge = parseFloat(document.getElementById('earthAge').value);
+            const aresResult = document.getElementById('aresResult');
+            const aresValue = document.getElementById('aresAgeValue');
+            
+            if (isNaN(earthAge) || earthAge < 0) {
+                aresValue.textContent = "Invalid";
+                aresResult.style.display = 'block';
+                aresResult.style.backgroundColor = "rgba(255, 0, 0, 0.3)";
+                return;
+            }
+            
+            // Use 365.25 for Earth year (accounting for leap years)
+            const aresAge = earthAge * (365.25 / EARTH_DAYS_PER_ARES_YEAR);
+            aresValue.textContent = aresAge.toFixed(5);
+            aresResult.style.display = 'block';
+            aresResult.style.backgroundColor = "rgba(0, 255, 0, 0.1)";
+            
+            // Scroll to result
+            aresResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        
+        function convertAresToEarth() {
+            const aresAge = parseFloat(document.getElementById('aresAgeInput').value);
+            const earthResult = document.getElementById('earthResult');
+            const earthValue = document.getElementById('earthAgeValue');
+            
+            if (isNaN(aresAge) || aresAge < 0) {
+                earthValue.textContent = "Invalid";
+                earthResult.style.display = 'block';
+                earthResult.style.backgroundColor = "rgba(255, 0, 0, 0.3)";
+                return;
+            }
+            
+            const earthAge = aresAge * (EARTH_DAYS_PER_ARES_YEAR / 365.25);
+            earthValue.textContent = earthAge.toFixed(5);
+            earthResult.style.display = 'block';
+            earthResult.style.backgroundColor = "rgba(0, 255, 0, 0.1)";
+            
+            // Scroll to result
+            earthResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        
         // ========== Character Database Functions ==========
         
-        // Google Sheets CSV URL (from your published sheet)
-const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTBH5t96rREPMDeLxgo1n64emrrKmlreOfazzQ0WtdAnu1HETbpbXnr9wq6gik9VdSYa9maK5cx4uUX/pub?gid=0&single=true&output=csv';
-    
-    let characterData = [];
-    let sortDirection = {};
-    
-    async function loadCharacterDatabase() {
-        const loadingSpinner = document.getElementById('databaseLoading');
-        const tableBody = document.getElementById('databaseBody');
+        const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTBH5t96rREPMDeLxgo1n64emrrKmlreOfazzQ0WtdAnu1HETbpbXnr9wq6gik9VdSYa9maK5cx4uUX/pub?gid=0&single=true&output=csv';
         
-        loadingSpinner.classList.add('active');
-        tableBody.innerHTML = '';
+        let characterData = [];
+        let sortDirection = {};
         
-        try {
-            const response = await fetch(GOOGLE_SHEET_URL);
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        async function loadCharacterDatabase() {
+            const loadingSpinner = document.getElementById('databaseLoading');
+            const tableBody = document.getElementById('databaseBody');
             
-            const csvText = await response.text();
-            const rows = parseCSV(csvText);
+            loadingSpinner.classList.add('active');
+            tableBody.innerHTML = '';
             
-            if (rows.length < 2) {
-                throw new Error('No data found in CSV');
-            }
-            
-            // Assuming first row is headers
-            const headers = rows[0].map(h => h.trim());
-            characterData = rows.slice(1).map(row => {
-                const obj = {};
-                headers.forEach((header, index) => {
-                    obj[header] = row[index] ? row[index].trim() : '';
+            try {
+                console.log('Fetching data from:', GOOGLE_SHEET_URL);
+                const response = await fetch(GOOGLE_SHEET_URL);
+                if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                
+                const csvText = await response.text();
+                console.log('Raw CSV data:', csvText.substring(0, 500));
+                
+                const rows = parseCSV(csvText);
+                console.log('Parsed rows:', rows.length, 'First few rows:', rows.slice(0, 3));
+                
+                if (rows.length < 2) {
+                    throw new Error('No data found in CSV (only headers or empty)');
+                }
+                
+                // Assuming first row is headers
+                const headers = rows[0].map(h => h.trim());
+                console.log('Headers:', headers);
+                
+                characterData = rows.slice(1).map(row => {
+                    const obj = {};
+                    headers.forEach((header, index) => {
+                        obj[header] = row[index] ? row[index].trim() : '';
+                    });
+                    return obj;
                 });
-                return obj;
-            });
-            
-            // Calculate missing ages automatically
-            characterData = characterData.map(character => {
-                return calculateMissingAges(character);
-            });
-            
-            // Update last updated time
-            document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
-            
-            displayCharacterData();
-            updateDatabaseStats();
-            window.databaseLoaded = true;
-            
-        } catch (error) {
-            tableBody.innerHTML = `
-                <tr>
-                    <td colspan="7" style="text-align: center; padding: 40px; color: #ff5555;">
-                        ⚠️ Error loading database: ${error.message}<br>
-                        <span style="color: var(--text-muted); font-size: 0.9rem;">
-                            Please check your internet connection and try again.
-                        </span>
-                    </td>
-                </tr>
-            `;
-        } finally {
-            loadingSpinner.classList.remove('active');
-        }
-    }
-    
-    function calculateMissingAges(character) {
-        // Reference date: September 2247
-        const referenceDate = new Date(2247, 8, 15); // September 15, 2247
-        
-        // Get character name
-        const charName = character['CHARACTER'] || character['Character'] || '';
-        
-        // Try to extract birth date from various formats
-        let birthDateStr = character['BIRTH DATE'] || character['Birth Date'] || character['Birth'] || '';
-        let birthDate = null;
-        let chronologicalAge = '';
-        let biologicalAge = '';
-        let age2247 = '';
-        
-        if (birthDateStr) {
-            birthDate = parseDate(birthDateStr);
-            if (birthDate) {
-                // Calculate chronological age
-                const msPerYear = 365.2425 * 24 * 60 * 60 * 1000;
-                const chronological = (referenceDate - birthDate) / msPerYear;
-                chronologicalAge = chronological.toFixed(1);
                 
-                // Get cryosleep years
-                const cryoStr = character['CRYOSLEEP'] || character['Cryosleep'] || character['Cryo'] || '0';
-                const cryoYears = parseFloat(cryoStr) || 0;
+                console.log('Processed character data:', characterData.slice(0, 3));
                 
-                // Calculate biological age
-                const biological = Math.max(0, chronological - cryoYears);
-                biologicalAge = biological.toFixed(1);
+                // Calculate missing ages automatically
+                characterData = characterData.map(character => {
+                    return calculateMissingAges(character);
+                });
                 
-                // Age in 2247 is the same as chronological age
-                age2247 = chronologicalAge;
+                // Update last updated time
+                document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
+                
+                displayCharacterData();
+                updateDatabaseStats();
+                window.databaseLoaded = true;
+                
+            } catch (error) {
+                console.error('Database load error:', error);
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 40px; color: #ff5555;">
+                            ⚠️ Error loading database: ${error.message}<br>
+                            <span style="color: var(--text-muted); font-size: 0.9rem;">
+                                Please check: 1) Internet connection, 2) Google Sheet is published as CSV, 3) URL is correct<br>
+                                URL used: ${GOOGLE_SHEET_URL}
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            } finally {
+                loadingSpinner.classList.remove('active');
             }
         }
         
-        // Return character with calculated ages
-        return {
-            ...character,
-            'CHARACTER': charName,
-            'BIRTH DATE': birthDateStr,
-            'AGE IN 2247': character['AGE IN 2247'] || age2247 || '',
-            'BIOLOGICAL AGE': character['BIOLOGICAL AGE'] || biologicalAge || '',
-            'CHRONO AGE': character['CHRONO AGE'] || chronologicalAge || '',
-            'CRYOSLEEP': character['CRYOSLEEP'] || character['Cryosleep'] || '0',
-            'SPECIES': character['SPECIES'] || character['Species'] || ''
-        };
-    }
-    
-    function parseCSV(csv) {
-        const lines = csv.split('\n');
-        const result = [];
-        let currentLine = [];
-        let inQuotes = false;
-        let currentField = '';
-        
-        for (let i = 0; i < lines.length; i++) {
-            const line = lines[i];
+        function calculateMissingAges(character) {
+            // Reference date: September 2247
+            const referenceDate = new Date(2247, 8, 15); // September 15, 2247
             
-            for (let j = 0; j < line.length; j++) {
-                const char = line[j];
-                
-                if (char === '"') {
-                    inQuotes = !inQuotes;
-                } else if (char === ',' && !inQuotes) {
-                    currentLine.push(currentField);
-                    currentField = '';
-                } else {
-                    currentField += char;
+            // Get character name from various possible column names
+            const charName = character['CHARACTER'] || character['Character'] || 
+                           character['NAME'] || character['Name'] || '';
+            
+            // Try to extract birth date from various column names
+            let birthDateStr = character['BIRTH DATE'] || character['Birth Date'] || 
+                             character['BIRTH_DATE'] || character['Birth'] || 
+                             character['BIRTH'] || character['DOB'] || '';
+            
+            let birthDate = null;
+            let chronologicalAge = '';
+            let biologicalAge = '';
+            let age2247 = '';
+            
+            if (birthDateStr && birthDateStr.trim() !== '') {
+                birthDate = parseDate(birthDateStr);
+                if (birthDate) {
+                    // Calculate chronological age
+                    const msPerYear = 365.2425 * 24 * 60 * 60 * 1000;
+                    const chronological = (referenceDate - birthDate) / msPerYear;
+                    chronologicalAge = chronological.toFixed(1);
+                    
+                    // Get cryosleep years from various column names
+                    const cryoStr = character['CRYOSLEEP'] || character['Cryosleep'] || 
+                                  character['CRYO'] || character['Cryo'] || 
+                                  character['CRYO_YEARS'] || character['Cryo Years'] || '0';
+                    const cryoYears = parseFloat(cryoStr) || 0;
+                    
+                    // Calculate biological age
+                    const biological = Math.max(0, chronological - cryoYears);
+                    biologicalAge = biological.toFixed(1);
+                    
+                    // Age in 2247 is the same as chronological age
+                    age2247 = chronologicalAge;
                 }
             }
             
-            if (!inQuotes) {
+            // Get species from various column names
+            const species = character['SPECIES'] || character['Species'] || 
+                          character['RACE'] || character['Race'] || 
+                          character['TYPE'] || character['Type'] || '';
+            
+            // Return character with calculated ages
+            return {
+                ...character,
+                'CHARACTER': charName,
+                'BIRTH DATE': birthDateStr,
+                'AGE IN 2247': character['AGE IN 2247'] || character['Age in 2247'] || age2247 || '',
+                'BIOLOGICAL AGE': character['BIOLOGICAL AGE'] || character['Biological Age'] || biologicalAge || '',
+                'CHRONO AGE': character['CHRONO AGE'] || character['Chrono Age'] || chronologicalAge || '',
+                'CRYOSLEEP': cryoStr || '0',
+                'SPECIES': species
+            };
+        }
+        
+        function parseCSV(csv) {
+            const lines = csv.split('\n');
+            const result = [];
+            
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (line === '') continue;
+                
+                let currentLine = [];
+                let currentField = '';
+                let inQuotes = false;
+                
+                for (let j = 0; j < line.length; j++) {
+                    const char = line[j];
+                    
+                    if (char === '"') {
+                        inQuotes = !inQuotes;
+                    } else if (char === ',' && !inQuotes) {
+                        currentLine.push(currentField);
+                        currentField = '';
+                    } else {
+                        currentField += char;
+                    }
+                }
+                
+                // Add the last field
                 currentLine.push(currentField);
                 result.push(currentLine);
-                currentLine = [];
-                currentField = '';
-            } else {
-                currentField += '\n';
             }
+            
+            return result;
         }
         
-        return result;
-    }
-    
-    function displayCharacterData(filteredData = characterData) {
-        const tableBody = document.getElementById('databaseBody');
-        
-        if (filteredData.length === 0) {
-            tableBody.innerHTML = `
-                <tr>
-                    <td colspan="7" style="text-align: center; padding: 40px; color: var(--text-muted);">
-                        No characters found. Try a different search term.
-                    </td>
-                </tr>
-            `;
-            return;
-        }
-        
-        let html = '';
-        
-        filteredData.forEach(character => {
-            const charName = escapeHTML(character['CHARACTER']);
-            const birthDate = escapeHTML(character['BIRTH DATE']);
-            const age2247 = escapeHTML(character['AGE IN 2247']);
-            const biologicalAge = escapeHTML(character['BIOLOGICAL AGE']);
-            const chronologicalAge = escapeHTML(character['CHRONO AGE']);
-            const cryosleep = escapeHTML(character['CRYOSLEEP']);
-            const species = escapeHTML(character['SPECIES']);
+        function displayCharacterData(filteredData = characterData) {
+            const tableBody = document.getElementById('databaseBody');
             
-            const hasCryosleep = parseFloat(cryosleep) > 0;
-            const hasBirthDate = birthDate && birthDate.trim() !== '';
-            
-            // Add data entry button if birth date is missing
-            const dataEntryBtn = !hasBirthDate ? `
-                <button class="data-entry-btn" onclick="enterCharacterData('${charName.replace(/'/g, "\\'")}')" 
-                        title="Enter data for ${charName}">
-                    📝
-                </button>
-            ` : '';
-            
-            html += `
-                <tr>
-                    <td>
-                        <strong>${charName}</strong>
-                        ${dataEntryBtn}
-                    </td>
-                    <td>${birthDate || '<span style="color: #ff5555; font-style: italic;">Missing</span>'}</td>
-                    <td><span class="age-highlight">${age2247 || '-'}</span></td>
-                    <td>
-                        ${biologicalAge || '-'}
-                        ${hasCryosleep ? '<span class="bio-badge">Bio</span>' : ''}
-                    </td>
-                    <td>
-                        ${chronologicalAge || '-'}
-                        ${hasCryosleep ? '<span class="cryo-badge">Cryo</span>' : ''}
-                    </td>
-                    <td>${cryosleep || '0'}</td>
-                    <td>${species || '<span style="color: #888;">Unknown</span>'}</td>
-                </tr>
-            `;
-        });
-        
-        tableBody.innerHTML = html;
-    }
-    
-    // Add a function to enter missing character data
-    function enterCharacterData(characterName) {
-        const birthDate = prompt(`Enter birth date for ${characterName}:\n(e.g., 10-11-2225, October 11, 2225)`);
-        if (birthDate !== null) {
-            const species = prompt(`Enter species for ${characterName}:`) || '';
-            
-            // Find and update the character in the data
-            const characterIndex = characterData.findIndex(char => 
-                char['CHARACTER'] === characterName
-            );
-            
-            if (characterIndex !== -1) {
-                characterData[characterIndex]['BIRTH DATE'] = birthDate;
-                characterData[characterIndex]['SPECIES'] = species;
-                
-                // Recalculate ages
-                characterData[characterIndex] = calculateMissingAges(characterData[characterIndex]);
-                
-                // Update display
-                displayCharacterData();
-                updateDatabaseStats();
-                
-                alert(`Data updated for ${characterName}!`);
+            if (filteredData.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 40px; color: var(--text-muted);">
+                            No characters found. Try a different search term.
+                        </td>
+                    </tr>
+                `;
+                return;
             }
+            
+            let html = '';
+            
+            filteredData.forEach(character => {
+                const charName = escapeHTML(character['CHARACTER']);
+                const birthDate = escapeHTML(character['BIRTH DATE']);
+                const age2247 = escapeHTML(character['AGE IN 2247']);
+                const biologicalAge = escapeHTML(character['BIOLOGICAL AGE']);
+                const chronologicalAge = escapeHTML(character['CHRONO AGE']);
+                const cryosleep = escapeHTML(character['CRYOSLEEP']);
+                const species = escapeHTML(character['SPECIES']);
+                
+                const hasCryosleep = parseFloat(cryosleep) > 0;
+                const hasBirthDate = birthDate && birthDate.trim() !== '';
+                
+                // Add data entry button if birth date is missing
+                const dataEntryBtn = !hasBirthDate ? `
+                    <button class="data-entry-btn" onclick="enterCharacterData('${charName.replace(/'/g, "\\'")}')" 
+                            title="Enter data for ${charName}">
+                        📝
+                    </button>
+                ` : '';
+                
+                html += `
+                    <tr>
+                        <td>
+                            <strong>${charName || 'Unknown'}</strong>
+                            ${dataEntryBtn}
+                        </td>
+                        <td>${birthDate || '<span style="color: #ff5555; font-style: italic;">Missing</span>'}</td>
+                        <td><span class="age-highlight">${age2247 || '-'}</span></td>
+                        <td>
+                            ${biologicalAge || '-'}
+                            ${hasCryosleep ? '<span class="bio-badge">Bio</span>' : ''}
+                        </td>
+                        <td>
+                            ${chronologicalAge || '-'}
+                            ${hasCryosleep ? '<span class="cryo-badge">Cryo</span>' : ''}
+                        </td>
+                        <td>${cryosleep || '0'}</td>
+                        <td>${species || '<span style="color: #888;">Unknown</span>'}</td>
+                    </tr>
+                `;
+            });
+            
+            tableBody.innerHTML = html;
         }
-    }
         
         function escapeHTML(str) {
             if (!str) return '';
@@ -1549,6 +1593,32 @@ const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTBH5t
                 .replace(/>/g, '&gt;')
                 .replace(/"/g, '&quot;')
                 .replace(/'/g, '&#039;');
+        }
+        
+        function enterCharacterData(characterName) {
+            const birthDate = prompt(`Enter birth date for ${characterName}:\n(e.g., 10-11-2225, October 11, 2225)`);
+            if (birthDate !== null) {
+                const species = prompt(`Enter species for ${characterName}:`) || '';
+                
+                // Find and update the character in the data
+                const characterIndex = characterData.findIndex(char => 
+                    char['CHARACTER'] === characterName
+                );
+                
+                if (characterIndex !== -1) {
+                    characterData[characterIndex]['BIRTH DATE'] = birthDate;
+                    characterData[characterIndex]['SPECIES'] = species;
+                    
+                    // Recalculate ages
+                    characterData[characterIndex] = calculateMissingAges(characterData[characterIndex]);
+                    
+                    // Update display
+                    displayCharacterData();
+                    updateDatabaseStats();
+                    
+                    alert(`Data updated for ${characterName}! (Note: This is temporary - add to Google Sheets for permanent storage)`);
+                }
+            }
         }
         
         function filterDatabase() {
@@ -1622,16 +1692,14 @@ const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTBH5t
                 return;
             }
             
-            // Calculate average biological age
             let totalAge = 0;
             let cryoCount = 0;
             let ages = [];
             
             filteredData.forEach(character => {
                 // Try to extract age from different possible column names
-                let ageStr = character['Biological Age'] || 
-                            character['Age'] || 
-                            character['Age in 2247'] || '';
+                let ageStr = character['BIOLOGICAL AGE'] || character['Biological Age'] || 
+                            character['AGE IN 2247'] || character['Age in 2247'] || '';
                 
                 if (ageStr) {
                     // Extract first number from string
@@ -1646,7 +1714,7 @@ const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTBH5t
                 }
                 
                 // Check for cryosleep
-                const cryoStr = character['Cryosleep'] || character['Cryo Years'] || '0';
+                const cryoStr = character['CRYOSLEEP'] || character['Cryosleep'] || '0';
                 if (parseFloat(cryoStr) > 0) {
                     cryoCount++;
                 }
@@ -1661,86 +1729,6 @@ const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTBH5t
             document.getElementById('youngestAge').textContent = youngestAge;
             document.getElementById('oldestAge').textContent = oldestAge;
         }
-        
-        // ... Rest of your existing JavaScript code ...
-        // ========== Cryosleep toggle ==========
-        document.getElementById('cryosleepToggle').addEventListener('change', function() {
-            const details = document.getElementById('cryosleepDetails');
-            const status = document.getElementById('toggleStatus');
-            
-            if (this.checked) {
-                details.classList.add('active');
-                status.textContent = 'Active';
-                status.style.color = 'var(--neon-cyan)';
-            } else {
-                details.classList.remove('active');
-                status.textContent = 'Inactive';
-                status.style.color = 'var(--neon-violet)';
-            }
-        });
-        
-         // Constants for Ares time system
-        const EARTH_DAYS_PER_ARES_YEAR = 407;
-        const EARTH_HOURS_PER_ARES_DAY = 18;
-        const EARTH_HOURS_PER_EARTH_DAY = 24;
-        
-        // Derived constants
-        const EARTH_DAYS_PER_ARES_DAY = EARTH_HOURS_PER_ARES_DAY / EARTH_HOURS_PER_EARTH_DAY; // 0.75
-        const ARES_DAYS_PER_ARES_YEAR = EARTH_DAYS_PER_ARES_YEAR / EARTH_DAYS_PER_ARES_DAY; // 542.666...
-        const EARTH_TO_ARES_FACTOR = 1 / (EARTH_DAYS_PER_ARES_YEAR / 365.25); // Earth year to Ares year
-        const ARES_TO_EARTH_FACTOR = EARTH_DAYS_PER_ARES_YEAR / 365.25; // Ares year to Earth year
-        
-        function convertEarthToAres() {
-            const earthAge = parseFloat(document.getElementById('earthAge').value);
-            const aresResult = document.getElementById('aresResult');
-            const aresValue = document.getElementById('aresAgeValue');
-            
-            if (isNaN(earthAge) || earthAge < 0) {
-                aresValue.textContent = "Invalid";
-                aresResult.style.display = 'block';
-                aresResult.style.backgroundColor = "rgba(255, 0, 0, 0.3)";
-                return;
-            }
-            
-            // Use 365.25 for Earth year (accounting for leap years)
-            const aresAge = earthAge * (365.25 / EARTH_DAYS_PER_ARES_YEAR);
-            aresValue.textContent = aresAge.toFixed(5);
-            aresResult.style.display = 'block';
-            aresResult.style.backgroundColor = "rgba(0, 255, 0, 0.1)";
-            
-            // Scroll to result
-            aresResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-        
-        function convertAresToEarth() {
-            const aresAge = parseFloat(document.getElementById('aresAgeInput').value);
-            const earthResult = document.getElementById('earthResult');
-            const earthValue = document.getElementById('earthAgeValue');
-            
-            if (isNaN(aresAge) || aresAge < 0) {
-                earthValue.textContent = "Invalid";
-                earthResult.style.display = 'block';
-                earthResult.style.backgroundColor = "rgba(255, 0, 0, 0.3)";
-                return;
-            }
-            
-            const earthAge = aresAge * (EARTH_DAYS_PER_ARES_YEAR / 365.25);
-            earthValue.textContent = earthAge.toFixed(5);
-            earthResult.style.display = 'block';
-            earthResult.style.backgroundColor = "rgba(0, 255, 0, 0.1)";
-        // Scroll to result
-            earthResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
-			}
-        // Initialize database when page loads (but don't load until tab is clicked)
-        window.databaseLoaded = false;
-        
-        // Initialize with example calculation
-        setTimeout(() => {
-            calculateChronoAge();
-        }, 500);
-        
-        // Keep all your existing functions from the original code
-        // Add them here without changes...
         
         // ========== Common UI Functions ==========
         
@@ -1781,9 +1769,14 @@ const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTBH5t
         document.getElementById('databaseSearch').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') filterDatabase();
         });
+        
+        // Initialize with example calculation
+        setTimeout(() => {
+            calculateChronoAge();
+        }, 500);
+        
+        // Initialize database flag
+        window.databaseLoaded = false;
     </script>
 </body>
 </html>
-
-
-
