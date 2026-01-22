@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chrono Age Calculator | Universal Age & Time Tool</title>
+	<link rel="icon" type="image/png" href="assets/images/favicon.png">
     <link rel="stylesheet" href="WikiStyle.css">
     <style>
         /* ========== TOP BANNER FIXES ========== */
@@ -740,6 +741,23 @@
                 justify-content: space-between;
                 min-width: unset;
             }
+			.data-entry-btn {
+    background: rgba(60, 100, 255, 0.2);
+    color: var(--neon-cyan);
+    border: 1px solid var(--neon-cyan);
+    border-radius: 4px;
+    padding: 2px 8px;
+    margin-left: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.data-entry-btn:hover {
+    background: var(--neon-cyan);
+    color: black;
+    transform: scale(1.1);
+}
         }
     </style>
 </head>
@@ -1764,4 +1782,5 @@ const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTBH5t
     </script>
 </body>
 </html>
+
 
