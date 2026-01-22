@@ -1728,7 +1728,9 @@ const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTBH5t
             earthValue.textContent = earthAge.toFixed(5);
             earthResult.style.display = 'block';
             earthResult.style.backgroundColor = "rgba(0, 255, 0, 0.1)";
-        
+        // Scroll to result
+            earthResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
+			}
         // Initialize database when page loads (but don't load until tab is clicked)
         window.databaseLoaded = false;
         
@@ -1782,5 +1784,6 @@ const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTBH5t
     </script>
 </body>
 </html>
+
 
 
