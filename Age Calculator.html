@@ -1213,114 +1213,148 @@
         }
         
         // Calculate age with cryosleep offset
-        function calculateChronoAge() {
-            const eventStr = document.getElementById('eventDate').value.trim();
-            const birthStr = document.getElementById('birthDate').value.trim();
-            const useCryosleep = document.getElementById('cryosleepToggle').checked;
-            const cryoYears = parseFloat(document.getElementById('cryoYears').value) || 0;
-            
-            try {
-                const eventDate = parseDate(eventStr);
-                const birthDate = parseDate(birthStr);
-                
-                if (!eventDate || !birthDate) {
-                    showChronoError("Invalid date format. Please check your inputs.");
-                    return;
-                }
-                
-                if (eventDate < birthDate) {
-                    showChronoError("Event date must be after birth date.");
-                    return;
-                }
-                
-                // Calculate chronological age in years (with decimals)
-                const msPerYear = 365.2425 * 24 * 60 * 60 * 1000;
-                const chronologicalAge = (eventDate - birthDate) / msPerYear;
-                
-                // Calculate biological age (subtract cryosleep time if applicable)
-                let biologicalAge = chronologicalAge;
-                let explanation = "";
-                
-                if (useCryosleep && cryoYears > 0) {
-                    biologicalAge = Math.max(0, chronologicalAge - cryoYears);
-                    explanation = `Character spent ${cryoYears.toFixed(1)} years in cryosleep. ` +
-                                 `While ${chronologicalAge.toFixed(1)} years have passed chronologically, ` +
-                                 `only ${biologicalAge.toFixed(1)} years of biological aging occurred.`;
-                } else if (useCryosleep) {
-                    explanation = "Cryosleep enabled but no offset years specified.";
-                } else {
-                    explanation = "Cryosleep offset not applied. Chronological age equals biological age.";
-                }
-                
-                // Format dates for display
-                const formatDate = (date) => {
-                    return date.toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                    });
-                };
-                
-                // Display results
-                displayChronoResults({
-                    birthDate: formatDate(birthDate),
-                    eventDate: formatDate(eventDate),
-                    chronologicalAge: chronologicalAge.toFixed(1),
-                    biologicalAge: biologicalAge.toFixed(1),
-                    cryoYears: cryoYears.toFixed(1),
-                    useCryosleep: useCryosleep,
-                    explanation: explanation
-                });
-                
-            } catch (error) {
-                showChronoError(`Calculation error: ${error.message}`);
-            }
+function calculateChronoAge() {
+    const eventStr = document.getElementById('eventDate').value.trim();
+    const birthStr = document.getElementById('birthDate').value.trim();
+    const useCryosleep = document.getElementById('cryosleepToggle').checked;
+    const cryoYears = parseFloat(document.getElementById('cryoYears').value) || 0;
+    
+    try {
+        const eventDate = parseDate(eventStr);
+        const birthDate = parseDate(birthStr);
+        
+        if (!eventDate || !birthDate) {
+            showChronoError("Invalid date format. Please check your inputs.");
+            return;
         }
         
-        function displayChronoResults(data) {
-            const resultCard = document.getElementById('chronoResultCard');
-            const resultContent = document.getElementById('chronoResultContent');
-            
-            let html = `
-                <div class="result-item">
-                    <div class="result-label">Chronological Age</div>
-                    <div class="result-value">${data.chronologicalAge}</div>
-                    <div class="result-subtitle">Years elapsed</div>
-                </div>
-                <div class="result-item">
-                    <div class="result-label">Biological Age</div>
-                    <div class="result-value" style="color: ${data.useCryosleep ? 'var(--neon-magenta)' : 'var(--text-heading)'}">
-                        ${data.biologicalAge}
-                    </div>
-                    <div class="result-subtitle">Actual body age</div>
-                </div>
-            `;
-            
-            if (data.useCryosleep) {
-                html += `
-                    <div class="result-explanation">
-                        <strong style="color: var(--neon-cyan);">⚡ Cryosleep Analysis:</strong><br>
-                        ${data.explanation}<br><br>
-                        <strong>Dates:</strong> Born ${data.birthDate}, Event on ${data.eventDate}<br>
-                        <strong>Cryosleep Offset:</strong> ${data.cryoYears} years
-                    </div>
-                `;
-            } else {
-                html += `
-                    <div class="result-explanation">
-                        <strong style="color: var(--neon-cyan);">⚡ Age Analysis:</strong><br>
-                        ${data.explanation}<br><br>
-                        <strong>Dates:</strong> Born ${data.birthDate}, Event on ${data.eventDate}
-                    </div>
-                `;
-            }
-            
-            resultContent.innerHTML = html;
-            resultCard.style.display = 'block';
-            
-            // Scroll to results
-            resultCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (eventDate < birthDate) {
+            showChronoError("Event date must be after birth date.");
+            return;
         }
+        
+        // Calculate chronological age in years (with decimals)
+        const msPerYear = 365.2425 * 24 * 60 * 60 * 1000;
+        const chronologicalAge = (eventDate - birthDate) / msPerYear;
+        
+        // Calculate biological age (subtract cryosleep time if applicable)
+        let biologicalAge = chronologicalAge;
+        let explanation = "";
+        
+        // CRITICAL FIX: Only apply cryosleep if event date is AFTER cryosleep would have started
+        // AND the person was born before the cryosleep cutoff
+        const cryosleepCutoff = new Date(2125, 9, 9); // October 9, 2125
+        
+        if (useCryosleep && cryoYears > 0) {
+            // Check if cryosleep should actually apply
+            if (birthDate < cryosleepCutoff && eventDate > cryosleepCutoff) {
+                // Character was born before 2125 and event is after 2125
+                // Calculate how much time was spent AFTER cryosleep would have started
+                const timeAfterCryosleepStart = (eventDate - cryosleepCutoff) / msPerYear;
+                
+                // The cryosleep years should not exceed the time available
+                const actualCryosleepApplied = Math.min(cryoYears, timeAfterCryosleepStart);
+                
+                biologicalAge = Math.max(0, chronologicalAge - actualCryosleepApplied);
+                
+                explanation = `Character born before the 2125 launch spent ${actualCryosleepApplied.toFixed(1)} years in cryosleep ` +
+                             `(between Oct 9, 2125 and ${eventDate.toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'})}). ` +
+                             `While ${chronologicalAge.toFixed(1)} years have passed chronologically, ` +
+                             `only ${biologicalAge.toFixed(1)} years of biological aging occurred.`;
+            } else if (eventDate <= cryosleepCutoff) {
+                // Event is BEFORE cryosleep would have started
+                explanation = "Event occurs BEFORE October 9, 2125 (cryosleep launch date). Cryosleep not applicable.";
+                useCryosleep = false; // Don't show as applied
+            } else if (birthDate >= cryosleepCutoff) {
+                // Character born AFTER cryosleep cutoff
+                explanation = "Character born after October 9, 2125. Not eligible for cryosleep.";
+                useCryosleep = false; // Don't show as applied
+            } else {
+                // Generic case (shouldn't happen with above checks)
+                biologicalAge = Math.max(0, chronologicalAge - cryoYears);
+                explanation = `Character spent ${cryoYears.toFixed(1)} years in cryosleep. ` +
+                             `While ${chronologicalAge.toFixed(1)} years have passed chronologically, ` +
+                             `only ${biologicalAge.toFixed(1)} years of biological aging occurred.`;
+            }
+        } else if (useCryosleep) {
+            explanation = "Cryosleep enabled but no offset years specified.";
+        } else {
+            explanation = "Cryosleep offset not applied. Chronological age equals biological age.";
+        }
+        
+        // Format dates for display
+        const formatDate = (date) => {
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        };
+        
+        // Display results
+        displayChronoResults({
+            birthDate: formatDate(birthDate),
+            eventDate: formatDate(eventDate),
+            chronologicalAge: chronologicalAge.toFixed(1),
+            biologicalAge: biologicalAge.toFixed(1),
+            cryoYears: (useCryosleep && cryoYears > 0) ? cryoYears.toFixed(1) : "0",
+            useCryosleep: useCryosleep && cryoYears > 0,
+            explanation: explanation,
+            cryosleepCutoffDate: formatDate(cryosleepCutoff)
+        });
+        
+    } catch (error) {
+        showChronoError(`Calculation error: ${error.message}`);
+    }
+}
+        
+  function displayChronoResults(data) {
+    const resultCard = document.getElementById('chronoResultCard');
+    const resultContent = document.getElementById('chronoResultContent');
+    
+    let html = `
+        <div class="result-item">
+            <div class="result-label">Chronological Age</div>
+            <div class="result-value">${data.chronologicalAge}</div>
+            <div class="result-subtitle">Years elapsed</div>
+        </div>
+        <div class="result-item">
+            <div class="result-label">Biological Age</div>
+            <div class="result-value" style="color: ${data.useCryosleep ? 'var(--neon-magenta)' : 'var(--text-heading)'}">
+                ${data.biologicalAge}
+            </div>
+            <div class="result-subtitle">Actual body age</div>
+        </div>
+    `;
+    
+    if (data.useCryosleep) {
+        html += `
+            <div class="result-explanation">
+                <strong style="color: var(--neon-cyan);">⚡ Cryosleep Analysis:</strong><br>
+                ${data.explanation}<br><br>
+                <strong>Key Dates:</strong><br>
+                • Born: ${data.birthDate}<br>
+                • Cryosleep Launch: ${data.cryosleepCutoffDate || 'October 9, 2125'}<br>
+                • Event: ${data.eventDate}<br>
+                <strong>Cryosleep Applied:</strong> ${data.cryoYears} years
+            </div>
+        `;
+    } else {
+        html += `
+            <div class="result-explanation">
+                <strong style="color: var(--neon-cyan);">⚡ Age Analysis:</strong><br>
+                ${data.explanation}<br><br>
+                <strong>Dates:</strong> Born ${data.birthDate}, Event on ${data.eventDate}
+            </div>
+        `;
+    }
+    
+    resultContent.innerHTML = html;
+    resultCard.style.display = 'block';
+    
+    // Scroll to results
+    resultCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
         
         function showChronoError(message) {
             const resultCard = document.getElementById('chronoResultCard');
@@ -1799,17 +1833,23 @@ function fillCalculator(characterName, birthDateStr, characterData) {
     eventDateInput.value = 'September 2247';
     eventDateInput.focus();
     
-    // Apply cryosleep if character was born before 2125
+    // Apply cryosleep if character was born before 2125 AND default event is after 2125
     const birthDate = parseDate(birthDateStr);
     const cryosleepCutoff = new Date(2125, 9, 9); // October 9, 2125
+    const defaultEventDate = parseDate('September 2247');
     
-    if (birthDate && birthDate < cryosleepCutoff) {
+    const shouldApplyCryosleep = birthDate && 
+                                 birthDate < cryosleepCutoff && 
+                                 defaultEventDate > cryosleepCutoff;
+    
+    if (shouldApplyCryosleep) {
         document.getElementById('cryosleepToggle').checked = true;
         document.getElementById('cryosleepToggle').dispatchEvent(new Event('change'));
         document.getElementById('cryoYears').value = '90';
     } else {
         document.getElementById('cryosleepToggle').checked = false;
         document.getElementById('cryosleepToggle').dispatchEvent(new Event('change'));
+        document.getElementById('cryoYears').value = '0';
     }
     
     // Show character info
@@ -1818,7 +1858,6 @@ function fillCalculator(characterName, birthDateStr, characterData) {
     // Auto-calculate after a brief delay
     setTimeout(() => calculateChronoAge(), 300);
 }
-
 function showCharacterInfo(characterName, character) {
     // Create or update info display
     let infoDiv = document.getElementById('characterInfoDisplay');
@@ -1971,6 +2010,7 @@ function setChapterDate(chapterName, date) {
     </script>
 </body>
 </html>
+
 
 
 
