@@ -51,21 +51,29 @@
       padding: 1.5rem;
       margin: 2rem 0;
     }
-    .read-sample-btn {
+
+  .read-sample-btn {
   display: inline-block;
-  background-color: #e37df5;
-  color: #1e0a47 !important; /* Dark text on light button */
-  padding: 0.6rem 1.2rem;
-  border-radius: 5px;
+  margin-top: 1.5rem;
+  padding: 0.8rem 1.5rem;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.9rem;
+  color: var(--neon-cyan);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  background: rgba(0, 232, 255, 0.05);
+  border: 1px solid var(--neon-cyan);
+  border-radius: 4px;
   text-decoration: none;
-  font-weight: bold;
-  margin-top: 1rem;
-  transition: transform 0.2s, background-color 0.2s;
+  box-shadow: 0 0 10px var(--glow-cyan);
+  transition: all 0.3s ease;
 }
 
 .read-sample-btn:hover {
-  background-color: #f0f0f0;
-  transform: translateY(-2px);
+  background: var(--neon-cyan);
+  color: var(--bg-space);
+  box-shadow: 0 0 25px var(--neon-cyan);
+  transform: scale(1.05);
 }
   </style>
 </head>
