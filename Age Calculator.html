@@ -1240,6 +1240,7 @@ function calculateChronoAge() {
         // Calculate biological age (subtract cryosleep time if applicable)
         let biologicalAge = chronologicalAge;
         let explanation = "";
+        let shouldShowCryosleep = useCryosleep && cryoYears > 0; // Track if we should display cryosleep
         
         // CRITICAL FIX: Only apply cryosleep if event date is AFTER cryosleep would have started
         // AND the person was born before the cryosleep cutoff
@@ -1261,25 +1262,30 @@ function calculateChronoAge() {
                              `(between Oct 9, 2125 and ${eventDate.toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'})}). ` +
                              `While ${chronologicalAge.toFixed(1)} years have passed chronologically, ` +
                              `only ${biologicalAge.toFixed(1)} years of biological aging occurred.`;
+                
+                shouldShowCryosleep = true;
             } else if (eventDate <= cryosleepCutoff) {
                 // Event is BEFORE cryosleep would have started
                 explanation = "Event occurs BEFORE October 9, 2125 (cryosleep launch date). Cryosleep not applicable.";
-                useCryosleep = false; // Don't show as applied
+                shouldShowCryosleep = false; // Don't show as applied
             } else if (birthDate >= cryosleepCutoff) {
                 // Character born AFTER cryosleep cutoff
                 explanation = "Character born after October 9, 2125. Not eligible for cryosleep.";
-                useCryosleep = false; // Don't show as applied
+                shouldShowCryosleep = false; // Don't show as applied
             } else {
                 // Generic case (shouldn't happen with above checks)
                 biologicalAge = Math.max(0, chronologicalAge - cryoYears);
                 explanation = `Character spent ${cryoYears.toFixed(1)} years in cryosleep. ` +
                              `While ${chronologicalAge.toFixed(1)} years have passed chronologically, ` +
                              `only ${biologicalAge.toFixed(1)} years of biological aging occurred.`;
+                shouldShowCryosleep = true;
             }
         } else if (useCryosleep) {
             explanation = "Cryosleep enabled but no offset years specified.";
+            shouldShowCryosleep = false;
         } else {
             explanation = "Cryosleep offset not applied. Chronological age equals biological age.";
+            shouldShowCryosleep = false;
         }
         
         // Format dates for display
@@ -1297,8 +1303,8 @@ function calculateChronoAge() {
             eventDate: formatDate(eventDate),
             chronologicalAge: chronologicalAge.toFixed(1),
             biologicalAge: biologicalAge.toFixed(1),
-            cryoYears: (useCryosleep && cryoYears > 0) ? cryoYears.toFixed(1) : "0",
-            useCryosleep: useCryosleep && cryoYears > 0,
+            cryoYears: shouldShowCryosleep ? cryoYears.toFixed(1) : "0",
+            useCryosleep: shouldShowCryosleep,
             explanation: explanation,
             cryosleepCutoffDate: formatDate(cryosleepCutoff)
         });
@@ -2010,6 +2016,7 @@ function setChapterDate(chapterName, date) {
     </script>
 </body>
 </html>
+
 
 
 
