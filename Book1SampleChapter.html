@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Book 1, Chapter 1 Sample</title>
   <link rel="icon" type="image/png" href="assets/images/favicon.png">
   <link rel="stylesheet" href="WikiStyle.css?v=3">
@@ -34,11 +35,14 @@
     background: rgba(255, 255, 255, 0); /* Completely transparent */
   }
   .page {
-  display: none; /* Hide all pages by default */
+  display: none;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
 }
 
 .page.active {
-  display: block; /* Only show the page with the 'active' class */
+  display: block;
+  opacity: 1;
 }
 
 .nav-controls {
@@ -48,6 +52,19 @@
   padding: 10px;
   background: #f9f9f9;
   border-top: 1px solid #ccc;
+}
+   button {
+  padding: 8px 15px;
+  cursor: pointer;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 </style>
 <body>
