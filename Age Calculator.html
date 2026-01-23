@@ -834,7 +834,42 @@
                         </div>
                     </div>
                 </div>
+<!-- Add this after the cryosleep section -->
+<div class="chapter-dates-section" style="margin: 20px 0; padding: 15px; background: var(--bg-card-dark); border-radius: 8px;">
+    <h3 style="color: var(--neon-cyan); margin-top: 0; font-size: 1.1rem;">📖 Quick Chapter Dates</h3>
+    <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
+        <button class="chapter-btn" onclick="setChapterDate('Launch Date', 'October 9, 2125')">🚀 Launch (2125)</button>
+        <button class="chapter-btn" onclick="setChapterDate('Arrival', 'July 20, 2215')">🪐 Arrival (2215)</button>
+        <button class="chapter-btn" onclick="setChapterDate('Celectra\'s Birth', 'October 11, 2225')">👶 Celectra Born (2225)</button>
+        <button class="chapter-btn" onclick="setChapterDate('Book 1', '2232')">📘 Book 1 (2232)</button>
+        <button class="chapter-btn" onclick="setChapterDate('Book 2', '2239')">📗 Book 2 (2239)</button>
+        <button class="chapter-btn" onclick="setChapterDate('Book 3', '2246')">📕 Book 3 (2246)</button>
+        <button class="chapter-btn" onclick="setChapterDate('Current', 'September 2247')">📅 Current (2247)</button>
+        <button class="chapter-btn" onclick="setChapterDate('Chapter 24', 'September 2248')">🏛️ Ch. 24: Ceremony (2248)</button>
+    </div>
+    <div style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
+        <em>Click a chapter to set as Event Date</em>
+    </div>
+</div>
 
+<style>
+.chapter-btn {
+    padding: 8px 12px;
+    background: rgba(60, 100, 255, 0.2);
+    border: 1px solid var(--neon-violet);
+    color: var(--text-primary);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.chapter-btn:hover {
+    background: var(--neon-violet);
+    color: white;
+    transform: translateY(-2px);
+}
+</style>
                 <button class="calculate-btn" onclick="calculateChronoAge()">
                     ⚡ CALCULATE AGE
                 </button>
@@ -996,11 +1031,9 @@
             <th onclick="sortTable(0)">Character</th>
             <th onclick="sortTable(1)">Birth Date</th>
             <th onclick="sortTable(2)">Age in 2247</th>
-            <th onclick="sortTable(3)">Biological Age</th>
-            <th onclick="sortTable(4)">Chrono Age</th>
-            <th onclick="sortTable(5)">Cryosleep</th>
-            <th onclick="sortTable(6)">Species</th>
-            <th onclick="sortTable(7)">Status</th>
+            <th onclick="sortTable(3)">Book 3 (2246)</th>
+            <th onclick="sortTable(4)">Status</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody id="databaseBody">
@@ -1443,72 +1476,59 @@ async function loadCharacterDatabase() {
     }
 }
 
+// Update the calculateMissingAges function to automatically apply cryosleep rule
 function calculateMissingAges(character) {
-    // Reference date: September 2247 (use Book 3 age as base)
-    const referenceYear = 2247;
+    const charName = character['Character'] || '';
+    const birthDateStr = character['Birthday'] || '';
+    const book3AgeStr = character['Book 3  (2246) age'] || '';
+    const deathDateStr = character['Death Date'] || '';
     
-    // Get character name
-    const charName = character['Character'] || character['CHARACTER'] || '';
-    
-    // Get birth date
-    const birthDateStr = character['Birthday'] || character['BIRTH DATE'] || 
-                        character['Birth Date'] || character['DOB'] || '';
-    
-    // Get age from Book 3 (2246) - closest to our reference date of 2247
-    const book3AgeStr = character['Book 3  (2246) age'] || character['Book 3 (2246) age'] || 
-                       character['Book 3 age'] || '';
+    // Cryosleep rule: born before October 9, 2125 = 90 years cryosleep
+    const cryosleepCutoff = new Date(2125, 9, 9); // October 9, 2125 (month is 0-indexed)
     
     let birthDate = null;
     let chronologicalAge = '';
     let biologicalAge = '';
     let age2247 = '';
+    let cryosleepYears = 0;
     
-    // First, try to use Book 3 age directly
-    if (book3AgeStr && book3AgeStr.trim() !== '' && book3AgeStr !== 'Deceased') {
+    // Parse birth date
+    if (birthDateStr && birthDateStr.trim() !== '') {
+        birthDate = parseDate(birthDateStr);
+    }
+    
+    // Calculate cryosleep based on rule
+    if (birthDate && birthDate < cryosleepCutoff) {
+        cryosleepYears = 90;
+    }
+    
+    // Calculate age for September 2247
+    if (birthDate) {
+        const referenceDate = new Date(2247, 8, 15); // September 15, 2247
+        const msPerYear = 365.2425 * 24 * 60 * 60 * 1000;
+        const chronological = (referenceDate - birthDate) / msPerYear;
+        
+        if (chronological > 0) {
+            chronologicalAge = chronological.toFixed(1);
+            biologicalAge = (chronological - cryosleepYears).toFixed(1);
+            age2247 = chronologicalAge;
+        }
+    } else if (book3AgeStr && book3AgeStr.trim() !== '' && book3AgeStr !== 'Deceased') {
+        // Fallback to Book 3 age + 1 year
         const ageMatch = book3AgeStr.match(/\d+(\.\d+)?/);
         if (ageMatch) {
             const book3Age = parseFloat(ageMatch[0]);
             if (!isNaN(book3Age)) {
-                // Book 3 is 2246, so for 2247 add 1 year
                 age2247 = (book3Age + 1).toFixed(1);
                 chronologicalAge = age2247;
-                biologicalAge = age2247; // Assuming no cryosleep for now
+                biologicalAge = (book3Age + 1 - cryosleepYears).toFixed(1);
             }
         }
     }
     
-    // If no Book 3 age, try to calculate from birth date
-    if ((!age2247 || age2247 === 'NaN') && birthDateStr && birthDateStr.trim() !== '') {
-        birthDate = parseDate(birthDateStr);
-        if (birthDate) {
-            // Calculate age for September 2247
-            const referenceDate = new Date(referenceYear, 8, 15); // September 15, 2247
-            const msPerYear = 365.2425 * 24 * 60 * 60 * 1000;
-            const chronological = (referenceDate - birthDate) / msPerYear;
-            
-            if (chronological > 0) {
-                chronologicalAge = chronological.toFixed(1);
-                biologicalAge = chronologicalAge; // No cryosleep data in this sheet
-                age2247 = chronologicalAge;
-            }
-        }
-    }
-    
-    // Get death date if available
-    const deathDateStr = character['Death Date'] || character['Death'] || '';
     const isDeceased = deathDateStr && deathDateStr.trim() !== '' || 
                       book3AgeStr === 'Deceased';
     
-    // Get species - not in this sheet, so we'll leave blank or try to infer
-    let species = '';
-    if (charName.toLowerCase().includes('cruiz') || 
-        charName.toLowerCase().includes('carisco') ||
-        charName.toLowerCase().includes('bowers') ||
-        charName.toLowerCase().includes('patel')) {
-        species = 'Human';
-    }
-    
-    // Return character with calculated ages
     return {
         ...character,
         'CHARACTER': charName,
@@ -1516,8 +1536,7 @@ function calculateMissingAges(character) {
         'AGE IN 2247': age2247 || '',
         'BIOLOGICAL AGE': biologicalAge || '',
         'CHRONO AGE': chronologicalAge || '',
-        'CRYOSLEEP': '0', // No cryosleep data in this sheet
-        'SPECIES': species,
+        'CRYOSLEEP': cryosleepYears.toString(),
         'STATUS': isDeceased ? 'Deceased' : 'Alive'
     };
 }
@@ -1555,13 +1574,14 @@ function parseCSV(csv) {
     return result;
 }
 
+// Update displayCharacterData to show simplified view
 function displayCharacterData(filteredData = characterData) {
     const tableBody = document.getElementById('databaseBody');
     
     if (filteredData.length === 0) {
         tableBody.innerHTML = `
             <tr>
-                <td colspan="7" style="text-align: center; padding: 40px; color: var(--text-muted);">
+                <td colspan="6" style="text-align: center; padding: 40px; color: var(--text-muted);">
                     No characters found. Try a different search term.
                 </td>
             </tr>
@@ -1575,43 +1595,31 @@ function displayCharacterData(filteredData = characterData) {
         const charName = escapeHTML(character['CHARACTER']);
         const birthDate = escapeHTML(character['BIRTH DATE']);
         const age2247 = escapeHTML(character['AGE IN 2247']);
-        const biologicalAge = escapeHTML(character['BIOLOGICAL AGE']);
-        const chronologicalAge = escapeHTML(character['CHRONO AGE']);
-        const cryosleep = escapeHTML(character['CRYOSLEEP']);
-        const species = escapeHTML(character['SPECIES']);
+        const book3Age = escapeHTML(character['Book 3  (2246) age'] || '');
         const status = character['STATUS'] || '';
         
         const isDeceased = status === 'Deceased';
-        const hasBirthDate = birthDate && birthDate.trim() !== '';
+        const statusStyle = isDeceased ? 'style="color: #888;"' : '';
+        const hasPre2125Birth = birthDate && parseDate(birthDate) < new Date(2125, 9, 9);
         
-        // Style based on status
-        const statusStyle = isDeceased ? 'style="color: #888; text-decoration: line-through;"' : '';
-        const deceasedBadge = isDeceased ? '<span style="color: #ff5555; font-size: 0.8rem; margin-left: 5px;">†</span>' : '';
-        
-        // Add data entry button if birth date is missing
-        const dataEntryBtn = !hasBirthDate ? `
-            <button class="data-entry-btn" onclick="enterCharacterData('${charName.replace(/'/g, "\\'")}')" 
-                    title="Enter data for ${charName}">
-                📝
-            </button>
-        ` : '';
-        
-html += `
-    <tr>
-        <td ${statusStyle}>
-            <strong>${charName || 'Unknown'}</strong>
-            ${deceasedBadge}
-            ${dataEntryBtn}
-        </td>
-        <td>${birthDate || '<span style="color: #ff5555; font-style: italic;">Missing</span>'}</td>
-        <td><span class="age-highlight">${age2247 || '-'}</span></td>
-        <td>${biologicalAge || '-'}</td>
-        <td>${chronologicalAge || '-'}</td>
-        <td>${cryosleep || '0'}</td>
-        <td>${species || '<span style="color: #888;">Unknown</span>'}</td>
-        <td>${isDeceased ? '<span style="color: #ff5555;">Deceased</span>' : '<span style="color: #55ff55;">Alive</span>'}</td>
-    </tr>
-`;
+        html += `
+            <tr>
+                <td ${statusStyle}>
+                    <strong>${charName || 'Unknown'}</strong>
+                    ${hasPre2125Birth ? '<span title="90 years cryosleep" style="color: var(--neon-magenta); margin-left: 5px;">⏸️</span>' : ''}
+                </td>
+                <td>${birthDate || '<span style="color: #ff5555; font-style: italic;">Missing</span>'}</td>
+                <td><span class="age-highlight">${age2247 || '-'}</span></td>
+                <td>${book3Age || '-'}</td>
+                <td>${isDeceased ? '<span style="color: #ff5555;">Deceased</span>' : '<span style="color: #55ff55;">Alive</span>'}</td>
+                <td>
+                    <button class="data-entry-btn" onclick="fillCalculator('${charName.replace(/'/g, "\\'")}', '${birthDate.replace(/'/g, "\\'")}', characterData)" 
+                            title="Calculate age for ${charName}">
+                        🧮 Calculate
+                    </button>
+                </td>
+            </tr>
+        `;
     });
     
     tableBody.innerHTML = html;
@@ -1769,7 +1777,98 @@ function updateDatabaseStats(filteredData = characterData) {
     // Update the "Total Characters" to show alive/deceased
     document.getElementById('totalCharacters').textContent = `${totalChars} (${aliveCount} alive)`;
 }
-        
+      // Enhanced fillCalculator function with automatic cryosleep detection
+function fillCalculator(characterName, birthDateStr, characterData) {
+    // Find the character in the data
+    const character = characterData.find(char => 
+        char['CHARACTER'] === characterName
+    );
+    
+    if (!character) return;
+    
+    // Switch to Chrono Age Calculator tab
+    document.querySelector('[data-tab="chrono-tab"]').click();
+    
+    // Fill in the birth date
+    if (birthDateStr && birthDateStr !== 'Missing') {
+        document.getElementById('birthDate').value = birthDateStr;
+    }
+    
+    // Set event date to current chapter date (default to September 2247)
+    const eventDateInput = document.getElementById('eventDate');
+    eventDateInput.value = 'September 2247';
+    eventDateInput.focus();
+    
+    // Apply cryosleep if character was born before 2125
+    const birthDate = parseDate(birthDateStr);
+    const cryosleepCutoff = new Date(2125, 9, 9); // October 9, 2125
+    
+    if (birthDate && birthDate < cryosleepCutoff) {
+        document.getElementById('cryosleepToggle').checked = true;
+        document.getElementById('cryosleepToggle').dispatchEvent(new Event('change'));
+        document.getElementById('cryoYears').value = '90';
+    } else {
+        document.getElementById('cryosleepToggle').checked = false;
+        document.getElementById('cryosleepToggle').dispatchEvent(new Event('change'));
+    }
+    
+    // Show character info
+    showCharacterInfo(characterName, character);
+    
+    // Auto-calculate after a brief delay
+    setTimeout(() => calculateChronoAge(), 300);
+}
+
+function showCharacterInfo(characterName, character) {
+    // Create or update info display
+    let infoDiv = document.getElementById('characterInfoDisplay');
+    if (!infoDiv) {
+        infoDiv = document.createElement('div');
+        infoDiv.id = 'characterInfoDisplay';
+        infoDiv.style.cssText = `
+            position: fixed;
+            top: 120px;
+            right: 20px;
+            background: var(--bg-card-dark);
+            border: 2px solid var(--neon-cyan);
+            padding: 15px;
+            border-radius: 8px;
+            z-index: 9998;
+            max-width: 300px;
+            box-shadow: 0 0 20px var(--glow-cyan);
+            animation: slideInRight 0.3s ease;
+        `;
+        document.body.appendChild(infoDiv);
+    }
+    
+    const book3Age = character['Book 3  (2246) age'] || '';
+    const status = character['STATUS'] || '';
+    
+    infoDiv.innerHTML = `
+        <div style="margin-bottom: 10px;">
+            <strong style="color: var(--neon-cyan);">${characterName}</strong>
+            ${status === 'Deceased' ? '<span style="color: #ff5555; margin-left: 10px;">† Deceased</span>' : ''}
+        </div>
+        <div style="font-size: 0.9rem; color: var(--text-muted);">
+            <div>Birth: ${character['BIRTH DATE'] || 'Unknown'}</div>
+            ${book3Age ? `<div>Age in 2246: ${book3Age}</div>` : ''}
+            ${character['AGE IN 2247'] ? `<div>Age in 2247: ${character['AGE IN 2247']}</div>` : ''}
+            ${parseInt(character['CRYOSLEEP']) > 0 ? 
+                `<div style="color: var(--neon-magenta);">⚠️ 90 years cryosleep applied</div>` : ''}
+        </div>
+        <button onclick="this.parentElement.remove()" 
+                style="position: absolute; top: 5px; right: 5px; background: none; border: none; color: var(--text-muted); cursor: pointer;">
+            ×
+        </button>
+    `;
+    
+    // Auto-remove after 10 seconds
+    setTimeout(() => {
+        if (infoDiv && infoDiv.parentElement) {
+            infoDiv.remove();
+        }
+    }, 10000);
+}  
         // ========== Common UI Functions ==========
         
         // Return to top functionality
@@ -1837,9 +1936,42 @@ function updateDatabaseStats(filteredData = characterData) {
     displayCharacterData();
     updateDatabaseStats();
 }
+        // Add this function
+function setChapterDate(chapterName, date) {
+    document.getElementById('eventDate').value = date;
+    
+    // Show notification
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 100px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--neon-cyan);
+        color: black;
+        padding: 10px 20px;
+        border-radius: 5px;
+        z-index: 9999;
+        animation: fadeInOut 3s ease;
+        font-weight: bold;
+    `;
+    notification.textContent = `📖 ${chapterName}: Event date set to ${date}`;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.remove();
+    }, 3000);
+    
+    // If there's a character loaded, recalculate
+    const birthDate = document.getElementById('birthDate').value;
+    if (birthDate && birthDate.trim() !== '') {
+        setTimeout(() => calculateChronoAge(), 500);
+    }
+}
     </script>
 </body>
 </html>
+
 
 
 
