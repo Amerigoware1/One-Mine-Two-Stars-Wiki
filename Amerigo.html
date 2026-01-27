@@ -2,65 +2,66 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Amerigo Giorgio Carisco - One Mine Two Stars Wiki</title>
   <link rel="icon" type="image/png" href="assets/images/favicon.png">
   <link rel="stylesheet" href="WikiStyle.css">
 </head>
 <body>
-  <!-- Navigation Bar -->
+
   <div class="top-banner">
     <a href="index.html" class="home-button">🏠 Home</a>
   </div>
 
-  <!-- Main Content -->
-  <div id="content">
-    <h1>Amerigo Giorgio Carisco</h1>
-<div class="infobox">
-  <table class="infobox">
-    <tr>
-      <td colspan="2" class="text-center pb-2">
-        <img src="assets/images/Amerigo.png" alt="Amerigo Carisco portrait" class="portrait">
-        <div class="image-caption">Amerigo Carisco</div>
-      </td>
-    </tr>
-    <tr>
-      <th>Born</th>
-      <td>Tucson, Arizona, USA</td>
-      <td>May 12, 2103</td>
-    </tr>
-    <tr>
-      <th>Occupation</th>
-      <td>Materials Scientist, Engineer</td>
-    </tr>
-    <tr>
-      <th>Affiliation</th>
-      <td>New Eden Science and Technology Division</td>
-    </tr>
-    <tr>
-      <th>Known for</th>
-      <td>Invention of Silicene-39<br>First Contact team member</td>
-    </tr>
-    <tr>
-      <th>Family</th>
-      <td>
-        Jenni Carisco (wife, †)<br>
-        Celectra Ambar Carisco (daughter)<br>
-        Zoë Kret (wife Married September 12, 2234)<br>
-        Alexander "Xan" Carisco (son)
-      </td>
-    </tr>
-  </table>
-</div>
-<div class="article-content">
- <div class="card-bg">
-    <h2 class="section-header">Overview</h2>
-    <p>
-      Amerigo Carisco is a materials scientist, engineer, and one of the original colonists of the New Eden settlement in the Chaos system.
-      He is the father of <a href="Celectra.html">Celectra Carisco</a> and the widower of exogeologist Jenni Carisco.
-      He played a central role in the discovery of the <a href="Galinstanians.html">Galinstanians</a> and in protecting his daughter against the unethical experimentation of
-      <a href="Douglas_Kret.html">Dr. Douglas Kret</a>.
-    </p>
+  <h1 class="gradient-title">Amerigo Giorgio Carisco</h1>
+  <div class="subtitle">(Born May 12, 2103) Materials Scientist, Engineer</div>
+
+  <div class="infobox">
+    <table class="infobox">
+      <tr>
+        <td colspan="2" class="text-center pb-2">
+          <img src="assets/images/Amerigo.png" alt="Amerigo Carisco portrait" class="portrait">
+          <div class="image-caption">Amerigo Carisco</div>
+        </td>
+      </tr>
+      <tr>
+        <th>Born</th>
+        <td>Tucson, Arizona, USA, May 12, 2103</td>
+      </tr>
+      <tr>
+        <th>Occupation</th>
+        <td>Materials Scientist, Engineer</td>
+      </tr>
+      <tr>
+        <th>Affiliation</th>
+        <td>New Eden Science and Technology Division</td>
+      </tr>
+      <tr>
+        <th>Known for</th>
+        <td>Invention of Silicene-39<br>First Contact team member</td>
+      </tr>
+      <tr>
+        <th>Family</th>
+        <td>
+          Jenni Carisco (wife, †)<br>
+          Celectra Ambar Carisco (daughter)<br>
+          Zoë Kret (wife, m. September 12, 2234)<br>
+          Alexander "Xan" Carisco (son)
+        </td>
+      </tr>
+    </table>
   </div>
+
+  <div class="article-content">
+    <div class="card-bg">
+      <h2 class="section-header">Overview</h2>
+      <p>
+        Amerigo Carisco is a materials scientist, engineer, and one of the original colonists of the New Eden settlement in the Chaos system.
+        He is the father of <a href="Celectra.html">Celectra Carisco</a> and the widower of exogeologist Jenni Carisco.
+        He played a central role in the discovery of the <a href="Galinstanians.html">Galinstanians</a> and in protecting his daughter against the unethical experimentation of
+        <a href="Douglas_Kret.html">Dr. Douglas Kret</a>.
+      </p>
+    </div>
 
   <div class="card-bg">
     <h2 class="section-header">Biography</h2>
@@ -118,32 +119,26 @@
     <blockquote>“I’ve been so busy worrying over your safety, I haven’t been seeing what you’re capable of.”</blockquote>
   </div>
   </div>
-  <!-- Footer -->
   <div id="footer">
     <p>Back to <a href="Cast.html">Characters</a> | <a href="index.html">Home</a></p>
     <p>&copy; One Mine Two Stars Wiki</p>
   </div>
-<!-- Floating Return to Top Button -->
-<button id="toTopBtn" aria-label="Return to top">⬆️ Top</button>
 
-<script>
-  const toTopBtn = document.getElementById("toTopBtn");
-
-  // Show button when scrolled down
-  window.addEventListener("scroll", () => {
-    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-      toTopBtn.style.display = "block";
-    } else {
-      toTopBtn.style.display = "none";
-    }
-  });
-
-  // Smooth scroll to top
-  toTopBtn.addEventListener("click", () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
-</script>
-
+  <!-- Back to Top Button -->
+  <button id="toTopBtn" aria-label="Return to top">⬆️ Top</button>
+  <script>
+    const toTopBtn = document.getElementById("toTopBtn");
+    window.addEventListener("scroll", () => {
+      if (document.documentElement.scrollTop > 200) {
+        toTopBtn.style.display = "block";
+      } else {
+        toTopBtn.style.display = "none";
+      }
+    });
+    toTopBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
 </body>
 </html>
 
