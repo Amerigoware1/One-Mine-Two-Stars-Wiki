@@ -638,6 +638,52 @@ main h2 {
   color: var(--neon-cyan);
 }
 
+/* ===========================
+   Vertical Timeline Flow
+   =========================== */
+
+.timeline-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  margin-top: 2rem;
+}
+
+.timeline-row {
+  display: grid;
+  grid-template-columns: 1fr 6px 1fr;
+  align-items: center;
+  gap: 1rem;
+}
+
+.timeline-spine {
+  width: 6px;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    var(--neon-cyan),
+    var(--neon-violet)
+  );
+  box-shadow: 0 0 12px var(--glow-cyan), 0 0 20px var(--glow-violet);
+  border-radius: 3px;
+}
+
+.timeline-left,
+.timeline-right {
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--neon-violet);
+  background: var(--bg-card-dark);
+  border-radius: 0.6rem;
+  box-shadow: 0 0 15px rgba(0, 232, 255, 0.15);
+}
+
+.timeline-left h3,
+.timeline-right h3 {
+  font-family: 'Orbitron', sans-serif;
+  color: var(--neon-cyan);
+  margin-bottom: 0.4rem;
+}
+
 
 
 
