@@ -1,135 +1,498 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Series Timeline</title>
-  <link rel="icon" type="image/png" href="assets/images/favicon.png">
-  <link rel="stylesheet" href="WikiStyle.css?v=3">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Series Timeline | Chaos System Chronicles</title>
+    <link rel="stylesheet" href="WikiStyle.css">
+    <style>
+        .era-divider {
+            text-align: center;
+            margin: 3rem 0;
+            position: relative;
+        }
+        .era-divider::after {
+            content: "— ⬡ — ⬡ — ⬡ —";
+            display: block;
+            color: var(--neon-violet);
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 0.3em;
+            margin-top: 0.5rem;
+            text-shadow: 0 0 10px var(--glow-violet);
+        }
+    </style>
 </head>
 <body>
-  <div class="top-banner">
-    <a href="index.html" class="home-button">🏠 Home</a>
-  </div>
+    <div class="top-banner">
+        <a href="index.html" class="home-button">🏠 Home</a>
+        <span id="timeDisplay">Timeline • 2084–2259</span>
+    </div>
 
+    <main class="page-body">
+        <div class="content-wrapper">
+            <header class="page-header">
+                <h1>🜂 SERIES TIMELINE</h1>
+                <p class="subtitle">Chronological Record of the Chaos System Colony</p>
+            </header>
 
+            <div class="timeline-wrapper">
+                <!-- PRE-ARRIVAL ERA -->
+                <section class="timeline-era">
+                    <h2 class="era-divider">Earth Origins • Pre-2215</h2>
+                    
+                    <div class="timeline-flow">
+                        <div class="timeline-row">
+                            <div class="timeline-left">
+                                <div class="timeline-date">
+                                    <span class="main">January 15, 2084</span>
+                                    <span class="sub">Earth Standard</span>
+                                </div>
+                                <h3 class="timeline-title">Douglas Kret Born</h3>
+                                <p class="timeline-summary">Future colony director and primary antagonist of Book 1. Age 41 at colony arrival.</p>
+                                <div class="timeline-meta">
+                                    <span class="chip">Character Origin</span>
+                                    <span class="chip">Antagonist</span>
+                                </div>
+                            </div>
+                            <div class="timeline-spine"></div>
+                            <div class="timeline-right"></div>
+                        </div>
 
+                        <div class="timeline-row">
+                            <div class="timeline-left"></div>
+                            <div class="timeline-spine"></div>
+                            <div class="timeline-right">
+                                <div class="timeline-date">
+                                    <span class="main">May 12, 2103</span>
+                                    <span class="sub">Earth Standard</span>
+                                </div>
+                                <h3 class="timeline-title">Amerigo Carisco Born</h3>
+                                <p class="timeline-summary">Chief Scientist of the Chaos System colony. Father of Celectra. Age 22 at expedition departure.</p>
+                                <div class="timeline-meta">
+                                    <span class="chip">Character Origin</span>
+                                    <span class="chip">Family</span>
+                                </div>
+                            </div>
+                        </div>
 
-<div class="timeline-flow">
+                        <div class="timeline-row">
+                            <div class="timeline-left">
+                                <div class="timeline-date">
+                                    <span class="main">January 20, 2105</span>
+                                    <span class="sub">Earth Standard</span>
+                                </div>
+                                <h3 class="timeline-title">Jinan "Jenni" Carisco Born</h3>
+                                <p class="timeline-summary">Amerigo's wife and Celectra's biological mother. Deceased 2225 during childbirth at age 30.</p>
+                                <div class="timeline-meta">
+                                    <span class="chip">Character Origin</span>
+                                    <span class="chip">Family</span>
+                                </div>
+                            </div>
+                            <div class="timeline-spine"></div>
+                            <div class="timeline-right"></div>
+                        </div>
 
-  <div class="timeline-row">
-    <div class="timeline-left card-bg">
-      <h3>Family Origins</h3>
-      <p><strong>Amerigo Carisco:</strong> May 12, 2103<br>
-         <strong>Jinan "Jenni":</strong> Jan 20, 2105<br>
-         <strong>Dr. Zoë Carisco:</strong> Jan 3, 2107</p>
-    </div>
-    <div class="timeline-spine"></div>
-    <div class="timeline-right card-bg">
-      <h3>The Great Voyage</h3>
-      <p><strong>2215 CE</strong><br>
-         The expedition arrives at the Chaos System. The colony begins construction on the moon Ares and the station Utopis.</p>
-    </div>
-  </div>
+                        <div class="timeline-row">
+                            <div class="timeline-left"></div>
+                            <div class="timeline-spine"></div>
+                            <div class="timeline-right">
+                                <div class="timeline-date">
+                                    <span class="main">January 3, 2107</span>
+                                    <span class="sub">Earth Standard</span>
+                                </div>
+                                <h3 class="timeline-title">Dr. Zoë Carisco Born</h3>
+                                <p class="timeline-summary">Expedition physician, later Amerigo's second wife and Celectra's stepmother. Age 18 at colony arrival.</p>
+                                <div class="timeline-meta">
+                                    <span class="chip">Character Origin</span>
+                                    <span class="chip">Family</span>
+                                    <span class="chip">Scientific</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-  <div class="timeline-row">
-    <div class="timeline-left card-bg">
-      <h3>Celectra's Birth</h3>
-      <p><strong>Oct 11, 2225</strong><br>
-         Celectra is born with "mononous disomas."<br><br>
-         <em>Also: Zara (June 22, 2225)</em></p>
-    </div>
-    <div class="timeline-spine"></div>
-    <div class="timeline-right card-bg">
-      <h3>The Shift</h3>
-      <p><strong>Oct 11, 2225</strong><br>
-         Jinan "Jenni" Carisco passes away during childbirth. Amerigo is left to raise the unique infant alone (with the assumption that he's raising twins, Electra and Celeste).</p>
-    </div>
-  </div>
+                <!-- ARRIVAL & EARLY COLONY -->
+                <section class="timeline-era">
+                    <h2 class="era-divider">The Great Voyage • 2215</h2>
+                    
+                    <div class="timeline-event">
+                        <div class="timeline-date">
+                            <span class="main">2215 CE</span>
+                            <span class="sub">Colony Arrival</span>
+                        </div>
+                        <h3 class="timeline-title">Expedition Reaches Chaos System</h3>
+                        <p class="timeline-summary">The colony ship arrives at the Chaos System. Construction begins on moon Ares and orbital station Utopis. Amerigo (22) leads scientific operations; Zoë (18) serves as chief medical officer.</p>
+                        <div class="timeline-meta">
+                            <span class="chip">Colony Foundation</span>
+                            <span class="chip">Political</span>
+                            <span class="chip">Scientific</span>
+                        </div>
+                    </div>
+                </section>
 
-  <div class="timeline-row">
-    <div class="timeline-left card-bg">
-      <h3>The Peer Group</h3>
-      <p><strong>Maya Keahi:</strong> Sept 22, 2226<br>
-         <strong>Sam Calder:</strong> Dec 30, 2227<br>
-         <strong>Jaxon Bowers:</strong> Oct 31, 2222</p>
-    </div>
-    <div class="timeline-spine"></div>
-    <div class="timeline-right card-bg">
-      <h3>B1: First Contact</h3>
-      <p><strong>Nov 5–9, 2232</strong><br>
-         After being abducted by Dr. Kret, Celectra escapes into the caves and initiates the first telepathic contact with Galinstanians.</p>
-    </div>
-  </div>
+                <!-- CELECTRA'S BIRTH & TRAGEDY -->
+                <section class="timeline-era">
+                    <h2 class="era-divider">New Generation • 2222–2227</h2>
+                    
+                    <div class="timeline-flow">
+                        <div class="timeline-row">
+                            <div class="timeline-left">
+                                <div class="timeline-date">
+                                    <span class="main">October 31, 2222</span>
+                                    <span class="sub">Ares Colony</span>
+                                </div>
+                                <h3 class="timeline-title">Jaxon Bowers Born</h3>
+                                <p class="timeline-summary">Son of colony leadership. Future husband of Celectra. Age 10 during first contact (Book 1).</p>
+                                <div class="timeline-meta">
+                                    <span class="chip">Character Origin</span>
+                                    <span class="chip">Peer Group</span>
+                                </div>
+                            </div>
+                            <div class="timeline-spine"></div>
+                            <div class="timeline-right"></div>
+                        </div>
 
-  <div class="timeline-row">
-    <div class="timeline-left card-bg">
-      <h3>Xan's Birth</h3>
-      <p><strong>March 8, 2234</strong><br>
-         Celectra's brother Xan is born, eventually developing his own "tap code" to communicate.</p>
-    </div>
-    <div class="timeline-spine"></div>
-    <div class="timeline-right card-bg">
-      <h3>Amerigo & Zoë Wedding</h3>
-      <p><strong>September 12, 2234</strong><br>
-         Following Xan's birth, Amerigo and Zoë marry, forming the stable family unit Celectra knows as "Daddy and Mommy."</p>
-    </div>
-  </div>
+                        <div class="timeline-row">
+                            <div class="timeline-left"></div>
+                            <div class="timeline-spine"></div>
+                            <div class="timeline-right">
+                                <div class="timeline-date">
+                                    <span class="main">March 5, 2223</span>
+                                    <span class="sub">Ares Colony</span>
+                                </div>
+                                <h3 class="timeline-title">Shawanna Born</h3>
+                                <p class="timeline-summary">Member of Celectra's peer group and future Listener Corps.</p>
+                                <div class="timeline-meta">
+                                    <span class="chip">Character Origin</span>
+                                    <span class="chip">Peer Group</span>
+                                </div>
+                            </div>
+                        </div>
 
-  <div class="timeline-row">
-    <div class="timeline-left card-bg">
-      <h3>Adolescence</h3>
-      <p>At age 14, Celectra begins balancing her academic Ph.D. track with her role as the colony's primary diplomat.</p>
-    </div>
-    <div class="timeline-spine"></div>
-    <div class="timeline-right card-bg">
-      <h3>B2: Environmental Victory</h3>
-      <p><strong>Dec 2239</strong><br>
-         Celectra proves industrial vibrations harm the aliens. The "Listener Corps" is formed to assist her in monitoring the moon.</p>
-    </div>
-  </div>
+                        <div class="timeline-row">
+                            <div class="timeline-left">
+                                <div class="timeline-date">
+                                    <span class="main">August 14, 2224</span>
+                                    <span class="sub">Ares Colony</span>
+                                </div>
+                                <h3 class="timeline-title">Ananya Patel Born</h3>
+                                <p class="timeline-summary">Daughter of engineering staff. Close friend and peer to Celectra.</p>
+                                <div class="timeline-meta">
+                                    <span class="chip">Character Origin</span>
+                                    <span class="chip">Peer Group</span>
+                                </div>
+                            </div>
+                            <div class="timeline-spine"></div>
+                            <div class="timeline-right"></div>
+                        </div>
 
-  <div class="timeline-row">
-    <div class="timeline-left card-bg">
-      <h3>The Twins' Birth</h3>
-      <p><strong>Nov 2247</strong><br>
-         <strong>Xara & Jenni:</strong> Born to Celectra and Jaxon, named after Celectra's late mother.</p>
-    </div>
-    <div class="timeline-spine"></div>
-    <div class="timeline-right card-bg">
-      <h3>B3: The ANI Prototype</h3>
-      <p><strong>March 2247</strong><br>
-         Celectra (age 21) successfully tests the Artificial Neural Interface, allowing humans to communicate without her direct mediation.</p>
-    </div>
-  </div>
+                        <div class="timeline-row">
+                            <div class="timeline-left"></div>
+                            <div class="timeline-spine"></div>
+                            <div class="timeline-right">
+                                <div class="timeline-date">
+                                    <span class="main">April 19, 2217</span>
+                                    <span class="sub">Aboard Colony Ship</span>
+                                </div>
+                                <h3 class="timeline-title">Lira Keahi Born</h3>
+                                <p class="timeline-summary">Older peer and mentor figure to Celectra's generation. Age 8 at colony arrival.</p>
+                                <div class="timeline-meta">
+                                    <span class="chip">Character Origin</span>
+                                    <span class="chip">Peer Group</span>
+                                </div>
+                            </div>
+                        </div>
 
-  <div class="timeline-row">
-    <div class="timeline-left card-bg">
-      <h3>Family Milestones</h3>
-      <p>Amerigo turns 53 and is named Chief Scientist of the Colony.</p>
-    </div>
-    <div class="timeline-spine"></div>
-    <div class="timeline-right card-bg">
-      <h3>Celectra & Jaxon Wedding</h3>
-      <p><strong>Sept 20, 2248</strong><br>
-         A dual-body wedding ceremony is held at the Samaya Activity Center plaza.</p>
-    </div>
-  </div>
+                        <div class="timeline-row">
+                            <div class="timeline-left">
+                                <div class="timeline-date">
+                                    <span class="main">June 22, 2225</span>
+                                    <span class="sub">Ares Colony</span>
+                                </div>
+                                <h3 class="timeline-title">Zara Born</h3>
+                                <p class="timeline-summary">Colony child born months before Celectra.</p>
+                                <div class="timeline-meta">
+                                    <span class="chip">Character Origin</span>
+                                </div>
+                            </div>
+                            <div class="timeline-spine"></div>
+                            <div class="timeline-right"></div>
+                        </div>
 
-  <div class="timeline-row">
-    <div class="timeline-left card-bg">
-      <h3>The Young Investigators</h3>
-      <p>The twins (age 7) discover a "help" code in the museum, signaling the start of the Resonant Echo mission.</p>
-    </div>
-    <div class="timeline-spine"></div>
-    <div class="timeline-right card-bg">
-      <h3>B4: Final Retirement</h3>
-      <p><strong>2259 CE</strong><br>
-         Celectra officially retires from "The Bridge." Her children and students now manage the interspecies network.</p>
-    </div>
-  </div>
+                        <div class="timeline-row">
+                            <div class="timeline-left"></div>
+                            <div class="timeline-spine"></div>
+                            <div class="timeline-right">
+                                <div class="timeline-date">
+                                    <span class="main glow-cyan">October 11, 2225</span>
+                                    <span class="sub">Ares Colony Medical Bay</span>
+                                </div>
+                                <h3 class="timeline-title glow-violet">Celectra Ambar Carisco Born</h3>
+                                <p class="timeline-summary"><strong>Major Event:</strong> Born with "mononous disomas" (dual consciousness). Mother Jinan dies during childbirth at age 30. Amerigo believes he is raising twins—Electra and Celeste—unaware they are one being.</p>
+                                <div class="timeline-meta">
+                                    <span class="chip">Protagonist</span>
+                                    <span class="chip">Family</span>
+                                    <span class="chip">Galinstanian Contact</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-</div>
+                <!-- BOOK 1 ERA -->
+                <section class="timeline-era">
+                    <h2 class="era-divider">First Contact • Book 1 (2232)</h2>
+                    
+                    <div class="timeline-event">
+                        <div class="timeline-date">
+                            <span class="main glow-cyan">November 5–9, 2232</span>
+                            <span class="sub">Age 7</span>
+                        </div>
+                        <h3 class="timeline-title glow-violet">The Abduction & First Contact</h3>
+                        <p class="timeline-summary"><strong>Book 1 Climax:</strong> Dr. Douglas Kret (age 49) abducts Celectra to study her condition. She escapes into the subterranean caves and establishes first telepathic contact with the Galinstanian consciousness. This event exposes Kret's unethical experiments and establishes Celectra as the colony's bridge to the native species.</p>
+                        <div class="timeline-meta">
+                            <span class="chip">Book 1</span>
+                            <span class="chip">Galinstanian Contact</span>
+                            <span class="chip">Political</span>
+                            <span class="chip">Scientific</span>
+                        </div>
+                    </div>
+                </section>
 
+                <!-- FAMILY DEVELOPMENT -->
+                <section class="timeline-era">
+                    <h2 class="era-divider">Family Bonds • 2234</h2>
+                    
+                    <div class="timeline-flow">
+                        <div class="timeline-row">
+                            <div class="timeline-left">
+                                <div class="timeline-date">
+                                    <span class="main">March 8, 2234</span>
+                                    <span class="sub">Age 9</span>
+                                </div>
+                                <h3 class="timeline-title">Xan Carisco Born</h3>
+                                <p class="timeline-summary">Celectra's younger brother. Develops unique "tap code" communication method, suggesting possible neurodivergent traits or latent telepathic sensitivity.</p>
+                                <div class="timeline-meta">
+                                    <span class="chip">Family</span>
+                                    <span class="chip">Character Development</span>
+                                </div>
+                            </div>
+                            <div class="timeline-spine"></div>
+                            <div class="timeline-right"></div>
+                        </div>
+
+                        <div class="timeline-row">
+                            <div class="timeline-left"></div>
+                            <div class="timeline-spine"></div>
+                            <div class="timeline-right">
+                                <div class="timeline-date">
+                                    <span class="main">September 12, 2234</span>
+                                    <span class="sub">Ares Colony</span>
+                                </div>
+                                <h3 class="timeline-title">Amerigo & Zoë Wedding</h3>
+                                <p class="timeline-summary">Following Xan's birth, Amerigo (age 31) and Dr. Zoë Carisco (age 27) marry, creating the stable family unit Celectra knows as "Daddy and Mommy."</p>
+                                <div class="timeline-meta">
+                                    <span class="chip">Family</span>
+                                    <span class="chip">Character Development</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ADOLESCENCE & BOOK 2 -->
+                <section class="timeline-era">
+                    <h2 class="era-divider">The Listener • Book 2 (2239)</h2>
+                    
+                    <div class="timeline-event">
+                        <div class="timeline-date">
+                            <span class="main">Age 14 (2239)</span>
+                            <span class="sub">Academic & Diplomatic Peak</span>
+                        </div>
+                        <h3 class="timeline-title">Dual Path: Ph.D. Track & Diplomacy</h3>
+                        <p class="timeline-summary">Celectra begins balancing advanced academic studies with her role as the colony's primary diplomat to the Galinstanians. The Listener Corps is formed under her guidance to monitor and interpret alien communications.</p>
+                        <div class="timeline-meta">
+                            <span class="chip">Character Development</span>
+                            <span class="chip">Scientific</span>
+                        </div>
+                    </div>
+
+                    <div class="timeline-event">
+                        <div class="timeline-date">
+                                    <span class="main glow-cyan">December 2239</span>
+                                    <span class="sub">Age 14</span>
+                                </div>
+                        <h3 class="timeline-title glow-violet">Environmental Victory</h3>
+                        <p class="timeline-summary"><strong>Book 2 Climax:</strong> Celectra proves that industrial vibrations from colony machinery are harming the Galinstanian consciousness. New protocols are established, and the Listener Corps becomes an official colony department.</p>
+                        <div class="timeline-meta">
+                            <span class="chip">Book 2</span>
+                            <span class="chip">Environmental</span>
+                            <span class="chip">Political</span>
+                            <span class="chip">Galinstanian Contact</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- YOUNGER GENERATION -->
+                <section class="timeline-era">
+                    <h2 class="era-divider">Next Generation • 2226–2227</h2>
+                    
+                    <div class="timeline-flow">
+                        <div class="timeline-row">
+                            <div class="timeline-left">
+                                <div class="timeline-date">
+                                    <span class="main">September 22, 2226</span>
+                                    <span class="sub">Ares Colony</span>
+                                </div>
+                                <h3 class="timeline-title">Maya Keahi Born</h3>
+                                <p class="timeline-summary">Younger member of the peer group, later involved in Listener Corps operations.</p>
+                                <div class="timeline-meta">
+                                    <span class="chip">Character Origin</span>
+                                    <span class="chip">Peer Group</span>
+                                </div>
+                            </div>
+                            <div class="timeline-spine"></div>
+                            <div class="timeline-right"></div>
+                        </div>
+
+                        <div class="timeline-row">
+                            <div class="timeline-left"></div>
+                            <div class="timeline-spine"></div>
+                            <div class="timeline-right">
+                                <div class="timeline-date">
+                                    <span class="main">December 30, 2227</span>
+                                    <span class="sub">Ares Colony</span>
+                                </div>
+                                <h3 class="timeline-title">Sam Calder Born</h3>
+                                <p class="timeline-summary">Youngest of the core peer group.</p>
+                                <div class="timeline-meta">
+                                    <span class="chip">Character Origin</span>
+                                    <span class="chip">Peer Group</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- BOOK 3 & TECHNOLOGY -->
+                <section class="timeline-era">
+                    <h2 class="era-divider">The Bridge • Book 3 (2246–2247)</h2>
+                    
+                    <div class="timeline-event">
+                        <div class="timeline-date">
+                            <span class="main">March 2247</span>
+                            <span class="sub">Age 21</span>
+                        </div>
+                        <h3 class="timeline-title">ANI Prototype Success</h3>
+                        <p class="timeline-summary"><strong>Book 3 Achievement:</strong> Celectra successfully tests the Artificial Neural Interface (ANI), allowing humans to communicate with Galinstanians without her direct telepathic mediation. This marks a major technological leap for interspecies relations.</p>
+                        <div class="timeline-meta">
+                            <span class="chip">Book 3</span>
+                            <span class="chip">Scientific</span>
+                            <span class="chip">Technological</span>
+                            <span class="chip">Galinstanian Contact</span>
+                        </div>
+                    </div>
+
+                    <div class="timeline-event">
+                        <div class="timeline-date">
+                            <span class="main glow-cyan">November 2247</span>
+                            <span class="sub">Age 22</span>
+                        </div>
+                        <h3 class="timeline-title glow-violet">Twin Daughters Born</h3>
+                        <p class="timeline-summary">Celectra and Jaxon welcome twin daughters: <strong>Xara</strong> and <strong>Jenni</strong> (named after Celectra's late mother). This event deepens Celectra's understanding of motherhood and sacrifice.</p>
+                        <div class="timeline-meta">
+                            <span class="chip">Family</span>
+                            <span class="chip">Character Development</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- MARRIAGE & MILESTONES -->
+                <section class="timeline-era">
+                    <h2 class="era-divider">Legacy • 2248–2255</h2>
+                    
+                    <div class="timeline-event">
+                        <div class="timeline-date">
+                            <span class="main">September 20, 2248</span>
+                            <span class="sub">Age 23</span>
+                        </div>
+                        <h3 class="timeline-title">Celectra & Jaxon Wedding</h3>
+                        <p class="timeline-summary">Dual-body ceremony held at the Samaya Activity Center plaza, uniting the colony's bridge-builder with its future leadership.</p>
+                        <div class="timeline-meta">
+                            <span class="chip">Family</span>
+                            <span class="chip">Political</span>
+                        </div>
+                    </div>
+
+                    <div class="timeline-event">
+                        <div class="timeline-date">
+                            <span class="main">2255</span>
+                            <span class="sub">Age 29–30</span>
+                        </div>
+                        <h3 class="timeline-title">Amerigo Named Chief Scientist</h3>
+                        <p class="timeline-summary">At age 53, Amerigo Carisco receives formal recognition as Chief Scientist of the Chaos System Colony, cementing the Carisco family's legacy.</p>
+                        <div class="timeline-meta">
+                            <span class="chip">Political</span>
+                            <span class="chip">Family</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- BOOK 4 & RETIREMENT -->
+                <section class="timeline-era">
+                    <h2 class="era-divider">Passing the Torch • Book 4 (2255–2259)</h2>
+                    
+                    <div class="timeline-event">
+                        <div class="timeline-date">
+                            <span class="main">Age 30–32 (2255–2257)</span>
+                            <span class="sub">The Young Investigators</span>
+                        </div>
+                        <h3 class="timeline-title">The Twins' Discovery</h3>
+                        <p class="timeline-summary">Daughters Xara and Jenni (age 7–8) discover a "help" code embedded in the colony museum archives, signaling the beginning of the Resonant Echo mission—a new chapter in human-Galinstanian relations led by the next generation.</p>
+                        <div class="timeline-meta">
+                            <span class="chip">Book 4</span>
+                            <span class="chip">Next Generation</span>
+                            <span class="chip">Galinstanian Contact</span>
+                        </div>
+                    </div>
+
+                    <div class="timeline-event">
+                        <div class="timeline-date">
+                            <span class="main glow-cyan">2259 CE</span>
+                            <span class="sub">Age 34</span>
+                        </div>
+                        <h3 class="timeline-title glow-violet">Final Retirement: "The Bridge"</h3>
+                        <p class="timeline-summary"><strong>Book 4 Conclusion:</strong> Celectra officially retires from her role as primary interspecies mediator. Her children, students, and the established Listener Corps network now manage ongoing communications with the Galinstanian consciousness. The bridge has become a permanent structure.</p>
+                        <div class="timeline-meta">
+                            <span class="chip">Book 4</span>
+                            <span class="chip">Legacy</span>
+                            <span class="chip">Galinstanian Contact</span>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <footer class="page-footer">
+                <p>Timeline compiled from colony records • Last updated 2259</p>
+                <p>Characters tracked: 25+ • Timespan: 175 years</p>
+            </footer>
+        </div>
+    </main>
+
+    <button id="toTopBtn">↑ TOP</button>
+
+    <script>
+        // Smooth scroll to top
+        document.getElementById('toTopBtn').addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Show/hide scroll button
+        window.addEventListener('scroll', function() {
+            const btn = document.getElementById('toTopBtn');
+            btn.style.display = (window.scrollY > 300) ? 'block' : 'none';
+        });
+    </script>
 </body>
-
 </html>
